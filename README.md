@@ -136,7 +136,7 @@ With this format:
 
 ## CLI
 
-### Add script in your package.json
+### **(optional)** Add script in your package.json
 
 ```diff
 {
