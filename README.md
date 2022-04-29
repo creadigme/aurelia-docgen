@@ -136,14 +136,27 @@ With this format:
 
 ## CLI
 
+### Add script in your package.json
+
+```diff
+{
+  "name": "something",
+  "scripts": {
++   "build:stories": "aurelia-stories --out ./src/stories"
+!   "build:stories": "aurelia-stories"
+  }
+}
+```
+
 ### Default way - All component stories in one directory
 
 ```bash
 # Go to your project
 cd ./my-supra-project
 
-# add a new script in package.json, like `generate:docs` with command
-aurelia-stories --out ./src/stories
+# add a new script in package.json, like `build:stories` with command
+# aurelia-stories --out ./src/stories
+npm run aurelia-stories
 
 # all detect components and stories will be written in ./src/stories directory.
 ```
@@ -151,7 +164,9 @@ aurelia-stories --out ./src/stories
 ### DRY way - Component stories next to components
 
 ```bash
-aurelia-stories
+# add a new script in package.json, like `build:stories` with command
+# aurelia-stories
+npm run aurelia-stories
 
 # all detected components and the stories will be written next to the detected components.
 ```
