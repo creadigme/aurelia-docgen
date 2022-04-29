@@ -3,6 +3,7 @@ const fs = require('fs');
 const Dotenv = require('dotenv-webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { BundleDeclarationsWebpackPlugin } = require('bundle-declarations-webpack-plugin');
+const webpack = require('webpack');
 
 /**
  * 
@@ -28,8 +29,10 @@ module.exports = function(
   const outputDir = path.join(options.directory, 'dist/');
   const outputDirSubDir = options.subdir ? path.join(outputDir, options.subdir) : outputDir;
 
+  let hasCli = false;
   if (fs.existsSync(cliPath)) {
     entry[options.name + '-cli'] = cliPath;
+    hasCli = true;
   }
 
   return function (env, { analyze }) {
@@ -74,6 +77,12 @@ module.exports = function(
           path: `./.env${production ? '' : '.' + (process.env.NODE_ENV || 'development')}`,
         }),
         analyze && new BundleAnalyzerPlugin(),
+        hasCli ? new webpack.BannerPlugin({
+          banner: "#!/usr/bin/env node",
+          raw: true,
+          entryOnly: true,
+          test: /\-cli\.bundle\.(js|ts)$/
+        }) : undefined,
       ].filter(f => f),
       resolve: {
         extensions: ['.ts', '.js'],
