@@ -159,24 +159,24 @@ aurelia-stories
 
 ### CLI parameters
 
-| Parameter | Description | Sample | Mandatory | Multiple
-|---|---|---|---|---|
-| --cwd | Project directory. *Current working directory is used by default.* | `./` | false | false
-| **--out** | Output directory for generated stories. *If not specified, stories are written next to the components.* | `./src/stories/` | false | false
-| **--mergeOut** | If `out` is specified, merges the component stories into a single file | `./src/stories/components.stories.ts` | false | false
-| --auRegister | Specify the TS file for Aurelia configuration. *If null or empty, only the current component will be register.* | | false | false
-| --etaTemplate | Path of Eta template (https://eta.js.org/). *If null, the default template is used* | | false | false
-| --verbose | More logs | | false | false
+| Parameter | Description | Sample |
+|---|---|---|
+| --cwd | Project directory. *Current working directory is used by default.* | `./` |
+| **--out** | Output directory for generated stories. *If not specified, stories are written next to the components.* | `./src/stories/` |
+| **--mergeOut** | If `out` is specified, merges the component stories into a single file | `./src/stories/components.stories.ts` |
+| --auRegister | Specify the TS file for Aurelia configuration. *If null or empty, only the current component will be register.* | |
+| --etaTemplate | Path of Eta template (https://eta.js.org/). *If null, the default template is used* | |
+| --verbose | More logs | |
 
 ### API
 
-| Parameter | Description | Sample | Mandatory | Multiple
-|---|---|---|---|---|
-| --cwd | Project directory. *Current working directory is used by default.* | `./` | false | false
-| --auRegister | Specify the TS file for Aurelia configuration. *If null or empty, only the current component will be register.* | | false | false
-| --etaTemplate | Path of Eta template (https://eta.js.org/). *If null, the default template is used* | | false | false
-| --verbose | More logs | | false | false
-| **--logger** | `(msg: string, level: LevelLog) => void` | `console.log(``${level} - ${msg}``)` | false | false
+| Parameter | Description | Sample |
+|---|---|---|
+| --cwd | Project directory. *Current working directory is used by default.* | `./` |
+| --auRegister | Specify the TS file for Aurelia configuration. *If null or empty, only the current component will be register.* | |
+| --etaTemplate | Path of Eta template (https://eta.js.org/). *If null, the default template is used* | |
+| --verbose | More logs |  |
+| **--logger** | `(msg: string, level: LevelLog) => void` | `console.log(``${level} - ${msg}``)` |
 
 ```typescript
 import { AU2Storybook } from './aurelia-stories';
