@@ -1,6 +1,8 @@
 name: Node.js CI
 
 on:
+  release:
+      types: [created]
   push:
   pull_request:
     types:
@@ -10,7 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/master') || github.event_name == 'release'
 
     # strategy:
     #   matrix:
@@ -52,8 +54,16 @@ jobs:
         CI: true
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-    - name: Publish packages
+    - name: Publish packages GitHub
+      env:
+        CI: true
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_GITHUB_AUTH_TOKEN }}
+        NPM_PUSH_REGISTRY: https://npm.pkg.github.com/
+      run: node ./.build/build-flow.js publish
+    - name: Publish packages npm
+      if: github.event_name == 'release'
       env:
         CI: true
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        NPM_PUSH_REGISTRY: https://registry.npmjs.org/
       run: node ./.build/build-flow.js publish
