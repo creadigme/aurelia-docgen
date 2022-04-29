@@ -1,0 +1,21 @@
+# au2-countdown stories
+- title: Start at 10
+  help: |
+    Countdown sample
+  tags:
+    - button
+    - simple
+  code: |
+    <let finish-stack.bind="[]"></let>
+    <au2-countdown view-model.ref="countdownVM" on-reach.call="finishStack.push('Let\'s go')"></au2-countdown>
+    <button click.trigger="countdownVM.isActive ? countdownVM.stop() : countdownVM.start()">${countdownVM.isActive ? 'Stop' : 'Start'}</button>
+    <ul><li repeat.for="finish of finishStack">${finish}</li></ul>
+- title: Start at 100
+  help: |
+    Countdown sample
+  tags:
+    - button
+    - simple
+  code: |
+    <au2-countdown view-model.ref="countdownVM" start-value.bind="100"></au2-countdown>
+    <button click.trigger="countdownVM.isActive ? countdownVM.stop() : countdownVM.start()">${countdownVM.isActive ? 'Stop' : 'Start'}</button>

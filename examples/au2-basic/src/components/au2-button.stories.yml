@@ -1,0 +1,22 @@
+# au2-button stories
+- title: Toggle
+  help: |
+    A button toggle
+  tags:
+    - button
+    - simple
+  code: |
+    <let state.bind="false"></let>
+    <au2-button action.call="state = !state" content="${state ? 'Turn me off' : 'Turn me on'}"></au2-button>
+    <div>${state ? '✅' : '☐' }</div>
+- title: Another story
+  help: |
+    Another story. Look at this sample...
+  tags:
+    - button
+    - simple
+    - supra
+  code: |
+    <let state.bind="false"></let>
+    <au2-button action.call="state = !state" content="${state ? '✅' : '☐'}"></au2-button>
+    <div>${state ? '✅' : '☐' }</div>

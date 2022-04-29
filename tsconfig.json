@@ -1,0 +1,29 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "target": "ES2017",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "newLine": "LF",
+    "outDir": "./build",
+    "alwaysStrict": true,
+  },
+  "exclude": [
+    "./node_modules",
+    "./build",
+  ],
+  "include": [
+    "./src"
+  ],
+  "files": [
+    "src/resource.d.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}

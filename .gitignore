@@ -1,0 +1,15 @@
+node_modules/
+build/
+dist/
+coverage/
+.nyc_output/
+.vscode/
+.yalc/
+yarn-error.log
+examples/au2-basic/node_modules/
+examples/au2-basic/build/
+examples/au2-basic/dist/
+examples/au2-basic/coverage/
+examples/au2-basic/.nyc_output/
+examples/au2-basic/.vscode/
+examples/au2-basic/.yalc/
