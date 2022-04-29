@@ -1,10 +1,11 @@
+[![npm version](https://img.shields.io/npm/v/@creadigme/aurelia-stories.svg)](https://www.npmjs.com/package/@creadigme/aurelia-stories)
 [![Build Status](https://github.com/creadigme/aurelia-stories/actions/workflows/ci.yml/badge.svg)](https://github.com/creadigme/aurelia-stories/actions)
 [![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/master/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
 <br />
 
 # Aurelia Stories | @creadigme/aurelia-stories
 
-> Aurelia + Storybook (can be) ❤
+> Aurelia + Storybook (*can be*) ❤
 
 `Aurelia Stories` brings the ability to generate component documentations, **stories**, from *any*<sup>1</sup> `Aurelia` `TypeScript` project.
 Components's stories are written in [YAML](https://yaml.org/).
@@ -36,7 +37,7 @@ This tool is intended to be used with projects based on [Aurelia framework](http
 npm i @creadigme/aurelia-stories -D
 # or
 yarn add @creadigme/aurelia-stories -D
-# or for global usage
+# or for global use
 yarn add @creadigme/aurelia-stories -g
 ```
 
@@ -92,19 +93,19 @@ module.exports = {
 
 Stories are written in [YAML](https://yaml.org/) next to components like these:
 
-```bash
-components
-├── something
-│   ├── au2-button.html
-│   ├── au2-button.ts
-│   ├── au2-button.stories.yml
-│   ├── au2-switch.html
-│   ├── au2-switch.ts
-│   ├── au2-switch.stories.yml
-└── else
-│   ├── supra-ultra-component.html
-│   ├── supra-ultra-component.ts
-│   ├── supra-ultra-component.stories.yml
+```diff
+ components
+ ├── something
+ │   ├── au2-button.html
+ │   ├── au2-button.ts
++│   ├── au2-button.stories.yml
+ │   ├── au2-switch.html
+ │   ├── au2-switch.ts
++│   ├── au2-switch.stories.yml
+ └── else
+ │   ├── supra-ultra-component.html
+ │   ├── supra-ultra-component.ts
++│   ├── supra-ultra-component.stories.yml
 ```
 
 With this format:
@@ -171,12 +172,13 @@ npm run build:stories
 # all detected components and the stories will be written next to the detected components.
 ```
 
-### Real world
+### Real world installation
 
-- Script on `package.json`.
+- Install `@creadigme/aurelia-stories` in [`devDependencies`](#aurelia-stories).
+- Script on `package.json` as below.
 - All component stories in one directory.
 - Storybook stories can use any register elements.
-- `./.storybook/main.js` is edited.
+- `./.storybook/main.js` is edited with [webpack configuration](#webpack-configuration).
 
 **./package.json**
 ```diff
@@ -184,6 +186,9 @@ npm run build:stories
   "name": "something",
   "scripts": {
 +   "build:stories": "aurelia-stories --out ./src/stories --auRegister ./configure"
+  },
+  "devDependencies": {
++   "@creadigme/aurelia-stories": "^1"
   }
 }
 ```
@@ -245,5 +250,3 @@ for (const ceStories of this._au2Storybook.getStories()) {
 [![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/master/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
 
 ![Coverage sunburst](https://codecov.io/gh/creadigme/aurelia-stories/branch/master/graphs/sunburst.svg?token=BV2ZP1FH6K)
-
-![Coverage tree](https://codecov.io/gh/creadigme/aurelia-stories/branch/master/graphs/tree.svg?token=BV2ZP1FH6K)
