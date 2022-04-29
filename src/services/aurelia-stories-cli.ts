@@ -28,6 +28,8 @@ export class AureliaStoriesCLI {
 
   /** Write stories */
   public writeStories(): void {
+    this._ensureOutDir();
+
     if (this._mergeOut) {
       const outPath = path.join(this._outDir, `components.stories${this._outExtension}`);
       fs.writeFileSync(outPath, '', { encoding: 'utf-8' });
@@ -35,10 +37,22 @@ export class AureliaStoriesCLI {
         fs.appendFileSync(outPath, ceStories.stories);
       }
     } else {
-      const baseDir = this._outDir || this._aureliaStories.projectDir;
+      const projectDir = this._aureliaStories.projectDir;
       for (const ceStories of this._aureliaStories.getStories()) {
-        fs.writeFileSync(this._outDir ? path.join(baseDir, `${ceStories.component.componentTag}.stories${this._outExtension}`) : path.join(baseDir, ceStories.componentPath + `.stories${this._outExtension}`), ceStories.stories, {
+        fs.writeFileSync(this._outDir ? path.join(this._outDir, `${ceStories.component.componentTag}.stories${this._outExtension}`) : path.join(projectDir, ceStories.componentPath + `.stories${this._outExtension}`), ceStories.stories, {
           encoding: 'utf-8',
+        });
+      }
+    }
+  }
+
+  /** Ensure output directory */
+  private _ensureOutDir() {
+    if (this._outDir) {
+      // ensure out dir
+      if (!fs.existsSync(this._outDir)) {
+        fs.mkdirSync(this._outDir, {
+          recursive: true,
         });
       }
     }

@@ -30,10 +30,9 @@ describe('aurelia-stories-cli', () => {
     }
   });
 
-  it('My self - so no component must be found', async () => {
+  it('My self - so no component must be found - outdir must be created', async () => {
     const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
     try {
-      fs.mkdirSync(tmp);
       const logs: string[] = [];
       const errors: Error[] = [];
       await new Promise<void>((resolve, reject) => {
