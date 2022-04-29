@@ -48,13 +48,10 @@ export class AureliaStories {
         stories: Eta.render(
           tpl,
           {
-            registry: { import: 'register', path: this._options.auRegister },
+            registry: { import: 'configure', path: this._options.auRegister },
             component,
             stories: ymlStories,
-            helpers: {
-              camelCase: require('camelcase'),
-              ...helpers,
-            },
+            helpers,
           },
           { async: false }
         ) as string,

@@ -66,7 +66,6 @@ describe('aurelia-stories', () => {
       cwd: path.join(process.cwd(), 'examples', 'au2-basic'),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const stories = Array.from(aureliaStories.getStories());
     assert.strictEqual(stories.length, 3);
 
@@ -106,7 +105,6 @@ describe('aurelia-stories', () => {
       etaTemplate: path.join(process.cwd(), 'static', 'templates', 'common.stories.md.eta'),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const stories = Array.from(aureliaStories.getStories());
     assert.strictEqual(stories.length, 3);
 
@@ -118,5 +116,22 @@ describe('aurelia-stories', () => {
     assert.ok(stories[0].stories.indexOf("> I'm not a button") !== -1);
     assert.ok(stories[0].stories.indexOf('## Stories') !== -1);
     assert.ok(stories[0].stories.indexOf('### Toggle') !== -1);
+  });
+
+  it('Project AU2 Basic - auRegister', () => {
+    const aureliaStories = new AureliaStories({
+      cwd: path.join(process.cwd(), 'examples', 'au2-basic'),
+      auRegister: './configure',
+    });
+
+    const stories = Array.from(aureliaStories.getStories());
+    assert.strictEqual(stories.length, 3);
+
+    assert.ok(stories[0].stories.indexOf("import * as configure from './configure';") !== -1);
+    assert.ok(stories[0].stories.indexOf('Aurelia.register(configure)') !== -1);
+    assert.ok(stories[1].stories.indexOf("import * as configure from './configure';") !== -1);
+    assert.ok(stories[1].stories.indexOf('Aurelia.register(configure)') !== -1);
+    assert.ok(stories[2].stories.indexOf("import * as configure from './configure';") !== -1);
+    assert.ok(stories[2].stories.indexOf('Aurelia.register(configure)') !== -1);
   });
 });

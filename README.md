@@ -156,7 +156,7 @@ cd ./my-supra-project
 
 # add a new script in package.json, like `build:stories` with command
 # aurelia-stories --out ./src/stories
-npm run aurelia-stories
+npm run build:stories
 
 # all detect components and stories will be written in ./src/stories directory.
 ```
@@ -166,11 +166,46 @@ npm run aurelia-stories
 ```bash
 # add a new script in package.json, like `build:stories` with command
 # aurelia-stories
-npm run aurelia-stories
+npm run build:stories
 
 # all detected components and the stories will be written next to the detected components.
 ```
 
+### Real world
+
+- Script on `package.json`.
+- All component stories in one directory.
+- Storybook stories can use any register elements.
+- `./.storybook/main.js` is edited.
+
+**./package.json**
+```diff
+{
+  "name": "something",
+  "scripts": {
++   "build:stories": "aurelia-stories --out ./src/stories --auRegister ./configure"
+  }
+}
+```
+
+**./src/configure.ts**
+```typescript
+import type { IContainer } from 'aurelia';
+
+export function register(container: IContainer): IContainer {
+  return container.register(/* Your configuration */);
+}
+```
+
+```bash
+npm run build:stories
+# all detect components and stories will be written in ./src/stories directory.
+```
+
+```bash
+# launch storybook
+npm run storybook
+```
 
 ### CLI parameters
 
@@ -179,7 +214,7 @@ npm run aurelia-stories
 | --cwd | Project directory. *Current working directory is used by default.* | `./` |
 | **--out** | Output directory for generated stories. *If not specified, stories are written next to the components.* | `./src/stories/` |
 | **--mergeOut** | If `out` is specified, merges the component stories into a single file | `./src/stories/components.stories.ts` |
-| --auRegister | Specify the TS file for Aurelia configuration. *If null or empty, only the current component will be register.* | |
+| --auRegister | Specify the TS file for Aurelia configuration (**without extension**).<br><br>Example `./configure` file:<br>`export function register(container: IContainer): IContainer { return container.register(...); }`.<br> *If null or empty, only the current component will be register.* | |
 | --etaTemplate | Path of Eta template (https://eta.js.org/). *If null, the default template is used* | |
 | --verbose | More logs | |
 
@@ -188,7 +223,7 @@ npm run aurelia-stories
 | Parameter | Description | Sample |
 |---|---|---|
 | --cwd | Project directory. *Current working directory is used by default.* | `./` |
-| --auRegister | Specify the TS file for Aurelia configuration. *If null or empty, only the current component will be register.* | |
+| --auRegister | Specify the TS file for Aurelia configuration (**without extension**).<br><br>Example `./configure` file:<br>`export function register(container: IContainer): IContainer { return container.register(...); }`.<br> *If null or empty, only the current component will be register.* | |
 | --etaTemplate | Path of Eta template (https://eta.js.org/). *If null, the default template is used* | |
 | --verbose | More logs |  |
 | **--logger** | `(msg: string, level: LevelLog) => void` | `console.log(``${level} - ${msg}``)` |
