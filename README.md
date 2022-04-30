@@ -145,6 +145,7 @@ With this format:
   "scripts": {
 +   "build:stories": "aurelia-stories --out ./src/stories"
 !   "build:stories": "aurelia-stories"
+!   "build:stories": "aurelia-stories --out ./src/stories --auRegister ./configure"
   }
 }
 ```
@@ -216,7 +217,7 @@ npm run storybook
 
 | Parameter | Description | Sample |
 |---|---|---|
-| --cwd | Project directory. *Current working directory is used by default.* | `./` |
+| --projectDir | Project directory. *Current working directory is used by default.* | `./` |
 | **--out** | Output directory for generated stories. *If not specified, stories are written next to the components.* | `./src/stories/` |
 | **--mergeOut** | If `out` is specified, merges the component stories into a single file | `./src/stories/components.stories.ts` |
 | --auRegister | Specify the TS file for Aurelia configuration (**without extension**).<br><br>Example `./configure` file:<br>`export function register(container: IContainer): IContainer { return container.register(...); }`.<br> *If null or empty, only the current component will be register.* | |
@@ -227,7 +228,7 @@ npm run storybook
 
 | Parameter | Description | Sample |
 |---|---|---|
-| --cwd | Project directory. *Current working directory is used by default.* | `./` |
+| --projectDir | Project directory. *Current working directory is used by default.* | `./` |
 | --auRegister | Specify the TS file for Aurelia configuration (**without extension**).<br><br>Example `./configure` file:<br>`export function register(container: IContainer): IContainer { return container.register(...); }`.<br> *If null or empty, only the current component will be register.* | |
 | --etaTemplate | Path of Eta template (https://eta.js.org/). *If null, the default template is used* | |
 | --verbose | More logs |  |
@@ -237,8 +238,8 @@ npm run storybook
 import { AU2Storybook } from './aurelia-stories';
 
 const au2Storybook = new AU2Storybook({
-  cwd: './path-of-your-supra-ultra-project',
-  out: './path-of-your-supra-ultra-project/src/stories',
+  projectDir: './path-of-your-supra-ultra-project',
+  out: './src/stories',
 });
 
 for (const ceStories of this._au2Storybook.getStories()) {

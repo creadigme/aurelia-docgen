@@ -21,7 +21,7 @@ describe('aurelia-stories', () => {
   it('My self - so no component must be found - cwd specified', () => {
     const logs: Array<{ msg: string; level: LogLevel }> = [];
     const aureliaStories = new AureliaStories({
-      cwd: process.cwd(),
+      projectDir: process.cwd(),
       logger: (msg, level) => logs.push({ msg, level }),
     });
 
@@ -35,7 +35,7 @@ describe('aurelia-stories', () => {
 
   it('My self verbose with default logger', () => {
     const aureliaStories = new AureliaStories({
-      cwd: process.cwd(),
+      projectDir: process.cwd(),
       verbose: true,
     });
 
@@ -48,7 +48,7 @@ describe('aurelia-stories', () => {
   it('My self verbose - so no component must be found', () => {
     const logs: Array<{ msg: string; level: LogLevel }> = [];
     const aureliaStories = new AureliaStories({
-      cwd: process.cwd(),
+      projectDir: process.cwd(),
       verbose: true,
       logger: (msg, level) => logs.push({ msg, level }),
     });
@@ -63,7 +63,7 @@ describe('aurelia-stories', () => {
 
   it('Project AU2 Basic - components must be found', () => {
     const aureliaStories = new AureliaStories({
-      cwd: path.join(process.cwd(), 'examples', 'au2-basic'),
+      projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
     });
 
     const stories = Array.from(aureliaStories.getStories());
@@ -101,7 +101,7 @@ describe('aurelia-stories', () => {
 
   it('Project AU2 Basic - custom Eta template', () => {
     const aureliaStories = new AureliaStories({
-      cwd: path.join(process.cwd(), 'examples', 'au2-basic'),
+      projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
       etaTemplate: path.join(process.cwd(), 'static', 'templates', 'common.stories.md.eta'),
     });
 
@@ -120,7 +120,7 @@ describe('aurelia-stories', () => {
 
   it('Project AU2 Basic - auRegister', () => {
     const aureliaStories = new AureliaStories({
-      cwd: path.join(process.cwd(), 'examples', 'au2-basic'),
+      projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
       auRegister: './configure',
     });
 

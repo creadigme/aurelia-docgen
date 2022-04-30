@@ -5,8 +5,8 @@ import { LogLevel } from 'typedoc';
 export type AureliaStoriesOptions = {
   /** You [can] speak too much! */
   verbose?: boolean;
-  /** Working directory of the target project */
-  cwd?: string;
+  /** Target project directory */
+  projectDir?: string;
   /**
    * Path of Eta template (https://eta.js.org/)
    * If null, the default template is used
@@ -52,7 +52,7 @@ export type AureliaStoriesCLIOptions = AureliaStoriesOptions & {
  */
 export const AureliaStoriesCLIOptions: OptionDefinition[] = [
   { name: 'verbose', alias: 'v', type: Boolean },
-  { name: 'cwd', alias: 'w', type: String },
+  { name: 'projectDir', alias: 'i', type: String },
   { name: 'out', alias: 'o', type: String },
   { name: 'mergeOut', alias: 'm', type: Boolean },
   { name: 'etaTemplate', alias: 't', type: String },

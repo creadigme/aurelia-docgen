@@ -66,7 +66,7 @@ describe('aurelia-stories-cli', () => {
       const errors: Error[] = [];
       await new Promise<void>((resolve, reject) => {
         const worker = new Worker(path.join(process.cwd(), './src/cli.worker.js'), {
-          argv: ['--cwd', process.cwd(), '--out', tmp],
+          argv: ['--projectDir', process.cwd(), '--out', tmp],
           env: process.env,
         });
         worker.on('message', data => logs.push(data));
@@ -95,7 +95,7 @@ describe('aurelia-stories-cli', () => {
       const errors: Error[] = [];
       await new Promise<void>((resolve, reject) => {
         const worker = new Worker(path.join(process.cwd(), './src/cli.worker.js'), {
-          argv: ['--cwd', path.join(process.cwd(), 'examples', 'au2-basic'), '--out', tmp],
+          argv: ['--projectDir', path.join(process.cwd(), 'examples', 'au2-basic'), '--out', tmp],
           env: process.env,
         });
         worker.on('message', data => logs.push(data));
@@ -130,7 +130,7 @@ describe('aurelia-stories-cli', () => {
       const errors: Error[] = [];
       await new Promise<void>((resolve, reject) => {
         const worker = new Worker(path.join(process.cwd(), './src/cli.worker.js'), {
-          argv: ['--cwd', path.join(process.cwd(), 'examples', 'au2-basic'), '--out', tmp, '--mergeOut', '--etaTemplate', path.join(process.cwd(), 'static', 'templates', 'common.stories.md.eta')],
+          argv: ['--projectDir', path.join(process.cwd(), 'examples', 'au2-basic'), '--out', tmp, '--mergeOut', '--etaTemplate', path.join(process.cwd(), 'static', 'templates', 'common.stories.md.eta')],
           env: process.env,
         });
         worker.on('message', data => logs.push(data));

@@ -22,7 +22,7 @@ export class AureliaStories {
   private readonly _defaultLogger: (msg: string, level: LogLevel) => void;
 
   constructor(private readonly _options: AureliaStoriesAPIOptions) {
-    this.projectDir = this._options.cwd || process.cwd();
+    this.projectDir = this._options.projectDir || process.cwd();
     this.srcDir = path.resolve(this.projectDir, 'src');
     this._tsConfigPath = path.join(this.projectDir, 'tsconfig.json');
     this._tplPath = this._options.etaTemplate ? path.resolve(this._options.etaTemplate) : path.join(__dirname, typeof __webpack_require__ === 'function' ? './' : '../../', 'static/templates/au2.stories.ts.eta');
@@ -61,7 +61,6 @@ export class AureliaStories {
 
   /**
    * Generate ProjectReflection from TypeScript project
-   * @param options { cwd: string } Must be the root path of the TS Project
    * @returns ProjectReflection
    */
   private _generateReflection(): ProjectReflection {
