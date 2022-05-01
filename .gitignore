@@ -13,3 +13,4 @@ examples/au2-basic/coverage/
 examples/au2-basic/.nyc_output/
 examples/au2-basic/.vscode/
 examples/au2-basic/.yalc/
+examples/au2-basic/src/components/*.stories.ts

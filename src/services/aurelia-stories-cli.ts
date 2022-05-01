@@ -46,9 +46,8 @@ export class AureliaStoriesCLI {
         fs.appendFileSync(outPath, ceStories.stories, 'utf-8');
       }
     } else {
-      const projectDir = this._aureliaStories.projectDir;
       for (const ceStories of this._aureliaStories.getStories()) {
-        fs.writeFileSync(outDir ? path.join(outDir, `${ceStories.component.componentTag}.stories${this._outExtension}`) : path.join(projectDir, ceStories.componentPath + `.stories${this._outExtension}`), ceStories.stories, 'utf-8');
+        fs.writeFileSync(outDir ? path.join(outDir, `${ceStories.component.componentTag}.stories${this._outExtension}`) : ceStories.componentPath + `.stories${this._outExtension}`, ceStories.stories, 'utf-8');
       }
     }
 

@@ -123,6 +123,26 @@ describe('aurelia-stories-cli', () => {
     }
   });
 
+  it('Project AU2 Basic - DRY - components must be found', async () => {
+    const projectDir = path.join(process.cwd(), 'examples', 'au2-basic');
+    await new Promise<void>((resolve, reject) => {
+      const worker = new Worker(path.join(process.cwd(), './src/cli.worker.js'), {
+        argv: ['--projectDir', projectDir],
+        env: process.env,
+      });
+      worker.on('exit', code => {
+        if (code !== 0) {
+          reject(new Error(`Worker stopped with exit code ${code}`));
+        } else {
+          resolve();
+        }
+      });
+    });
+    assert.ok(fs.existsSync(path.join(projectDir, 'src', 'components', 'au2-button.stories.ts')));
+    assert.ok(fs.existsSync(path.join(projectDir, 'src', 'components', 'au2-countdown.stories.ts')));
+    assert.ok(fs.existsSync(path.join(projectDir, 'src', 'components', 'au2-empty.stories.ts')));
+  });
+
   it('Watch Project AU2 Basic - components must be found', async () => {
     const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
     const projectDir = path.join(process.cwd(), 'examples', 'au2-basic');
