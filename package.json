@@ -63,7 +63,7 @@
     "clean": "node ./node_modules/rimraf/bin ./dist && node ./node_modules/rimraf/bin ./coverage && node ./node_modules/rimraf/bin ./.nyc_output && node ./node_modules/rimraf/bin ./node_modules",
     "lint": "node ./node_modules/eslint/bin/eslint ./src/**/*.{js,ts,tsx}",
     "lint:fix": "node ./node_modules/eslint/bin/eslint ./src/**/*.{js,ts,tsx} --fix",
-    "test": "node ./node_modules/ts-mocha/bin/ts-mocha --timeout 10000 src/**/*.spec.ts",
+    "test": "node ./node_modules/ts-mocha/bin/ts-mocha --timeout 15000 src/**/*.spec.ts",
     "test:coverage": "nyc --reporter=html --reporter=text --reporter=json --reporter=text-summary npm test",
     "analyze": "node  ./node_modules/rimraf/bin dist && node ./node_modules/webpack/bin/webpack --env production --analyze",
     "build": "node ./node_modules/rimraf/bin dist && node ./node_modules/webpack/bin/webpack --mode=production",
