@@ -3,8 +3,10 @@
 import Aurelia from 'aurelia';
 <% if (it.registry.import && it.registry.path) { %>
 import * as <%= it.registry.import %> from '<%= it.registry.path %>';
-<% } %>
+<% } else { %>
 import { <%= it.component.name %> } from '<%= it.importPath %>';
+<% } %>
+
 // More on default export: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
   title: '<%= it.component.parent.name /* it.component.componentTag */ %>',
@@ -42,19 +44,13 @@ export default {
   },
 };
 
-async function getAurelia(): Promise<Aurelia> {
+const loaders = [ async () => ({
 <% if (it.registry.path) { %>
-  if (<%= it.registry.import %>.getOrCreateAurelia) {
-    return await <%= it.registry.import %>.getOrCreateAurelia();
-  } else {
-    return Aurelia.register(<%= it.component.name %>);
-  }
+  $au: await <%= it.registry.import %>.getOrCreateAurelia(),
 <% } else { %>
-  return Aurelia.register(<%= it.component.name %>);
+  $au: Aurelia.register(<%= it.component.name %>),
 <% } %>
-}
-
-const loaders = [ async () => ({ $au: await getAurelia() }) ];
+}) ];
 
 function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context: unknown = {}): HTMLDivElement {
   const host = document.createElement('div');
