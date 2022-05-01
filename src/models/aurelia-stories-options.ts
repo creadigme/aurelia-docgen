@@ -3,6 +3,18 @@ import { LogLevel } from 'typedoc';
 
 /** Aurelia Stories Common Options */
 export type AureliaStoriesOptions = {
+  /**
+   * Output directory for generated stories
+   *
+   * If null or empty, stories will be written next to the classes.
+   *
+   * ⚠️ Write (on drive) the files in CLI usage (*command-line* or `AureliaStoriesCLI`), not with `AureliaStories`.
+   */
+  out?: string;
+  /**
+   * ⚠️ Write (on drive) the file in CLI usage (*command-line* or `AureliaStoriesCLI`), not with `AureliaStories`.
+   */
+  mergeOut?: boolean;
   /** You [can] speak too much! */
   verbose?: boolean;
   /** Target project directory */
@@ -13,11 +25,27 @@ export type AureliaStoriesOptions = {
    */
   etaTemplate?: string;
   /**
-   * Specify the TS file for Aurelia 2 configuration
+   * Specify the TS file for Aurelia configuration (**without extension**).
    *
-   * If null or empty, only the current component will be register.
+   * @remark *If null or empty, only the current component will be register.*
+   *
+   * @example `./src/configure`
+   *
+   * ```typescript
+   * import * as Aurelia from 'aurelia';
+   *
+   * // If specified, this function is called to retrieve the instance of Aurelia
+   * let au: Aurelia;
+   * export async function getOrCreateAurelia(): Promise<Aurelia> {
+   *   if (!au) {
+   *     au = new Aurelia().register(...);
+   *     // Do some stuff;
+   *   }
+   *   return au;
+   * }
+   * ```
    */
-  auRegister?: string;
+  auConfigure?: string;
 };
 
 /** Aurelia Stories API Options */
@@ -26,24 +54,6 @@ export type AureliaStoriesAPIOptions = AureliaStoriesOptions & {
    * **ONLY WITH API USAGE**
    */
   logger?: (msg: string, level: LogLevel) => void;
-};
-
-/** Aurelia Stories CLI Options */
-export type AureliaStoriesCLIOptions = AureliaStoriesOptions & {
-  /**
-   * **ONLY WITH CLI USAGE**
-   *
-   * Output directory for generated stories
-   *
-   * If null or empty, stories will be written next to the classes.
-   */
-  out?: string;
-  /**
-   * **ONLY WITH CLI USAGE**
-   *
-   * If `out` is specified, this parameter merges component stories into one file.
-   */
-  mergeOut?: boolean;
 };
 
 /**
@@ -56,5 +66,5 @@ export const AureliaStoriesCLIOptions: OptionDefinition[] = [
   { name: 'out', alias: 'o', type: String },
   { name: 'mergeOut', alias: 'm', type: Boolean },
   { name: 'etaTemplate', alias: 't', type: String },
-  { name: 'auRegister', type: String },
+  { name: 'auConfigure', type: String },
 ];

@@ -7,6 +7,7 @@ import type { AureliaStoriesAPIOptions } from '../models/aurelia-stories-options
 import type { AureliaStoriesCustomElement } from '../models/aurelia-stories-custom-element';
 import type { CustomElementReflection } from '../models/custom-element-reflection';
 import * as helpers from './helpers/typedoc-stories-helpers';
+import { buildRelativePath, ensureAbsolutePath } from './helpers/path-utils';
 
 declare const __webpack_require__;
 /**
@@ -15,15 +16,26 @@ declare const __webpack_require__;
 export class AureliaStories {
   /** Target project directory */
   public readonly projectDir: string;
+  /** Output directory */
+  public readonly outDir?: string;
+  /** Merge all stories ? */
+  public readonly mergeOut: boolean;
   /** Sources directory */
   public readonly srcDir: string;
   private readonly _tsConfigPath: string;
   private readonly _tplPath: string;
   private readonly _defaultLogger: (msg: string, level: LogLevel) => void;
+  private readonly _auConfigure?: string;
 
   constructor(private readonly _options: AureliaStoriesAPIOptions) {
     this.projectDir = this._options.projectDir || process.cwd();
     this.srcDir = path.resolve(this.projectDir, 'src');
+    if (this._options.out) {
+      this.outDir = ensureAbsolutePath(this.projectDir, this._options.out);
+      this.mergeOut = !!this._options.mergeOut;
+    }
+    this._auConfigure = this._options.auConfigure ? ensureAbsolutePath(this.projectDir, this._options.auConfigure) : undefined;
+
     this._tsConfigPath = path.join(this.projectDir, 'tsconfig.json');
     this._tplPath = this._options.etaTemplate ? path.resolve(this._options.etaTemplate) : path.join(__dirname, typeof __webpack_require__ === 'function' ? './' : '../../', 'static/templates/au2.stories.ts.eta');
     this._defaultLogger = this._options.logger || ((msg: string, level: LogLevel) => console.log(`${level} - ${msg}`));
@@ -38,17 +50,21 @@ export class AureliaStories {
 
     // Phase 3: Search and format components
     for (const component of this._getCustomElements(projectReflection as unknown as DeclarationReflection)) {
-      const componentPathWE = path.join(this.srcDir, component.parent.name);
-      const ymlStoriesPath = componentPathWE + '.stories.yml';
+      const componentPathWOE = path.join(this.srcDir, component.parent.name);
+      const ymlStoriesPath = componentPathWOE + '.stories.yml';
       const ymlStories = fs.existsSync(ymlStoriesPath) ? jsyaml.load(fs.readFileSync(ymlStoriesPath, { encoding: 'utf-8' })) : [];
 
       yield {
         component,
-        componentPath: componentPathWE,
+        componentPath: componentPathWOE,
         stories: Eta.render(
           tpl,
           {
-            registry: { import: 'configure', path: this._options.auRegister },
+            importPath: this.outDir ? buildRelativePath(this.outDir, componentPathWOE) : './' + path.basename(component.parent.name),
+            registry: {
+              import: 'configure',
+              path: this._auConfigure ? buildRelativePath(this.outDir || path.dirname(componentPathWOE), this._auConfigure) : undefined,
+            },
             component,
             stories: ymlStories,
             helpers,

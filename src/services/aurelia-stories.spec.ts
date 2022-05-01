@@ -74,7 +74,7 @@ describe('aurelia-stories', () => {
     assert.strictEqual(stories[0].component.bindables.length, 3);
     assert.strictEqual(stories[0].component.publicMethods.length, 0);
     assert.ok(stories[0].stories.indexOf("import Aurelia from 'aurelia';") !== -1);
-    assert.ok(stories[0].stories.indexOf("import { Au2Button } from './../components/au2-button';") !== -1);
+    assert.ok(stories[0].stories.indexOf("import { Au2Button } from './au2-button';") !== -1);
     assert.ok(stories[0].stories.indexOf("title: 'components/au2-button'") !== -1);
     assert.ok(stories[0].stories.indexOf('action: {"type":"object","control":"object","table":{"category":"Properties"}') !== -1);
     assert.ok(stories[0].stories.indexOf('content: {"type":"string","control":"text","defaultValue":"\'Click me\'","description":"Content of button","table":{"category":"Properties"}') !== -1);
@@ -118,20 +118,23 @@ describe('aurelia-stories', () => {
     assert.ok(stories[0].stories.indexOf('### Toggle') !== -1);
   });
 
-  it('Project AU2 Basic - auRegister', () => {
+  it('Project AU2 Basic - auConfigure', () => {
     const aureliaStories = new AureliaStories({
       projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
-      auRegister: './configure',
+      auConfigure: './src/configure',
     });
 
     const stories = Array.from(aureliaStories.getStories());
     assert.strictEqual(stories.length, 3);
 
-    assert.ok(stories[0].stories.indexOf("import * as configure from './configure';") !== -1);
-    assert.ok(stories[0].stories.indexOf('Aurelia.register(configure)') !== -1);
-    assert.ok(stories[1].stories.indexOf("import * as configure from './configure';") !== -1);
-    assert.ok(stories[1].stories.indexOf('Aurelia.register(configure)') !== -1);
-    assert.ok(stories[2].stories.indexOf("import * as configure from './configure';") !== -1);
-    assert.ok(stories[2].stories.indexOf('Aurelia.register(configure)') !== -1);
+    assert.ok(stories[0].stories.indexOf("import * as configure from './../configure';") !== -1);
+    assert.ok(stories[0].stories.indexOf('au = await configure.getOrCreateAurelia();') !== -1);
+    assert.ok(stories[0].stories.indexOf('au = Aurelia.register') !== -1);
+    assert.ok(stories[1].stories.indexOf("import * as configure from './../configure';") !== -1);
+    assert.ok(stories[1].stories.indexOf('au = await configure.getOrCreateAurelia();') !== -1);
+    assert.ok(stories[1].stories.indexOf('au = Aurelia.register') !== -1);
+    assert.ok(stories[2].stories.indexOf("import * as configure from './../configure';") !== -1);
+    assert.ok(stories[2].stories.indexOf('au = await configure.getOrCreateAurelia();') !== -1);
+    assert.ok(stories[2].stories.indexOf('au = Aurelia.register') !== -1);
   });
 });

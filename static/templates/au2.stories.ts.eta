@@ -3,10 +3,8 @@
 import Aurelia from 'aurelia';
 <% if (it.registry.import && it.registry.path) { %>
 import * as <%= it.registry.import %> from '<%= it.registry.path %>';
-<% } else { %>
-import { <%= it.component.name %> } from './../<%= it.component.parent.name %>';
 <% } %>
-
+import { <%= it.component.name %> } from '<%= it.importPath %>';
 // More on default export: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
   title: '<%= it.component.parent.name /* it.component.componentTag */ %>',
@@ -44,24 +42,43 @@ export default {
   },
 };
 
-// More on component templates: https://storybook.js.org/docs/html/writing-stories/introduction#using-args
-const Template = (options) => {
+async function getAurelia(): Promise<Aurelia> {
+<% if (it.registry.path) { %>
+  if (<%= it.registry.import %>.getOrCreateAurelia) {
+    return await <%= it.registry.import %>.getOrCreateAurelia();
+  } else {
+    return Aurelia.register(<%= it.component.name %>);
+  }
+<% } else { %>
+  return Aurelia.register(<%= it.component.name %>);
+<% } %>
+}
+
+const loaders = [ async () => ({ $au: await getAurelia() }) ];
+
+function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context: unknown = {}): HTMLDivElement {
   const host = document.createElement('div');
-  host.innerHTML = `<<%= it.component.componentTag %>
+  host.innerHTML = content;
+  sbInfo.loaded.$au.enhance({
+    host,
+    component: context,
+  });
+  return host;
+}
+
+// More on component templates: https://storybook.js.org/docs/html/writing-stories/introduction#using-args
+const Template = (options, sbInfo: { loaded: { $au: Aurelia } }) => {
+  return enhance(sbInfo, `<<%= it.component.componentTag %>
 <% for (const property of it.component.bindables) { %>
   <%= property.name %>.bind="<%= property.name %>"
 <% } %>
-  ></<%= it.component.componentTag %>>`;
-  Aurelia.register(<%= it.registry.path ? it.registry.import : it.component.name %>).enhance({
-    host,
-    component: options,
-  });
-  return host;
+  ></<%= it.component.componentTag %>>`, options);
 };
 
 export const DefaultUsage = Template.bind({});
 DefaultUsage.args = {};
 DefaultUsage.storyName = 'Default usage';
+DefaultUsage.loaders = loaders;
 <% if (it.component.comment) { %>
 DefaultUsage.parameters = {
   docs: {
@@ -73,14 +90,8 @@ DefaultUsage.parameters = {
 <% } %>
 
 <% if (it.stories.length) { %>
-const RawTemplate = (options) => {
-  const host = document.createElement('div');
-  host.innerHTML = options.content;
-  Aurelia.register(<%= it.registry.path ? it.registry.import : it.component.name %>).enhance({
-    host,
-    component: {},
-  });
-  return host;
+const RawTemplate = (options, sbInfo) => {
+  return enhance(sbInfo, options.content);
 };
 <% } %>
 
@@ -100,4 +111,6 @@ export const <%= storyName %> = RawTemplate.bind({});
     },
   },
 };
+<%= storyName %>.loaders = loaders;
+
 <% } %>

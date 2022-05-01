@@ -1,6 +1,7 @@
 [![npm version](https://img.shields.io/npm/v/@creadigme/aurelia-stories.svg)](https://www.npmjs.com/package/@creadigme/aurelia-stories)
 [![Build Status](https://github.com/creadigme/aurelia-stories/actions/workflows/ci.yml/badge.svg)](https://github.com/creadigme/aurelia-stories/actions)
 [![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/master/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
+[![License Badge](https://img.shields.io/badge/License-AGPL%203%2B-blue.svg)](LICENSE)
 <br />
 
 # Aurelia Stories | @creadigme/aurelia-stories
@@ -145,7 +146,7 @@ With this format:
   "scripts": {
 +   "build:stories": "aurelia-stories --out ./src/stories"
 !   "build:stories": "aurelia-stories"
-!   "build:stories": "aurelia-stories --out ./src/stories --auRegister ./configure"
+!   "build:stories": "aurelia-stories --out ./src/stories --auConfigure ./src/configure"
   }
 }
 ```
@@ -186,7 +187,7 @@ npm run build:stories
 {
   "name": "something",
   "scripts": {
-+   "build:stories": "aurelia-stories --out ./src/stories --auRegister ./configure"
++   "build:stories": "aurelia-stories --out ./src/stories --auConfigure ./src/configure"
   },
   "devDependencies": {
 +   "@creadigme/aurelia-stories": "^1"
@@ -196,10 +197,19 @@ npm run build:stories
 
 **./src/configure.ts**
 ```typescript
-import type { IContainer } from 'aurelia';
+/** It's just an example */
+let au: Aurelia;
 
-export function register(container: IContainer): IContainer {
-  return container.register(/* Your configuration */);
+/**
+ * If specified, this function is called to retrieve the instance of Aurelia
+ * @return Aurelia
+ */
+export async function getOrCreateAurelia(): Promise<Aurelia> {
+  if (!au) {
+    au = new Aurelia().register(/** Your configuration */);
+    // Do your specific stuff here
+  }
+  return au;
 }
 ```
 
@@ -218,20 +228,18 @@ npm run storybook
 | Parameter | Description | Sample |
 |---|---|---|
 | --projectDir | Project directory. *Current working directory is used by default.* | `./` |
-| **--out** | Output directory for generated stories. *If not specified, stories are written next to the components.* | `./src/stories/` |
-| **--mergeOut** | If `out` is specified, merges the component stories into a single file | `./src/stories/components.stories.ts` |
-| --auRegister | Specify the TS file for Aurelia configuration (**without extension**).<br><br>Example `./configure` file:<br>`export function register(container: IContainer): IContainer { return container.register(...); }`.<br> *If null or empty, only the current component will be register.* | |
+| --out | Output directory for generated stories. *If not specified, stories are written next to the components.* | `./src/stories/` |
+| --mergeOut | If `out` is specified, merges the component stories into a single file | `./src/stories/components.stories.ts` |
+| --auConfigure | Specify the TS file for Aurelia configuration (**without extension**).<br><br>Example `./src/configure` file:<br>`export async function getOrCreateAurelia(): Promise<Aurelia> { return Aurelia.register(/** */); }`.<br> *If null or empty, only the current component will be register.* | |
 | --etaTemplate | Path of Eta template (https://eta.js.org/). *If null, the default template is used* | |
 | --verbose | More logs | |
 
-### API
+### API Parameters
+
+[CLI Parameters](#cli-parameters) + below:
 
 | Parameter | Description | Sample |
 |---|---|---|
-| --projectDir | Project directory. *Current working directory is used by default.* | `./` |
-| --auRegister | Specify the TS file for Aurelia configuration (**without extension**).<br><br>Example `./configure` file:<br>`export function register(container: IContainer): IContainer { return container.register(...); }`.<br> *If null or empty, only the current component will be register.* | |
-| --etaTemplate | Path of Eta template (https://eta.js.org/). *If null, the default template is used* | |
-| --verbose | More logs |  |
 | **--logger** | `(msg: string, level: LevelLog) => void` | `console.log(``${level} - ${msg}``)` |
 
 ```typescript
