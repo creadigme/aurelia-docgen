@@ -240,7 +240,7 @@ npm run storybook
 
 | Parameter | Description | Sample |
 |---|---|---|
-| **--logger** | `(msg: string, level: LevelLog) => void` | `console.log(``${level} - ${msg}``)` |
+| logger | `(msg: string, level: LevelLog) => void` | `console.log(``${level} - ${msg}``)` |
 
 ```typescript
 import { AU2Storybook } from './aurelia-stories';
