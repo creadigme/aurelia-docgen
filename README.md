@@ -30,7 +30,7 @@ This tool is intended to be used with projects based on [Aurelia framework](http
 > [/AD]
 -->
 
-## Installation
+## 💾 Installation
 
 ### Aurelia Stories
 
@@ -42,7 +42,7 @@ yarn add @creadigme/aurelia-stories -D
 yarn add @creadigme/aurelia-stories -g
 ```
 
-### Storybook
+### Storybook (*version 6*)
 
 #### Storybook for HTML (if needed)
 [Storybook for HTML](https://storybook.js.org/docs/html/get-started/install)
@@ -90,7 +90,7 @@ module.exports = {
 
 > ⚠️ Currently we do not support .mdx stories.
 
-## Write stories
+## 📝 Write stories
 
 Stories are written in [YAML](https://yaml.org/) next to components like these:
 
@@ -136,7 +136,7 @@ With this format:
     <div>${state ? '✅' : '☐' }</div>
 ```
 
-## CLI
+## 🔨 Usage
 
 ### **(optional)** Add script in your package.json
 
@@ -257,7 +257,7 @@ for (const ceStories of this._au2Storybook.getStories()) {
 }
 ```
 
-# Coverage
+## Coverage
 [![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/master/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
 
 ![Coverage sunburst](https://codecov.io/gh/creadigme/aurelia-stories/branch/master/graphs/sunburst.svg?token=BV2ZP1FH6K)
