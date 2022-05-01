@@ -8,7 +8,7 @@
 
 > Aurelia + Storybook (*can be*) ❤
 
-`Aurelia Stories` brings the ability to generate component documentations, **stories**, from *any*<sup>1</sup> `Aurelia` `TypeScript` project.
+`Aurelia Stories` brings the ability to **generate** component documentations, **stories**, from *any*<sup>1</sup> `Aurelia` `TypeScript` project.
 Components's stories are written in [YAML](https://yaml.org/).
 
 This tool is intended to be used with projects based on [Aurelia framework](https://aurelia.io/)<sup>2</sup> + [Storybook](https://storybook.js.org). It could also work with projects using only `Aurelia` **without** `Storybook`.
@@ -188,6 +188,7 @@ npm run build:stories
   "name": "something",
   "scripts": {
 +   "build:stories": "aurelia-stories --out ./src/stories --auConfigure ./src/configure"
++   "watch:stories": "npm run build:stories -- --watch"
   },
   "devDependencies": {
 +   "@creadigme/aurelia-stories": "^1"
@@ -233,6 +234,7 @@ npm run storybook
 | --auConfigure | Specify the TS file for Aurelia configuration (**without extension**).<br><br>Example `./src/configure` file:<br>`export async function getOrCreateAurelia(): Promise<Aurelia> { return Aurelia.register(/** */); }`.<br> *If null or empty, only the current component will be register.* | |
 | --etaTemplate | Path of Eta template (https://eta.js.org/). *If null, the default template is used* | |
 | --verbose | More logs | |
+| --watch | Monitor changes | |
 
 ### API Parameters
 

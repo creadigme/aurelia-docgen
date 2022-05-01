@@ -48,6 +48,15 @@ export type AureliaStoriesOptions = {
   auConfigure?: string;
 };
 
+/** Aurelia Stories CLI Options */
+export type AureliaStoriesCLIOptions = AureliaStoriesOptions & {
+  /**
+   * **ONLY WITH CLI USAGE**
+   * Watch modifications
+   */
+  watch?: boolean;
+};
+
 /** Aurelia Stories API Options */
 export type AureliaStoriesAPIOptions = AureliaStoriesOptions & {
   /**
@@ -67,4 +76,5 @@ export const AureliaStoriesCLIOptions: OptionDefinition[] = [
   { name: 'mergeOut', alias: 'm', type: Boolean },
   { name: 'etaTemplate', alias: 't', type: String },
   { name: 'auConfigure', type: String },
+  { name: 'watch', type: Boolean },
 ];

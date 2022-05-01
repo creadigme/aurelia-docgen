@@ -128,13 +128,10 @@ describe('aurelia-stories', () => {
     assert.strictEqual(stories.length, 3);
 
     assert.ok(stories[0].stories.indexOf("import * as configure from './../configure';") !== -1);
-    assert.ok(stories[0].stories.indexOf('au = await configure.getOrCreateAurelia();') !== -1);
-    assert.ok(stories[0].stories.indexOf('au = Aurelia.register') !== -1);
+    assert.ok(stories[0].stories.indexOf('$au: await configure.getOrCreateAurelia(),') !== -1);
     assert.ok(stories[1].stories.indexOf("import * as configure from './../configure';") !== -1);
-    assert.ok(stories[1].stories.indexOf('au = await configure.getOrCreateAurelia();') !== -1);
-    assert.ok(stories[1].stories.indexOf('au = Aurelia.register') !== -1);
+    assert.ok(stories[1].stories.indexOf('$au: await configure.getOrCreateAurelia(),') !== -1);
     assert.ok(stories[2].stories.indexOf("import * as configure from './../configure';") !== -1);
-    assert.ok(stories[2].stories.indexOf('au = await configure.getOrCreateAurelia();') !== -1);
-    assert.ok(stories[2].stories.indexOf('au = Aurelia.register') !== -1);
+    assert.ok(stories[2].stories.indexOf('$au: await configure.getOrCreateAurelia(),') !== -1);
   });
 });

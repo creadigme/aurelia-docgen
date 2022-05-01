@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "ansi-colors": "^4.1.1",
+    "chokidar": "^3.5.3",
     "command-line-args": "^5.2.1",
     "eta": "^1.12.3",
     "js-yaml": "^4.1.0",

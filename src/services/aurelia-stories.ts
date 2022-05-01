@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as jsyaml from 'js-yaml';
 import * as Eta from 'eta';
-import { Application, type ProjectReflection, type LogLevel, DeclarationReflection, TSConfigReader } from 'typedoc';
+import { Application, type LogLevel, DeclarationReflection, TSConfigReader } from 'typedoc';
 import type { AureliaStoriesAPIOptions } from '../models/aurelia-stories-options';
 import type { AureliaStoriesCustomElement } from '../models/aurelia-stories-custom-element';
 import type { CustomElementReflection } from '../models/custom-element-reflection';
@@ -27,6 +27,10 @@ export class AureliaStories {
   private readonly _defaultLogger: (msg: string, level: LogLevel) => void;
   private readonly _auConfigure?: string;
 
+  /** Current template */
+  private _tpl?: string;
+  private _typedoc: Application;
+
   constructor(private readonly _options: AureliaStoriesAPIOptions) {
     this.projectDir = this._options.projectDir || process.cwd();
     this.srcDir = path.resolve(this.projectDir, 'src');
@@ -39,50 +43,57 @@ export class AureliaStories {
     this._tsConfigPath = path.join(this.projectDir, 'tsconfig.json');
     this._tplPath = this._options.etaTemplate ? path.resolve(this._options.etaTemplate) : path.join(__dirname, typeof __webpack_require__ === 'function' ? './' : '../../', 'static/templates/au2.stories.ts.eta');
     this._defaultLogger = this._options.logger || ((msg: string, level: LogLevel) => console.log(`${level} - ${msg}`));
+    this._init();
+  }
+
+  private _init(): void {
+    this._initTypedoc();
+    this._tpl = fs.readFileSync(this._tplPath, 'utf8');
   }
 
   /** Get stories from TS project */
   public *getStories(): Generator<AureliaStoriesCustomElement> {
     // Phase 1: TypeDoc
-    const projectReflection = this._generateReflection();
-    // Phase 2 (very short): get template (https://eta.js.org/)
-    const tpl = fs.readFileSync(this._tplPath, 'utf8');
+    const projectReflection = this._typedoc.convert();
 
-    // Phase 3: Search and format components
+    // Phase 2: Search and format components
     for (const component of this._getCustomElements(projectReflection as unknown as DeclarationReflection)) {
-      const componentPathWOE = path.join(this.srcDir, component.parent.name);
-      const ymlStoriesPath = componentPathWOE + '.stories.yml';
-      const ymlStories = fs.existsSync(ymlStoriesPath) ? jsyaml.load(fs.readFileSync(ymlStoriesPath, { encoding: 'utf-8' })) : [];
-
-      yield {
-        component,
-        componentPath: componentPathWOE,
-        stories: Eta.render(
-          tpl,
-          {
-            importPath: this.outDir ? buildRelativePath(this.outDir, componentPathWOE) : './' + path.basename(component.parent.name),
-            registry: {
-              import: 'configure',
-              path: this._auConfigure ? buildRelativePath(this.outDir || path.dirname(componentPathWOE), this._auConfigure) : undefined,
-            },
-            component,
-            stories: ymlStories,
-            helpers,
-          },
-          { async: false }
-        ) as string,
-      } as AureliaStoriesCustomElement;
+      yield this._buildElementStory(component);
     }
   }
 
+  private _buildElementStory(component: CustomElementReflection): AureliaStoriesCustomElement {
+    const componentPathWOE = path.join(this.srcDir, component.parent.name);
+    const ymlStoriesPath = componentPathWOE + '.stories.yml';
+    const ymlStories = fs.existsSync(ymlStoriesPath) ? jsyaml.load(fs.readFileSync(ymlStoriesPath, 'utf-8')) : [];
+
+    return {
+      component,
+      componentPath: componentPathWOE,
+      stories: Eta.render(
+        this._tpl,
+        {
+          importPath: this.outDir ? buildRelativePath(this.outDir, componentPathWOE) : './' + path.basename(component.parent.name),
+          registry: {
+            import: 'configure',
+            path: this._auConfigure ? buildRelativePath(this.outDir || path.dirname(componentPathWOE), this._auConfigure) : undefined,
+          },
+          component,
+          stories: ymlStories,
+          helpers,
+        },
+        { async: false }
+      ) as string,
+    } as AureliaStoriesCustomElement;
+  }
+
   /**
-   * Generate ProjectReflection from TypeScript project
-   * @returns ProjectReflection
+   * Init Typedoc
    */
-  private _generateReflection(): ProjectReflection {
-    const typedoc = new Application();
-    typedoc.options.addReader(new TSConfigReader());
-    typedoc.bootstrap({
+  private _initTypedoc(): void {
+    this._typedoc = new Application();
+    this._typedoc.options.addReader(new TSConfigReader());
+    this._typedoc.bootstrap({
       logger: (msg: string, level: LogLevel) => {
         if (level > 0 || this._options.verbose) {
           this._defaultLogger(msg, level);
@@ -99,8 +110,6 @@ export class AureliaStories {
       excludeProtected: true,
       entryPoints: [this.srcDir],
     });
-
-    return typedoc.convert();
   }
 
   /** Get customElement recursively */
