@@ -62,6 +62,8 @@ export class AureliaStoriesCLI {
   public watchStories(): fs.FSWatcher {
     // Initial
     this.writeStories();
+    // debounce
+    let tokenTimeout: NodeJS.Timeout;
 
     const fsWatcher = chokidar
       .watch(this._aureliaStories.srcDir, {
@@ -78,12 +80,19 @@ export class AureliaStoriesCLI {
       })
       .on('all', (eventName: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir', fpath: string, stat?: fs.Stats) => {
         if (AureliaStoriesCLI._RE_WATCH_EVENT.test(eventName) && (!stat || stat.isFile()) && !AureliaStoriesCLI._RE_WATCH_IGNORE.test(fpath)) {
-          console.log(blueBright(`[${name}] ${eventName} - ${fpath}`));
-          try {
-            this.writeStories();
-          } catch (error) {
-            console.log(redBright(`[${name}] Writing stories failed: ${error.message}`));
+          // Debounce writeStories
+          if (tokenTimeout) {
+            clearTimeout(tokenTimeout);
+            tokenTimeout = undefined;
           }
+          tokenTimeout = setTimeout(() => {
+            console.log(blueBright(`[${name}] ${eventName} - ${fpath}`));
+            try {
+              this.writeStories();
+            } catch (error) {
+              console.log(redBright(`[${name}] Writing stories failed: ${error.message}`));
+            }
+          }, 500);
         }
       });
 
