@@ -5,7 +5,7 @@ import { AureliaStoriesCLIOptions } from '../models/aurelia-stories-options';
 import { AureliaStories } from './aurelia-stories';
 import commandLineArgs from 'command-line-args';
 import { parentPort } from 'worker_threads';
-import { blueBright } from 'ansi-colors';
+import { blueBright, redBright } from 'ansi-colors';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { name } = require('./../../package.json');
@@ -79,7 +79,11 @@ export class AureliaStoriesCLI {
       .on('all', (eventName: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir', fpath: string, stat?: fs.Stats) => {
         if (AureliaStoriesCLI._RE_WATCH_EVENT.test(eventName) && (!stat || stat.isFile()) && !AureliaStoriesCLI._RE_WATCH_IGNORE.test(fpath)) {
           console.log(blueBright(`[${name}] ${eventName} - ${fpath}`));
-          this.writeStories();
+          try {
+            this.writeStories();
+          } catch (error) {
+            console.log(redBright(`[${name}] Writing stories failed: ${error.message}`));
+          }
         }
       });
 
