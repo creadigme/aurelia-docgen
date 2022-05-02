@@ -100,7 +100,7 @@ export class AureliaStories {
         }
       },
       tsconfig: this._tsConfigPath,
-      exclude: ['**/*+(.spec|.e2e).ts'],
+      exclude: ['**/*+(.spec|.e2e|.stories).ts'],
       entryPointStrategy: 'Expand',
       excludeExternals: true,
       excludeInternal: true,
