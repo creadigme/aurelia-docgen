@@ -1,6 +1,6 @@
 [![npm version](https://img.shields.io/npm/v/@creadigme/aurelia-stories.svg)](https://www.npmjs.com/package/@creadigme/aurelia-stories)
 [![Build Status](https://github.com/creadigme/aurelia-stories/actions/workflows/ci.yml/badge.svg)](https://github.com/creadigme/aurelia-stories/actions)
-[![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/master/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
+[![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/main/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
 [![License Badge](https://img.shields.io/badge/License-AGPL%203%2B-blue.svg)](LICENSE)
 <br />
 
@@ -258,6 +258,6 @@ for (const ceStories of this._au2Storybook.getStories()) {
 ```
 
 ## Coverage
-[![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/master/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
+[![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/main/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
 
-![Coverage sunburst](https://codecov.io/gh/creadigme/aurelia-stories/branch/master/graphs/sunburst.svg?token=BV2ZP1FH6K)
+![Coverage sunburst](https://codecov.io/gh/creadigme/aurelia-stories/branch/main/graphs/sunburst.svg?token=BV2ZP1FH6K)
