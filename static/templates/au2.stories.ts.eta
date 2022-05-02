@@ -7,9 +7,42 @@ import * as <%= it.registry.import %> from '<%= it.registry.path %>';
 import { <%= it.component.name %> } from '<%= it.importPath %>';
 <% } %>
 
+const loaders = [ async () => ({
+<% if (it.registry.path) { %>
+  $au: await <%= it.registry.import %>.getOrCreateAurelia(),
+<% } else { %>
+  $au: Aurelia.register(<%= it.component.name %>),
+<% } %>
+}) ];
+
+let auCache: Aurelia;
+function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context: unknown = {}): HTMLDivElement {
+  const host = document.createElement('div');
+  host.innerHTML = content;
+  const localAu = auCache || sbInfo.loaded.$au;
+  if (localAu) {
+    localAu.enhance({
+      host,
+      component: context,
+    });
+  } else {
+    // docs tab issue with loaders https://github.com/storybookjs/storybook/issues/12726
+    loaders[0]().then(f => {
+      auCache = f.$au;
+      auCache.enhance({
+        host,
+        component: context,
+      });
+    });
+  }
+  
+  return host;
+}
+
 // More on default export: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
   title: '<%= it.component.parent.name /* it.component.componentTag */ %>',
+  loaders,
   // More on argTypes: https://storybook.js.org/docs/html/api/argtypes
   argTypes: {
 <% for (const property of it.component.bindables) { %>
@@ -44,23 +77,6 @@ export default {
   },
 };
 
-const loaders = [ async () => ({
-<% if (it.registry.path) { %>
-  $au: await <%= it.registry.import %>.getOrCreateAurelia(),
-<% } else { %>
-  $au: Aurelia.register(<%= it.component.name %>),
-<% } %>
-}) ];
-
-function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context: unknown = {}): HTMLDivElement {
-  const host = document.createElement('div');
-  host.innerHTML = content;
-  sbInfo.loaded.$au.enhance({
-    host,
-    component: context,
-  });
-  return host;
-}
 
 // More on component templates: https://storybook.js.org/docs/html/writing-stories/introduction#using-args
 const Template = (options, sbInfo: { loaded: { $au: Aurelia } }) => {
@@ -74,7 +90,6 @@ const Template = (options, sbInfo: { loaded: { $au: Aurelia } }) => {
 export const DefaultUsage = Template.bind({});
 DefaultUsage.args = {};
 DefaultUsage.storyName = 'Default usage';
-DefaultUsage.loaders = loaders;
 <% if (it.component.comment) { %>
 DefaultUsage.parameters = {
   docs: {
@@ -107,6 +122,5 @@ export const <%= storyName %> = RawTemplate.bind({});
     },
   },
 };
-<%= storyName %>.loaders = loaders;
 
 <% } %>
