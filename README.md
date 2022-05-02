@@ -136,7 +136,7 @@ With this format:
     <div>${state ? '✅' : '☐' }</div>
 ```
 
-## 🔨 Usage
+## 🔨 How to use
 
 ### **(optional)** Add script in your package.json
 
