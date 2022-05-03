@@ -8,7 +8,15 @@ export function formatComment(comment: Comment) {
       formatedComment += `\n\n${comment.text}`;
     }
     if (comment.tags.length) {
-      formatedComment += `\n\n${comment.tags.map(f => `**@${f.tagName}** ${f.text}`).join('\n')}`;
+      formatedComment += `\n\n${comment.tags
+        .map(f => {
+          let tag = `🔖 **${f.tagName}**`;
+          if (f.text) {
+            tag += `: ${f.text}`;
+          }
+          return tag;
+        })
+        .join('\n')}`;
     }
     return formatedComment;
   } else {
