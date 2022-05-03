@@ -25,7 +25,6 @@ export class Au2Countdown implements ICustomElementViewModel {
 
   /**
    * Start the countdown
-   * @documented
    */
   public start(): void {
     this.stop();
@@ -35,7 +34,6 @@ export class Au2Countdown implements ICustomElementViewModel {
 
   /**
    * Stop the countdown
-   * @documented
    */
   public stop(): void {
     if (this._timer) {
@@ -44,6 +42,9 @@ export class Au2Countdown implements ICustomElementViewModel {
     }
   }
 
+  /**
+   * @ignore
+   */
   public detaching() {
     this.stop();
   }

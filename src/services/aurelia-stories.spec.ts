@@ -112,7 +112,7 @@ describe('aurelia-stories', () => {
     assert.strictEqual(stories[0].component.componentTag, 'au2-button');
     assert.strictEqual(stories[0].component.bindables.length, 3);
     assert.strictEqual(stories[0].component.publicMethods.length, 0);
-    assert.ok(stories[0].stories.indexOf('# Au2Button') !== -1);
+    assert.ok(stories[0].stories.indexOf('# components/au2-button') !== -1);
     assert.ok(stories[0].stories.indexOf("> I'm not a button") !== -1);
     assert.ok(stories[0].stories.indexOf('## Stories') !== -1);
     assert.ok(stories[0].stories.indexOf('### Toggle') !== -1);

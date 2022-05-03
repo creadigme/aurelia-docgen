@@ -41,7 +41,7 @@ function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context:
 
 // More on default export: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
-  title: '<%= it.component.parent.name /* it.component.componentTag */ %>',
+  title: '<%= it.component.category ? it.component.category + '/' + it.component.componentTag : it.component.parent.name /* it.component.componentTag */ %>',
   loaders,
   // More on argTypes: https://storybook.js.org/docs/html/api/argtypes
   argTypes: {

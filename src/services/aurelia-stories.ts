@@ -130,8 +130,10 @@ export class AureliaStories {
       // Search bindables properties
       element.bindables = element.children.filter(f => f.kind === 1024 && f.decorators && f.decorators.find(f => f.name === 'bindable'));
       // Public methods
-      element.publicMethods = element.children.filter(f => f.kind === 2048 && f.flags.isPublic && !f.flags.isStatic && f.signatures.length && f.signatures[0].comment?.hasTag('documented'));
+      element.publicMethods = element.children.filter(f => f.kind === 2048 && f.flags.isPublic && !f.flags.isStatic);
 
+      // Store main category (if specified)
+      element.category = parent?.groups?.length && parent.groups[0].categories?.length ? parent.groups[0].categories[0].title : undefined;
       yield element;
     } else if (element.children) {
       for (const child of element.children) {

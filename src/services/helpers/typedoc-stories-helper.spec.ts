@@ -12,6 +12,6 @@ describe('typedoc-stories-helper', () => {
     const stories = Array.from(aureliaStories.getStories());
     assert.strictEqual(formatComment(stories[0].component.comment), "I'm not a button");
     assert.strictEqual(formatComment(stories[1].component.comment), 'Au2 Countdown');
-    assert.strictEqual(formatComment(stories[2].component.comment), "I'm not empty.\n\nI am ?\n");
+    assert.strictEqual(formatComment(stories[2].component.comment), "I'm not empty.\n\nI am ?\n\n\n**@star** \n");
   });
 });

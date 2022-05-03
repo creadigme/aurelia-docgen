@@ -8,4 +8,6 @@ export type CustomElementReflection = DeclarationReflection & {
   bindables?: DeclarationReflection[];
   /** Public methods */
   publicMethods?: DeclarationReflection[];
+  /** Main category */
+  category?: string;
 };
