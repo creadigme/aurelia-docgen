@@ -112,10 +112,11 @@ describe('aurelia-stories-cli', () => {
         });
       });
       const files = fs.readdirSync(tmp);
-      assert.strictEqual(files.length, 3);
+      assert.strictEqual(files.length, 4);
       assert.strictEqual(files[0], 'au2-button.stories.ts');
       assert.strictEqual(files[1], 'au2-countdown.stories.ts');
       assert.strictEqual(files[2], 'au2-empty.stories.ts');
+      assert.strictEqual(files[3], 'au2-just-for-test.stories.ts');
     } finally {
       fs.rmSync(tmp, {
         recursive: true,
@@ -148,6 +149,7 @@ describe('aurelia-stories-cli', () => {
     const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
     const projectDir = path.join(process.cwd(), 'examples', 'au2-basic');
     const tmpNewFile = path.join(projectDir, 'src', '_move_.txt');
+    const tmpNewFile2 = path.join(projectDir, 'src', '_move_2.txt');
 
     try {
       let i = 0;
@@ -161,6 +163,7 @@ describe('aurelia-stories-cli', () => {
         worker.on('message', message => {
           if (message === AureliaStoriesCLI.MSG_WATCHING) {
             fs.writeFileSync(tmpNewFile, "c'est parti", 'utf-8');
+            fs.writeFileSync(tmpNewFile2, "c'est parti 2", 'utf-8');
           } else if (message === AureliaStoriesCLI.MSG_WRITE_STORIES_DONE) {
             i++;
             if (i > 1) {
@@ -180,16 +183,18 @@ describe('aurelia-stories-cli', () => {
       });
       assert.strictEqual(i, 2);
       const files = fs.readdirSync(tmp);
-      assert.strictEqual(files.length, 3);
+      assert.strictEqual(files.length, 4);
       assert.strictEqual(files[0], 'au2-button.stories.ts');
       assert.strictEqual(files[1], 'au2-countdown.stories.ts');
       assert.strictEqual(files[2], 'au2-empty.stories.ts');
+      assert.strictEqual(files[3], 'au2-just-for-test.stories.ts');
     } finally {
       fs.rmSync(tmp, {
         recursive: true,
         force: true,
       });
       fs.unlinkSync(tmpNewFile);
+      fs.unlinkSync(tmpNewFile2);
     }
   });
 

@@ -46,28 +46,28 @@ export default {
   // More on argTypes: https://storybook.js.org/docs/html/api/argtypes
   argTypes: {
 <% for (const property of it.component.bindables) { %>
-    <%= property.name %>: <%~ JSON.stringify(
-      Object.assign(
-        {},
-        it.helpers.typedocToArgType[
-          (typeof property.type === 'string' ?
-            property.type :
-            (property.type.type === 'intrinsic' ? property.type.name : 'reference')
-          ).toLowerCase()
-        ], {
-          defaultValue: property.defaultValue,
-          description: it.helpers.formatComment(property.comment),
-          table: {
-            category: 'Properties',
-          },
-        }
-      )
-    ) %>,
+    <%= property.name %>: {
+<% const options = it.helpers.typedocToArgType[
+      (typeof property.type === 'string' ?
+        property.type :
+        (property.type.type === 'intrinsic' ? property.type.name : 'reference')
+      ).toLowerCase()
+    ];
+    for (const propName of Object.keys(options)) { 
+%>
+      <%= propName %>: <%~ JSON.stringify(options[propName]) %>,
+<% } %>
+      defaultValue: <%~ property.defaultValue %>,
+      description: <%~ JSON.stringify(it.helpers.formatComment(property.comment)) %>,
+      table: {
+        category: 'Properties',
+      },
+    },
 <% } %>
 <% for (const method of it.component.publicMethods) { %>
     <%= method.name %>: <%~ JSON.stringify({
       type: 'object',
-      control: 'object',
+      control: false,
       description: method.signatures?.length ? it.helpers.formatComment(method.signatures[0].comment) : undefined,
       table: {
         category: 'Methods',
@@ -118,6 +118,7 @@ export const <%= storyName %> = RawTemplate.bind({});
 <%= storyName %>.parameters = {
   docs: {
     description: {
+      component: <%~ JSON.stringify(it.helpers.formatComment(it.component.comment)) %>,
       story: <%~ JSON.stringify(story.tags?.length ? story.tags.map(f => `\`${f}\``).join(' ') + '\n' : '') %> + <%~ JSON.stringify(story.help) %>,
     },
   },

@@ -5,6 +5,8 @@ import { bindable, BindingMode, customElement, ICustomElementViewModel } from "a
  */
 @customElement('au2-countdown')
 export class Au2Countdown implements ICustomElementViewModel {
+  public static readonly NAME = 'something';
+
   private _timer;
 
   /** Interval in seconds */

@@ -67,7 +67,7 @@ describe('aurelia-stories', () => {
     });
 
     const stories = Array.from(aureliaStories.getStories());
-    assert.strictEqual(stories.length, 3);
+    assert.strictEqual(stories.length, 4);
 
     // AU2 Button
     assert.strictEqual(stories[0].component.componentTag, 'au2-button');
@@ -76,9 +76,39 @@ describe('aurelia-stories', () => {
     assert.ok(stories[0].stories.indexOf("import Aurelia from 'aurelia';") !== -1);
     assert.ok(stories[0].stories.indexOf("import { Au2Button } from './au2-button';") !== -1);
     assert.ok(stories[0].stories.indexOf("title: 'components/au2-button'") !== -1);
-    assert.ok(stories[0].stories.indexOf('action: {"type":"object","control":"object","table":{"category":"Properties"}') !== -1);
-    assert.ok(stories[0].stories.indexOf('content: {"type":"string","control":"text","defaultValue":"\'Click me\'","description":"Content of button","table":{"category":"Properties"}') !== -1);
-    assert.ok(stories[0].stories.indexOf('style: {"type":"string","control":"text","description":"Style of button","table":{"category":"Properties"}') !== -1);
+    assert.ok(
+      stories[0].stories.indexOf(`action: {
+      type: "object",
+      control: "object",
+      defaultValue: undefined,
+      description: undefined,
+      table: {
+        category: 'Properties',
+      },
+    },`) !== -1
+    );
+    assert.ok(
+      stories[0].stories.indexOf(`content: {
+      type: "string",
+      control: "text",
+      defaultValue: 'Click me',
+      description: "Content of button",
+      table: {
+        category: 'Properties',
+      },
+    },`) !== -1
+    );
+    assert.ok(
+      stories[0].stories.indexOf(`style: {
+      type: "string",
+      control: "text",
+      defaultValue: undefined,
+      description: "Style of button",
+      table: {
+        category: 'Properties',
+      },
+    },`) !== -1
+    );
     assert.ok(stories[0].stories.indexOf('export const DefaultUsage = Template.bind({});') !== -1);
     assert.ok(stories[0].stories.indexOf("DefaultUsage.storyName = 'Default usage'") !== -1);
     assert.ok(stories[0].stories.indexOf("I'm not a button") !== -1);
@@ -106,7 +136,7 @@ describe('aurelia-stories', () => {
     });
 
     const stories = Array.from(aureliaStories.getStories());
-    assert.strictEqual(stories.length, 3);
+    assert.strictEqual(stories.length, 4);
 
     // AU2 Button
     assert.strictEqual(stories[0].component.componentTag, 'au2-button');
@@ -125,7 +155,7 @@ describe('aurelia-stories', () => {
     });
 
     const stories = Array.from(aureliaStories.getStories());
-    assert.strictEqual(stories.length, 3);
+    assert.strictEqual(stories.length, 4);
 
     assert.ok(stories[0].stories.indexOf("import * as configure from './../configure';") !== -1);
     assert.ok(stories[0].stories.indexOf('$au: await configure.getOrCreateAurelia(),') !== -1);

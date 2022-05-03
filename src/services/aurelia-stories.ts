@@ -2,18 +2,21 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as jsyaml from 'js-yaml';
 import * as Eta from 'eta';
-import { Application, type LogLevel, DeclarationReflection, TSConfigReader } from 'typedoc';
+import type { LogLevel, DeclarationReflection } from 'typedoc';
 import type { AureliaStoriesAPIOptions } from '../models/aurelia-stories-options';
 import type { AureliaStoriesCustomElement } from '../models/aurelia-stories-custom-element';
 import type { CustomElementReflection } from '../models/custom-element-reflection';
 import * as helpers from './helpers/typedoc-stories-helpers';
 import { buildRelativePath, ensureAbsolutePath } from './helpers/path-utils';
+import { TypedocManager } from './typedoc/typedoc-manager';
 
 declare const __webpack_require__;
 /**
  * Aurelia Stories
  */
 export class AureliaStories {
+  private readonly _typedocManager: TypedocManager;
+
   /** Target project directory */
   public readonly projectDir: string;
   /** Output directory */
@@ -22,14 +25,12 @@ export class AureliaStories {
   public readonly mergeOut: boolean;
   /** Sources directory */
   public readonly srcDir: string;
-  private readonly _tsConfigPath: string;
   private readonly _tplPath: string;
   private readonly _defaultLogger: (msg: string, level: LogLevel) => void;
   private readonly _auConfigure?: string;
 
   /** Current template */
   private _tpl?: string;
-  private _typedoc: Application;
 
   constructor(private readonly _options: AureliaStoriesAPIOptions) {
     this.projectDir = this._options.projectDir || process.cwd();
@@ -40,21 +41,27 @@ export class AureliaStories {
     }
     this._auConfigure = this._options.auConfigure ? ensureAbsolutePath(this.projectDir, this._options.auConfigure) : undefined;
 
-    this._tsConfigPath = path.join(this.projectDir, 'tsconfig.json');
     this._tplPath = this._options.etaTemplate ? path.resolve(this._options.etaTemplate) : path.join(__dirname, typeof __webpack_require__ === 'function' ? './' : '../../', 'static/templates/au2.stories.ts.eta');
     this._defaultLogger = this._options.logger || ((msg: string, level: LogLevel) => console.log(`${level} - ${msg}`));
+
+    // Typedoc manger
+    this._typedocManager = new TypedocManager({
+      logger: this._defaultLogger,
+      srcDir: this.srcDir,
+      tsConfigPath: path.join(this.projectDir, 'tsconfig.json'),
+      verbose: this._options.verbose,
+    });
     this._init();
   }
 
   private _init(): void {
-    this._initTypedoc();
     this._tpl = fs.readFileSync(this._tplPath, 'utf8');
   }
 
   /** Get stories from TS project */
   public *getStories(): Generator<AureliaStoriesCustomElement> {
     // Phase 1: TypeDoc
-    const projectReflection = this._typedoc.convert();
+    const projectReflection = this._typedocManager.convert();
 
     // Phase 2: Search and format components
     for (const component of this._getCustomElements(projectReflection as unknown as DeclarationReflection)) {
@@ -85,31 +92,6 @@ export class AureliaStories {
         { async: false }
       ) as string,
     } as AureliaStoriesCustomElement;
-  }
-
-  /**
-   * Init Typedoc
-   */
-  private _initTypedoc(): void {
-    this._typedoc = new Application();
-    this._typedoc.options.addReader(new TSConfigReader());
-    this._typedoc.bootstrap({
-      logger: (msg: string, level: LogLevel) => {
-        if (level > 0 || this._options.verbose) {
-          this._defaultLogger(msg, level);
-        }
-      },
-      tsconfig: this._tsConfigPath,
-      exclude: ['**/*+(.spec|.e2e|.stories).ts'],
-      entryPointStrategy: 'Expand',
-      excludeExternals: true,
-      excludeInternal: true,
-      excludePrivate: true,
-      disableSources: true,
-      logLevel: this._options.verbose ? 'Verbose' : 'Warn',
-      excludeProtected: true,
-      entryPoints: [this.srcDir],
-    });
   }
 
   /** Get customElement recursively */
