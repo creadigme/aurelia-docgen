@@ -49,8 +49,8 @@ export class TypedocManager {
       if (!node || !node.initializer) return;
 
       const defaultValue = printer.printNode(TypeScript.EmitHint.Expression, node.initializer, node.getSourceFile());
-      // Currently we handle only PropertyAccessExpression from the same class
-      if (node.initializer.kind !== TypeScript.SyntaxKind.PropertyAccessExpression || (node.initializer.kind === TypeScript.SyntaxKind.PropertyAccessExpression && defaultValue?.startsWith(`${node.parent.name.getText()}.`))) {
+      // Ignore PropertyAccessExpression (property = MyClass.anotherProperty)
+      if (node.initializer.kind !== TypeScript.SyntaxKind.PropertyAccessExpression) {
         defaultValues.set(reflection, defaultValue);
       } else {
         defaultValues.set(reflection, undefined);
