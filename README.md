@@ -8,17 +8,30 @@
 
 > Aurelia + Storybook (*can be*) ❤
 
-`Aurelia Stories` brings the ability to **generate** component documentations, **stories**, from *any*<sup>1</sup> `Aurelia` `TypeScript` project.
-Components's stories are written in [YAML](https://yaml.org/).
+`Aurelia Stories` brings the ability to **generate** component<sup>1</sup> documentations, **stories**, from *any*<sup>2</sup> `Aurelia` `TypeScript` project.
+Component's stories are written in class comments `@story` or in [YAML](https://yaml.org/) files.
 
-This tool is intended to be used with projects based on [Aurelia framework](https://aurelia.io/)<sup>2</sup> + [Storybook](https://storybook.js.org). It could also work with projects using only `Aurelia` **without** `Storybook`.
+This tool is intended to be used with projects based on [Aurelia framework](https://aurelia.io/)<sup>3</sup> + [Storybook](https://storybook.js.org). It could also work with projects using only `Aurelia` **without** `Storybook`.
 
 [![aurelia logo](https://aurelia.io/styles/images/logo.svg "Aurelia")](https://aurelia.io/)
 
 [![storybook logo](https://storybook.js.org/showcase/images/logos/storybookLogo.svg "Storybook")](https://storybook.js.org)
 
-<sup>1. Without any warranty.</sup><br>
-<sup>2. ⚠️ Aurelia 1 support is not implemented yet.</sup>
+
+<sup>1. `customElement` and `valueConverter`.</sup><br>
+<sup>2. Without any warranty.</sup><br>
+<sup>3. ⚠️ Aurelia 1 support is not implemented yet.</sup>
+
+## 📝 License
+
+Copyright © 2022 [Creadigme](https://www.creadigme.net).
+
+This project is licensed under the **AGPLv3** License - see the [LICENSE file](LICENSE) for details.
+
+> **Disclaimer**: any use of this project must be under the same license, i.e. **AGPLv3**.
+You can make a private or/and commercial use with an OEM / private license agreement. Do not hesitate to contact us.
+
+
 <!--
 > [AD]
 > 
@@ -91,6 +104,70 @@ module.exports = {
 > ⚠️ Currently we do not support .mdx stories.
 
 ## 📝 Write stories
+
+> **TLDR;** comment your class with `@story` **or**/**and** via YAML files.
+
+### Comment your class `@story`
+
+Just like that:
+
+#### `customElement`
+
+```typescript
+/**
+ * My component
+ *
+ * @story My story
+ * ```html
+ * <au-component value.bind="1"></<au-component>
+ * ```
+ *
+ * @story My another story
+ * ```html
+ * <au-component value.bind="200"></<au-component>
+ * ```
+ */
+@customElement('au-component')
+export class AuComponent implements ICustomElementViewModel {
+  /** ... */
+  @bindable()
+  public value = 1;
+}
+```
+
+#### `valueConverter`
+
+```typescript
+/**
+ * My converter
+ *
+ * @example
+ * ```html
+ * <!-- it's the default usage for valueConverter ! -->
+ * <span>${ '1' | doSomething}</span>
+ * ```
+ *
+ * @story My story
+ * ```html
+ * <let my-value.bind="{ a: 1 }">
+ * <span>${ myValue | doSomething}</span>
+ * ```
+ *
+ * @story My another story
+ * ```html
+ * <let my-value.bind="{ a: 1, b: 2 }">
+ * <span>${ myValue | doSomething}</span>
+ * ```
+ */
+@valueConverter('doSomething')
+export class DoSomethingValueConverter {
+  public toView(value: string | Record<string, number>): string {
+    return /* ?? */ 'ok';
+  }
+}
+```
+
+### YAML Way
 
 Stories are written in [YAML](https://yaml.org/) next to components like these:
 
@@ -245,7 +322,7 @@ npm run storybook
 | logger | `(msg: string, level: LevelLog) => void` | `console.log(``${level} - ${msg}``)` |
 
 ```typescript
-import { AU2Storybook } from './aurelia-stories';
+import { AU2Storybook } from '@creadigme/aurelia-stories';
 
 const au2Storybook = new AU2Storybook({
   projectDir: './path-of-your-supra-ultra-project',

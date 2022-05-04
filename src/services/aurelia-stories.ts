@@ -15,6 +15,7 @@ declare const __webpack_require__;
  * Aurelia Stories
  */
 export class AureliaStories {
+  private static readonly _RE_DECORATORS = /^(valueConverter|customElement)$/;
   private readonly _typedocManager: TypedocManager;
 
   /** Target project directory */
@@ -86,7 +87,7 @@ export class AureliaStories {
             path: this._auConfigure ? buildRelativePath(this.outDir || path.dirname(componentPathWOE), this._auConfigure) : undefined,
           },
           component,
-          stories: ymlStories,
+          stories: component.stories.concat(ymlStories),
           helpers,
         },
         { async: false }
@@ -94,14 +95,16 @@ export class AureliaStories {
     } as AureliaStoriesCustomElement;
   }
 
-  /** Get customElement recursively */
+  /** Get customElement & valueConverters recursively */
   private *_getCustomElements(element: CustomElementReflection, parent?: CustomElementReflection): Generator<CustomElementReflection> {
-    if (element.kind === 128 && element.decorators?.find(f => f.name === 'customElement')) {
+    if (element.kind === 128 && element.decorators?.find(f => AureliaStories._RE_DECORATORS.test(f.name))) {
       // Ensure parent element
       element.parent = parent;
 
       // Set `componentTag` (i.e. `something-else`)
-      const decoratorArgs = element.decorators.find(f => f.name === 'customElement').arguments;
+      const decorator = element.decorators.find(f => AureliaStories._RE_DECORATORS.test(f.name));
+      const decoratorArgs = decorator.arguments;
+      element.auType = decorator.name as any;
       if (decoratorArgs.name) {
         element.componentTag = decoratorArgs.name.slice(1, -1);
       } else {
@@ -109,8 +112,16 @@ export class AureliaStories {
         element.componentTag = /name: '([\w\-]*)'/.exec(decoratorArgs.definition)[1];
       }
 
-      // Search bindables properties
-      element.bindables = element.children.filter(f => f.kind === 1024 && f.decorators && f.decorators.find(f => f.name === 'bindable'));
+      if (element.auType === 'customElement') {
+        // Search bindables properties
+        element.bindables = element.children.filter(f => f.kind === 1024 && f.decorators && f.decorators.find(f => f.name === 'bindable'));
+      } else {
+        element.bindables = [];
+      }
+
+      // Embedded stories
+      element.stories = helpers.getAndStripStories(element.comment);
+
       // Public methods
       element.publicMethods = element.children.filter(f => f.kind === 2048 && f.flags.isPublic && !f.flags.isStatic);
 

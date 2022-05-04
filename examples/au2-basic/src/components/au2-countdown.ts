@@ -2,6 +2,21 @@ import { bindable, BindingMode, customElement, ICustomElementViewModel } from "a
 
 /**
  * Au2 Countdown
+ *
+ * @example
+ * ```html
+ * <au2-countdown></<au2-countdown>
+ * ```
+ *
+ * @story My story
+ * ```html
+ * <au2-countdown start-value.bind="100"></<au2-countdown>
+ * ```
+ *
+ * @story My another story
+ * ```html
+ * <au2-countdown start-value.bind="200"></<au2-countdown>
+ * ```
  */
 @customElement('au2-countdown')
 export class Au2Countdown implements ICustomElementViewModel {

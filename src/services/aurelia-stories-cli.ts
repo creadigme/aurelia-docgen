@@ -15,6 +15,7 @@ const { name } = require('./../../package.json');
  */
 export class AureliaStoriesCLI {
   public static readonly MSG_WRITE_STORIES_DONE = 'aurelia-stories:write-stories:done';
+  public static readonly MSG_WRITE_STORIES_FAIL = 'aurelia-stories:write-stories:failed';
   public static readonly MSG_WATCHING = 'aurelia-stories:watching';
   public static readonly MSG_EXIT = 'aurelia-stories:exit';
   private static readonly _RE_WATCH_IGNORE = /stories\.(ts|tsx|js|jsx|mdx)$/i;
@@ -51,11 +52,7 @@ export class AureliaStoriesCLI {
       }
     }
 
-    if (parentPort?.postMessage) {
-      parentPort.postMessage(AureliaStoriesCLI.MSG_WRITE_STORIES_DONE);
-    } else if (process.send) {
-      process.send(AureliaStoriesCLI.MSG_WRITE_STORIES_DONE);
-    }
+    AureliaStoriesCLI._sendMessage(AureliaStoriesCLI.MSG_WRITE_STORIES_DONE);
   }
 
   /** Watch and write stories */
@@ -72,11 +69,7 @@ export class AureliaStoriesCLI {
         ignoreInitial: true,
       })
       .on('ready', () => {
-        if (parentPort?.postMessage) {
-          parentPort.postMessage(AureliaStoriesCLI.MSG_WATCHING);
-        } else if (process.send) {
-          process.send(AureliaStoriesCLI.MSG_WATCHING);
-        }
+        AureliaStoriesCLI._sendMessage(AureliaStoriesCLI.MSG_WATCHING);
       })
       .on('all', (eventName: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir', fpath: string, stat?: fs.Stats) => {
         if (AureliaStoriesCLI._RE_WATCH_EVENT.test(eventName) && (!stat || stat.isFile()) && !AureliaStoriesCLI._RE_WATCH_IGNORE.test(fpath)) {
@@ -90,6 +83,7 @@ export class AureliaStoriesCLI {
             try {
               this.writeStories();
             } catch (error) {
+              AureliaStoriesCLI._sendMessage(AureliaStoriesCLI.MSG_WRITE_STORIES_FAIL);
               console.log(redBright(`[${name}] Writing stories failed: ${error.message}`));
             }
           }, 500);
@@ -109,6 +103,14 @@ export class AureliaStoriesCLI {
           recursive: true,
         });
       }
+    }
+  }
+
+  private static _sendMessage(message: string) {
+    if (parentPort?.postMessage) {
+      parentPort.postMessage(message);
+    } else if (process.send) {
+      process.send(message);
     }
   }
 }

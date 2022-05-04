@@ -6,6 +6,12 @@ import * as assert from 'assert';
 import { AureliaStoriesCLI } from './aurelia-stories-cli';
 import { spawn, spawnSync } from 'child_process';
 
+function ensureUnlink(filePath: string) {
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+  }
+}
+
 describe('aurelia-stories-cli', () => {
   it('Bad parameters', async () => {
     const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
@@ -112,11 +118,12 @@ describe('aurelia-stories-cli', () => {
         });
       });
       const files = fs.readdirSync(tmp);
-      assert.strictEqual(files.length, 4);
+      assert.strictEqual(files.length, 5);
       assert.strictEqual(files[0], 'au2-button.stories.ts');
       assert.strictEqual(files[1], 'au2-countdown.stories.ts');
       assert.strictEqual(files[2], 'au2-empty.stories.ts');
       assert.strictEqual(files[3], 'au2-just-for-test.stories.ts');
+      assert.strictEqual(files[4], 'doSomething.stories.ts');
     } finally {
       fs.rmSync(tmp, {
         recursive: true,
@@ -150,6 +157,8 @@ describe('aurelia-stories-cli', () => {
     const projectDir = path.join(process.cwd(), 'examples', 'au2-basic');
     const tmpNewFile = path.join(projectDir, 'src', '_move_.txt');
     const tmpNewFile2 = path.join(projectDir, 'src', '_move_2.txt');
+    ensureUnlink(tmpNewFile);
+    ensureUnlink(tmpNewFile2);
 
     try {
       let i = 0;
@@ -183,18 +192,19 @@ describe('aurelia-stories-cli', () => {
       });
       assert.strictEqual(i, 2);
       const files = fs.readdirSync(tmp);
-      assert.strictEqual(files.length, 4);
+      assert.strictEqual(files.length, 5);
       assert.strictEqual(files[0], 'au2-button.stories.ts');
       assert.strictEqual(files[1], 'au2-countdown.stories.ts');
       assert.strictEqual(files[2], 'au2-empty.stories.ts');
       assert.strictEqual(files[3], 'au2-just-for-test.stories.ts');
+      assert.strictEqual(files[4], 'doSomething.stories.ts');
     } finally {
       fs.rmSync(tmp, {
         recursive: true,
         force: true,
       });
-      fs.unlinkSync(tmpNewFile);
-      fs.unlinkSync(tmpNewFile2);
+      ensureUnlink(tmpNewFile);
+      ensureUnlink(tmpNewFile2);
     }
   });
 

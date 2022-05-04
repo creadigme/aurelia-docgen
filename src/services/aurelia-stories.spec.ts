@@ -67,7 +67,7 @@ describe('aurelia-stories', () => {
     });
 
     const stories = Array.from(aureliaStories.getStories());
-    assert.strictEqual(stories.length, 4);
+    assert.strictEqual(stories.length, 5);
 
     // AU2 Button
     assert.strictEqual(stories[0].component.componentTag, 'au2-button');
@@ -122,6 +122,11 @@ describe('aurelia-stories', () => {
     assert.strictEqual(stories[1].component.publicMethods.length, 2);
     assert.strictEqual(stories[1].component.publicMethods[0].name, 'start');
     assert.strictEqual(stories[1].component.publicMethods[1].name, 'stop');
+    assert.strictEqual(stories[1].component.stories.length, 2);
+    assert.strictEqual(stories[1].component.stories[0].title, 'My story');
+    assert.strictEqual(stories[1].component.stories[0].code, '<au2-countdown start-value.bind="100"></<au2-countdown>');
+    assert.strictEqual(stories[1].component.stories[1].title, 'My another story');
+    assert.strictEqual(stories[1].component.stories[1].code, '<au2-countdown start-value.bind="200"></<au2-countdown>');
 
     // AU2 Empty
     assert.strictEqual(stories[2].component.componentTag, 'au2-empty');
@@ -136,7 +141,7 @@ describe('aurelia-stories', () => {
     });
 
     const stories = Array.from(aureliaStories.getStories());
-    assert.strictEqual(stories.length, 4);
+    assert.strictEqual(stories.length, 5);
 
     // AU2 Button
     assert.strictEqual(stories[0].component.componentTag, 'au2-button');
@@ -155,7 +160,7 @@ describe('aurelia-stories', () => {
     });
 
     const stories = Array.from(aureliaStories.getStories());
-    assert.strictEqual(stories.length, 4);
+    assert.strictEqual(stories.length, 5);
 
     assert.ok(stories[0].stories.indexOf("import * as configure from './../configure';") !== -1);
     assert.ok(stories[0].stories.indexOf('$au: await configure.getOrCreateAurelia(),') !== -1);
