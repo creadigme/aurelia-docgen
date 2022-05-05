@@ -6,6 +6,9 @@ import { customElement } from "aurelia";
  * I am ?
  *
  * @category components/empty
+ *
+ * @example nothing
+ *
  * @star
  */
 @customElement({ name: 'au2-empty' })

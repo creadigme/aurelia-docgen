@@ -1,4 +1,4 @@
-import type { Comment } from 'typedoc';
+import type { Comment, CommentTag } from 'typedoc';
 import type { AureliaStoriesStory } from '../../models/aurelia-stories-story';
 
 /** Format TypeDoc Comment */
@@ -12,18 +12,33 @@ export function formatComment(comment: Comment) {
       formatedComment += `\n\n${comment.tags
         .map(f => {
           let tag = `🔖 **${f.tagName}**`;
-          if (f.text?.trim()) {
-            tag += `: ${f.text}`;
+          if (f.text.trim() && _formatTagComment.has(f.tagName)) {
+            tag += _formatTagComment.get(f.tagName)(f);
           }
           return tag;
         })
-        .join('\n')}`;
+        .join('\n<br>')}`;
     }
     return formatedComment;
   } else {
     return undefined;
   }
 }
+
+/** Easy formatting of special tags */
+const _formatTagComment = new Map<string, (tag: CommentTag) => string>([
+  [
+    'example',
+    ({ text }) => {
+      if (text.indexOf('```html') !== -1) {
+        // we are in a "p", we can't use pre or code
+        return `\n<br><span class="prismjs language-html" style="padding: 8px;font-size: 12px;font-family: monospace;display: block;background: whitesmoke;border-radius: 8px;">${encodeHTML(extractStory(text).code)}</span>`;
+      } else {
+        return `: ${text}`;
+      }
+    },
+  ],
+]);
 
 /** Get example from comment */
 export function getExampleFromComment(comment: Comment) {
@@ -74,6 +89,17 @@ function extractStory(text: string): AureliaStoriesStory {
     code,
     help: '```html\n' + code + '\n```\n',
   };
+}
+
+const _htmlTags = new Map([
+  ['&', '&amp;'],
+  ['<', '&lt;'],
+  ['>', '&gt;'],
+]);
+
+/** Encode HTML */
+export function encodeHTML(html: string) {
+  return html.replace(/[&<>]/g, tag => _htmlTags.get(tag));
 }
 
 /** Typedoc type to StoryBook argTypes */
