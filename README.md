@@ -26,11 +26,15 @@ This tool is intended to be used with projects based on [Aurelia framework](http
 
 Copyright © 2022 [Creadigme](https://www.creadigme.net).
 
-This project is licensed under the **AGPLv3** License - see the [LICENSE file](LICENSE) for details.
+**Disclaimer**
 
-> **Disclaimer**: any use of this project must be under the same license, i.e. **AGPLv3**.
-You can make a private or/and commercial use with an OEM / private license agreement. Do not hesitate to contact us.
+This project has a dual license:
+- The **AGPLv3** License - see the [LICENSE file](LICENSE) for details.
+- An OEM / private license agreement for private or/and commercial use.
 
+See [the FAQ on licensing.](#license-faq).
+
+Do not hesitate to contact us.
 
 <!--
 > [AD]
@@ -333,6 +337,21 @@ for (const ceStories of this._au2Storybook.getStories()) {
   console.dir(ceStories);
 }
 ```
+
+## License FAQ
+
+### Can I use this project with my **AGPLv3** project ?
+Yes
+
+### Can I use this project with my commercial **AGPLv3** project ?
+Yes
+
+### Can I use this project with my private project ?
+Yes, with an OEM / private license agreement, contact us.
+
+### Can I use this project with my private commercial project ?
+Yes, with an OEM / private license agreement, contact us.
+
 
 ## Coverage
 [![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/main/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
