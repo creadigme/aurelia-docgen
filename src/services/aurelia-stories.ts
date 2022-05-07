@@ -5,10 +5,11 @@ import * as Eta from 'eta';
 import type { LogLevel, DeclarationReflection } from 'typedoc';
 import type { AureliaStoriesAPIOptions } from '../models/aurelia-stories-options';
 import type { AureliaStoriesCustomElement } from '../models/aurelia-stories-custom-element';
-import type { CustomElementReflection } from '../models/custom-element-reflection';
 import * as helpers from './helpers/typedoc-stories-helpers';
 import { buildRelativePath, ensureAbsolutePath } from './helpers/path-utils';
 import { TypedocManager } from './typedoc/typedoc-manager';
+import { getEligibleDeclaration } from './declaration/declaration-factory';
+import { BaseDeclaration } from './declaration/base/base-declaration';
 
 declare const __webpack_require__;
 /**
@@ -65,29 +66,29 @@ export class AureliaStories {
     const projectReflection = this._typedocManager.convert();
 
     // Phase 2: Search and format components
-    for (const component of this._getCustomElements(projectReflection as unknown as DeclarationReflection)) {
+    for (const component of this._getEligibleDeclarations(projectReflection as unknown as DeclarationReflection)) {
       yield this._buildElementStory(component);
     }
   }
 
-  private _buildElementStory(component: CustomElementReflection): AureliaStoriesCustomElement {
-    const componentPathWOE = path.join(this.srcDir, component.parent.name);
+  private _buildElementStory(baseDeclaration: BaseDeclaration): AureliaStoriesCustomElement {
+    const componentPathWOE = path.join(this.srcDir, baseDeclaration.original.parent.name);
     const ymlStoriesPath = componentPathWOE + '.stories.yml';
     const ymlStories = fs.existsSync(ymlStoriesPath) ? jsyaml.load(fs.readFileSync(ymlStoriesPath, 'utf-8')) : [];
 
     return {
-      component,
+      component: baseDeclaration,
       componentPath: componentPathWOE,
       stories: Eta.render(
         this._tpl,
         {
-          importPath: this.outDir ? buildRelativePath(this.outDir, componentPathWOE) : './' + path.basename(component.parent.name),
+          importPath: this.outDir ? buildRelativePath(this.outDir, componentPathWOE) : './' + path.basename(baseDeclaration.original.parent.name),
           registry: {
             import: 'configure',
             path: this._auConfigure ? buildRelativePath(this.outDir || path.dirname(componentPathWOE), this._auConfigure) : undefined,
           },
-          component,
-          stories: component.stories.concat(ymlStories),
+          component: baseDeclaration,
+          stories: baseDeclaration.stories.concat(ymlStories),
           helpers,
         },
         { async: false }
@@ -95,42 +96,18 @@ export class AureliaStories {
     } as AureliaStoriesCustomElement;
   }
 
-  /** Get customElement & valueConverters recursively */
-  private *_getCustomElements(element: CustomElementReflection, parent?: CustomElementReflection): Generator<CustomElementReflection> {
-    if (element.kind === 128 && element.decorators?.find(f => AureliaStories._RE_DECORATORS.test(f.name))) {
+  /** Get customElement, valueConverters, etc recursively */
+  private *_getEligibleDeclarations(element: DeclarationReflection, parent?: DeclarationReflection): Generator<BaseDeclaration> {
+    if (!element.parent) {
       // Ensure parent element
       element.parent = parent;
-
-      // Set `componentTag` (i.e. `something-else`)
-      const decorator = element.decorators.find(f => AureliaStories._RE_DECORATORS.test(f.name));
-      const decoratorArgs = decorator.arguments;
-      element.auType = decorator.name as any;
-      if (decoratorArgs.name) {
-        element.componentTag = decoratorArgs.name.slice(1, -1);
-      } else {
-        // "{\n  name: 'ra-modal',\n  template: tpl,\n}"
-        element.componentTag = /name: '([\w\-]*)'/.exec(decoratorArgs.definition)[1];
-      }
-
-      if (element.auType === 'customElement') {
-        // Search bindables properties
-        element.bindables = element.children.filter(f => f.kind === 1024 && f.decorators && f.decorators.find(f => f.name === 'bindable'));
-      } else {
-        element.bindables = [];
-      }
-
-      // Embedded stories
-      element.stories = helpers.getAndStripStories(element.comment);
-
-      // Public methods
-      element.publicMethods = element.children.filter(f => f.kind === 2048 && f.flags.isPublic && !f.flags.isStatic);
-
-      // Store main category (if specified)
-      element.category = parent?.groups?.length && parent.groups[0].categories?.length ? parent.groups[0].categories[0].title : undefined;
-      yield element;
+    }
+    const eligibleDeclaration = getEligibleDeclaration(element);
+    if (eligibleDeclaration) {
+      yield eligibleDeclaration;
     } else if (element.children) {
       for (const child of element.children) {
-        yield* this._getCustomElements(child, element);
+        yield* this._getEligibleDeclarations(child, element);
       }
     }
   }

@@ -19,7 +19,7 @@ import { bindable, BindingMode, customElement, ICustomElementViewModel } from "a
  * ```
  */
 @customElement('au2-countdown')
-export class Au2Countdown implements ICustomElementViewModel {
+export class Au2Countdown implements ICustomElementViewModel, IAu2Countdown {
   public static readonly NAME = 'something';
 
   private _timer;
@@ -41,7 +41,7 @@ export class Au2Countdown implements ICustomElementViewModel {
   public onReach: () => void;
 
   /**
-   * Start the countdown
+   * @inheritdoc
    */
   public start(): void {
     this.stop();
@@ -79,4 +79,11 @@ export class Au2Countdown implements ICustomElementViewModel {
   public get isActive() {
     return !!this._timer;
   }
+}
+
+export interface IAu2Countdown {
+  /**
+   * Start the countdown
+   */
+  start(): void;
 }

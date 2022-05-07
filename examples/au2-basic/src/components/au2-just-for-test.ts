@@ -33,4 +33,12 @@ export class Au2JustForTest {
 
   @bindable()
   public myName: string = Au2JustForTest.NAME;
+
+  /**
+   * Compute nothing
+   * @returns string
+   */
+  public compute(): string {
+    return 'abcd';
+  }
 }

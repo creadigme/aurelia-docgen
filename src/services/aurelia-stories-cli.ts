@@ -48,7 +48,7 @@ export class AureliaStoriesCLI {
       }
     } else {
       for (const ceStories of this._aureliaStories.getStories()) {
-        fs.writeFileSync(outDir ? path.join(outDir, `${ceStories.component.componentTag}.stories${this._outExtension}`) : ceStories.componentPath + `.stories${this._outExtension}`, ceStories.stories, 'utf-8');
+        fs.writeFileSync(outDir ? path.join(outDir, `${ceStories.component.tag}.stories${this._outExtension}`) : ceStories.componentPath + `.stories${this._outExtension}`, ceStories.stories, 'utf-8');
       }
     }
 

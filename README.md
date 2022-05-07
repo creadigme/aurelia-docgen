@@ -18,7 +18,7 @@ This tool is intended to be used with projects based on [Aurelia framework](http
 [![storybook logo](https://storybook.js.org/showcase/images/logos/storybookLogo.svg "Storybook")](https://storybook.js.org)
 
 
-<sup>1. `customElement` and `valueConverter`.</sup><br>
+<sup>1. `customElement`, `valueConverter`, `customAttribute`, `bindingBehavior` and services.</sup><br>
 <sup>2. Without any warranty.</sup><br>
 <sup>3. ⚠️ Aurelia 1 support is not implemented yet.</sup>
 
@@ -167,6 +167,82 @@ export class AuComponent implements ICustomElementViewModel {
 export class DoSomethingValueConverter {
   public toView(value: string | Record<string, number>): string {
     return /* ?? */ 'ok';
+  }
+}
+```
+
+#### `customAttribute`
+
+```typescript
+import { customAttribute, INode } from 'aurelia';
+
+/**
+ * Red Square
+ * From https://docs.aurelia.io/getting-to-know-aurelia/custom-attributes#attribute-aliases
+ *
+ * @group attributes/red-square
+ */
+@customAttribute({ name: 'red-square', aliases: ['redify', 'redbox'] }) 
+export class RedSquareCustomAttribute {
+  constructor(@INode private element: HTMLElement){
+      this.element.style.width = this.element.style.height = '100px';
+      this.element.style.backgroundColor = 'red';
+  }
+}
+```
+
+#### `bindingBehavior`
+
+```typescript
+import { ILogger, bindingBehavior } from 'aurelia';
+
+/**
+ * Log behavior
+ *
+ * @group binding-behavior/log
+ */
+@bindingBehavior('log')
+export class Log {
+  constructor(
+    @ILogger readonly logger: ILogger,
+  ) {}
+  bind(...args) {
+    this.logger.debug('bind', ...args);
+  }
+  unbind(...args) {
+    this.logger.debug('unbind', ...args);
+  }
+}
+```
+
+#### `service`
+
+The tag comment `@service` is the key.
+
+```typescript
+/**
+ * My Service
+ *
+ * @service
+ */
+export class MyService implements IMyService {
+  /**
+   * @inheritdoc
+   */
+  public running: boolean = false;
+
+  /**
+   * @inheritdoc
+   */
+  public start(): void {
+    this.running = true;
+  }
+
+  /**
+   * @inheritdoc
+   */
+   public stop(): void {
+    this.running = false;
   }
 }
 ```

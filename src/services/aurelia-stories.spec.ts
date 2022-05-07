@@ -67,71 +67,71 @@ describe('aurelia-stories', () => {
     });
 
     const stories = Array.from(aureliaStories.getStories());
-    assert.strictEqual(stories.length, 5);
+    assert.strictEqual(stories.length, 8);
 
     // AU2 Button
-    assert.strictEqual(stories[0].component.componentTag, 'au2-button');
-    assert.strictEqual(stories[0].component.bindables.length, 3);
-    assert.strictEqual(stories[0].component.publicMethods.length, 0);
-    assert.ok(stories[0].stories.indexOf("import Aurelia from 'aurelia';") !== -1);
-    assert.ok(stories[0].stories.indexOf("import { Au2Button } from './au2-button';") !== -1);
-    assert.ok(stories[0].stories.indexOf("title: 'components/au2-button'") !== -1);
+    assert.strictEqual(stories[2].component.tag, 'au2-button');
+    assert.strictEqual(stories[2].component.bindables.length, 3);
+    assert.strictEqual(stories[2].component.publicMethods.length, 0);
+    assert.ok(stories[2].stories.indexOf("import Aurelia from 'aurelia';") !== -1);
+    assert.ok(stories[2].stories.indexOf("import { Au2Button } from './au2-button';") !== -1);
+    assert.ok(stories[2].stories.indexOf("title: 'components/au2-button'") !== -1);
     assert.ok(
-      stories[0].stories.indexOf(`action: {
+      stories[2].stories.indexOf(`action: {
       type: "object",
-      control: "object",
+      control: false,
       defaultValue: undefined,
       description: undefined,
       table: {
-        category: 'Properties',
+        category: 'Bindables',
       },
     },`) !== -1
     );
     assert.ok(
-      stories[0].stories.indexOf(`content: {
+      stories[2].stories.indexOf(`content: {
       type: "string",
       control: "text",
       defaultValue: 'Click me',
       description: "Content of button",
       table: {
-        category: 'Properties',
+        category: 'Bindables',
       },
     },`) !== -1
     );
     assert.ok(
-      stories[0].stories.indexOf(`style: {
+      stories[2].stories.indexOf(`style: {
       type: "string",
       control: "text",
       defaultValue: undefined,
       description: "Style of button",
       table: {
-        category: 'Properties',
+        category: 'Bindables',
       },
     },`) !== -1
     );
-    assert.ok(stories[0].stories.indexOf('export const DefaultUsage = Template.bind({});') !== -1);
-    assert.ok(stories[0].stories.indexOf("DefaultUsage.storyName = 'Default usage'") !== -1);
-    assert.ok(stories[0].stories.indexOf("I'm not a button") !== -1);
-    assert.ok(stories[0].stories.indexOf('export const story0 = RawTemplate.bind({});') !== -1);
-    assert.ok(stories[0].stories.indexOf('story0.storyName = "Toggle";') !== -1);
-    assert.ok(stories[0].stories.indexOf('story: "`button` `simple`\\n" + "A button toggle\\n"') !== -1);
+    assert.ok(stories[2].stories.indexOf('export const DefaultUsage = Template.bind({});') !== -1);
+    assert.ok(stories[2].stories.indexOf("DefaultUsage.storyName = 'Default usage'") !== -1);
+    assert.ok(stories[2].stories.indexOf("I'm not a button") !== -1);
+    assert.ok(stories[2].stories.indexOf('export const story0 = RawTemplate.bind({});') !== -1);
+    assert.ok(stories[2].stories.indexOf('story0.storyName = "Toggle";') !== -1);
+    assert.ok(stories[2].stories.indexOf('story: "`button` `simple`\\n" + "A button toggle\\n"') !== -1);
 
     // AU2 Countdown
-    assert.strictEqual(stories[1].component.componentTag, 'au2-countdown');
-    assert.strictEqual(stories[1].component.bindables.length, 4);
-    assert.strictEqual(stories[1].component.publicMethods.length, 2);
-    assert.strictEqual(stories[1].component.publicMethods[0].name, 'start');
-    assert.strictEqual(stories[1].component.publicMethods[1].name, 'stop');
-    assert.strictEqual(stories[1].component.stories.length, 2);
-    assert.strictEqual(stories[1].component.stories[0].title, 'My story');
-    assert.strictEqual(stories[1].component.stories[0].code, '<au2-countdown start-value.bind="100"></<au2-countdown>');
-    assert.strictEqual(stories[1].component.stories[1].title, 'My another story');
-    assert.strictEqual(stories[1].component.stories[1].code, '<au2-countdown start-value.bind="200"></<au2-countdown>');
+    assert.strictEqual(stories[3].component.tag, 'au2-countdown');
+    assert.strictEqual(stories[3].component.bindables.length, 4);
+    assert.strictEqual(stories[3].component.publicMethods.length, 2);
+    assert.strictEqual(stories[3].component.publicMethods[0].name, 'start');
+    assert.strictEqual(stories[3].component.publicMethods[1].name, 'stop');
+    assert.strictEqual(stories[3].component.stories.length, 2);
+    assert.strictEqual(stories[3].component.stories[0].title, 'My story');
+    assert.strictEqual(stories[3].component.stories[0].code, '<au2-countdown start-value.bind="100"></<au2-countdown>');
+    assert.strictEqual(stories[3].component.stories[1].title, 'My another story');
+    assert.strictEqual(stories[3].component.stories[1].code, '<au2-countdown start-value.bind="200"></<au2-countdown>');
 
     // AU2 Empty
-    assert.strictEqual(stories[2].component.componentTag, 'au2-empty');
-    assert.strictEqual(stories[2].component.bindables.length, 0);
-    assert.strictEqual(stories[2].component.publicMethods.length, 0);
+    assert.strictEqual(stories[4].component.tag, 'au2-empty');
+    assert.strictEqual(stories[4].component.bindables.length, 0);
+    assert.strictEqual(stories[4].component.publicMethods.length, 0);
   });
 
   it('Project AU2 Basic - custom Eta template', () => {
@@ -141,16 +141,16 @@ describe('aurelia-stories', () => {
     });
 
     const stories = Array.from(aureliaStories.getStories());
-    assert.strictEqual(stories.length, 5);
+    assert.strictEqual(stories.length, 8);
 
     // AU2 Button
-    assert.strictEqual(stories[0].component.componentTag, 'au2-button');
-    assert.strictEqual(stories[0].component.bindables.length, 3);
-    assert.strictEqual(stories[0].component.publicMethods.length, 0);
-    assert.ok(stories[0].stories.indexOf('# components/au2-button') !== -1);
-    assert.ok(stories[0].stories.indexOf("> I'm not a button") !== -1);
-    assert.ok(stories[0].stories.indexOf('## Stories') !== -1);
-    assert.ok(stories[0].stories.indexOf('### Toggle') !== -1);
+    assert.strictEqual(stories[2].component.tag, 'au2-button');
+    assert.strictEqual(stories[2].component.bindables.length, 3);
+    assert.strictEqual(stories[2].component.publicMethods.length, 0);
+    assert.ok(stories[2].stories.indexOf('# components/au2-button') !== -1);
+    assert.ok(stories[2].stories.indexOf("> I'm not a button") !== -1);
+    assert.ok(stories[2].stories.indexOf('## Stories') !== -1);
+    assert.ok(stories[2].stories.indexOf('### Toggle') !== -1);
   });
 
   it('Project AU2 Basic - auConfigure', () => {
@@ -160,7 +160,7 @@ describe('aurelia-stories', () => {
     });
 
     const stories = Array.from(aureliaStories.getStories());
-    assert.strictEqual(stories.length, 5);
+    assert.strictEqual(stories.length, 8);
 
     assert.ok(stories[0].stories.indexOf("import * as configure from './../configure';") !== -1);
     assert.ok(stories[0].stories.indexOf('$au: await configure.getOrCreateAurelia(),') !== -1);

@@ -42,18 +42,18 @@ function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context:
 
 // More on default export: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
-  title: '<%= (it.component.category ? it.component.category + '/' + it.component.componentTag : it.component.parent.name) + (it.component.comment?.hasTag('star') ? ' ✨' : '') /* it.component.componentTag */ %>',
+  title: '<%= (it.component.category ? it.component.category + '/' + it.component.tag : it.component.parent.name) + (it.component.comment?.hasTag('star') ? ' ✨' : '') /* it.component.tag */ %>',
   loaders,
   // More on argTypes: https://storybook.js.org/docs/html/api/argtypes
   argTypes: {
 <% for (const property of it.component.bindables) { %>
     <%= property.name %>: {
-<% const options = it.helpers.typedocToArgType[
+<% const options = it.helpers.toArgType(
       (typeof property.type === 'string' ?
         property.type :
         (property.type.type === 'intrinsic' ? property.type.name : 'reference')
-      ).toLowerCase()
-    ];
+      ).toLowerCase(), true
+    );
     for (const propName of Object.keys(options)) { 
 %>
       <%= propName %>: <%~ JSON.stringify(options[propName]) %>,
@@ -61,19 +61,41 @@ export default {
       defaultValue: <%~ property.defaultValue %>,
       description: <%~ JSON.stringify(it.helpers.formatComment(property.comment)) %>,
       table: {
-        category: 'Properties',
+        category: 'Bindables',
       },
     },
 <% } %>
-<% for (const method of it.component.publicMethods) { %>
+<% for (const method of it.component.publicMethods) {
+  const methodComment = method.signatures?.length && method.signatures[0].comment;
+  const parameters = methodComment ? method.signatures[0].parameters : [];
+%>
     <%= method.name %>: <%~ JSON.stringify({
       type: 'object',
       control: false,
-      description: method.signatures?.length ? it.helpers.formatComment(method.signatures[0].comment) : undefined,
+      description: methodComment ? it.helpers.formatComment(methodComment, parameters) : '',
       table: {
         category: 'Methods',
       },
     }) %>,
+<% } %>
+<% for (const property of it.component.properties) { %>
+    <%= property.name %>: {
+<% const options = it.helpers.toArgType(
+      (typeof property.type === 'string' ?
+        property.type :
+        (property.type.type === 'intrinsic' ? property.type.name : 'reference')
+      ).toLowerCase(), false
+    );
+    for (const propName of Object.keys(options)) { 
+%>
+      <%= propName %>: <%~ JSON.stringify(options[propName]) %>,
+<% } %>
+      defaultValue: <%~ JSON.stringify(property.defaultValue) %>,
+      description: <%~ JSON.stringify(it.helpers.formatComment(property.comment)) %>,
+      table: {
+        category: 'Properties',
+      },
+    },
 <% } %>
   },
 };
@@ -82,13 +104,13 @@ export default {
 // More on component templates: https://storybook.js.org/docs/html/writing-stories/introduction#using-args
 const Template = (options, sbInfo: { loaded: { $au: Aurelia } }) => {
 <% if (it.component.auType === 'customElement') { %>
-  return enhance(sbInfo, `<<%= it.component.componentTag %>
+  return enhance(sbInfo, `<<%= it.component.tag %>
 <% for (const property of it.component.bindables) { %>
   <%= property.name %>.bind="<%= property.name %>"
 <% } %>
-  ></<%= it.component.componentTag %>>`, options);
+  ></<%= it.component.tag %>>`, options);
 <% } else { %>
-  return enhance(sbInfo, <%~ JSON.stringify(componentExample || '<h3>Value converter <code>' + it.component.componentTag + '</code> has no default example. Check the stories for more informations.</h3>') %>, options);
+  return enhance(sbInfo, <%~ JSON.stringify(componentExample || `<h3>${it.component.auType} <code>` + it.component.tag + '</code> has no default example. Check the stories for more informations.</h3>') %>, options);
 <% } %>
 };
 

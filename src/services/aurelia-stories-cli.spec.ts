@@ -118,12 +118,15 @@ describe('aurelia-stories-cli', () => {
         });
       });
       const files = fs.readdirSync(tmp);
-      assert.strictEqual(files.length, 5);
+      assert.strictEqual(files.length, 8);
       assert.strictEqual(files[0], 'au2-button.stories.ts');
       assert.strictEqual(files[1], 'au2-countdown.stories.ts');
       assert.strictEqual(files[2], 'au2-empty.stories.ts');
       assert.strictEqual(files[3], 'au2-just-for-test.stories.ts');
       assert.strictEqual(files[4], 'doSomething.stories.ts');
+      assert.strictEqual(files[5], 'log.stories.ts');
+      assert.strictEqual(files[6], 'MyService.stories.ts');
+      assert.strictEqual(files[7], 'red-square.stories.ts');
     } finally {
       fs.rmSync(tmp, {
         recursive: true,
@@ -192,12 +195,15 @@ describe('aurelia-stories-cli', () => {
       });
       assert.strictEqual(i, 2);
       const files = fs.readdirSync(tmp);
-      assert.strictEqual(files.length, 5);
+      assert.strictEqual(files.length, 8);
       assert.strictEqual(files[0], 'au2-button.stories.ts');
       assert.strictEqual(files[1], 'au2-countdown.stories.ts');
       assert.strictEqual(files[2], 'au2-empty.stories.ts');
       assert.strictEqual(files[3], 'au2-just-for-test.stories.ts');
       assert.strictEqual(files[4], 'doSomething.stories.ts');
+      assert.strictEqual(files[5], 'log.stories.ts');
+      assert.strictEqual(files[6], 'MyService.stories.ts');
+      assert.strictEqual(files[7], 'red-square.stories.ts');
     } finally {
       fs.rmSync(tmp, {
         recursive: true,
