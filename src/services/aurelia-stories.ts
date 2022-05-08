@@ -4,7 +4,7 @@ import * as jsyaml from 'js-yaml';
 import * as Eta from 'eta';
 import type { LogLevel, DeclarationReflection } from 'typedoc';
 import type { AureliaStoriesAPIOptions } from '../models/aurelia-stories-options';
-import type { AureliaStoriesCustomElement } from '../models/aurelia-stories-custom-element';
+import type { AureliaStoriesEligible } from '../models/aurelia-stories-eligible';
 import * as helpers from './helpers/typedoc-stories-helpers';
 import { buildRelativePath, ensureAbsolutePath } from './helpers/path-utils';
 import { TypedocManager } from './typedoc/typedoc-manager';
@@ -61,7 +61,7 @@ export class AureliaStories {
   }
 
   /** Get stories from TS project */
-  public *getStories(): Generator<AureliaStoriesCustomElement> {
+  public *getStories(): Generator<AureliaStoriesEligible> {
     // Phase 1: TypeDoc
     const projectReflection = this._typedocManager.convert();
 
@@ -71,7 +71,7 @@ export class AureliaStories {
     }
   }
 
-  private _buildElementStory(baseDeclaration: BaseDeclaration): AureliaStoriesCustomElement {
+  private _buildElementStory(baseDeclaration: BaseDeclaration): AureliaStoriesEligible {
     const componentPathWOE = path.join(this.srcDir, baseDeclaration.original.parent.name);
     const ymlStoriesPath = componentPathWOE + '.stories.yml';
     const ymlStories = fs.existsSync(ymlStoriesPath) ? jsyaml.load(fs.readFileSync(ymlStoriesPath, 'utf-8')) : [];
@@ -93,7 +93,7 @@ export class AureliaStories {
         },
         { async: false }
       ) as string,
-    } as AureliaStoriesCustomElement;
+    } as AureliaStoriesEligible;
   }
 
   /** Get customElement, valueConverters, etc recursively */

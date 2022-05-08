@@ -1,7 +1,7 @@
 import type { BaseDeclaration } from '../services/declaration/base/base-declaration';
 
-/** Aurelia Stories CustomElement stories generated */
-export type AureliaStoriesCustomElement = {
+/** Aurelia Stories Eligible stories generated */
+export type AureliaStoriesEligible = {
   /** Plain text stories generated with the specified Eta template */
   stories: string;
   /** Component Reflection */
