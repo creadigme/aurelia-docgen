@@ -1,5 +1,6 @@
 [![npm version](https://img.shields.io/npm/v/@creadigme/aurelia-stories.svg)](https://www.npmjs.com/package/@creadigme/aurelia-stories)
 [![Build Status](https://github.com/creadigme/aurelia-stories/actions/workflows/ci.yml/badge.svg)](https://github.com/creadigme/aurelia-stories/actions)
+[![CodeQL](https://github.com/creadigme/aurelia-stories/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/creadigme/aurelia-stories/actions/workflows/codeql-analysis.yml)
 [![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/main/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
 [![License Badge](https://img.shields.io/badge/License-AGPL%203%2B-blue.svg)](LICENSE)
 <br />
