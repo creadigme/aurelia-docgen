@@ -118,6 +118,7 @@ describe('aurelia-stories-cli', () => {
         });
       });
       const files = fs.readdirSync(tmp);
+      files.sort((a, b) => a.localeCompare(b));
       assert.strictEqual(files.length, 8);
       assert.strictEqual(files[0], 'au2-button.stories.ts');
       assert.strictEqual(files[1], 'au2-countdown.stories.ts');
@@ -195,6 +196,7 @@ describe('aurelia-stories-cli', () => {
       });
       assert.strictEqual(i, 2);
       const files = fs.readdirSync(tmp);
+      files.sort((a, b) => a.localeCompare(b));
       assert.strictEqual(files.length, 8);
       assert.strictEqual(files[0], 'au2-button.stories.ts');
       assert.strictEqual(files[1], 'au2-countdown.stories.ts');
