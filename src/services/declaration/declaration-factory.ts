@@ -1,10 +1,10 @@
 import type { DeclarationReflection } from 'typedoc';
 import type { BaseDeclaration } from './base/base-declaration';
-import { BindingBehaviorDeclaration } from './binding-behavior-declaration';
-import { CustomAttributeDeclaration } from './custom-attribute-declaration';
-import { CustomElementDeclaration } from './custom-element-declaration';
-import { ServiceDeclaration } from './service-declaration';
-import { ValueConverterDeclaration } from './value-converter-declaration';
+import { BindingBehaviorDeclaration } from './eligible/binding-behavior-declaration';
+import { CustomAttributeDeclaration } from './eligible/custom-attribute-declaration';
+import { CustomElementDeclaration } from './eligible/custom-element-declaration';
+import { ServiceDeclaration } from './eligible/service-declaration';
+import { ValueConverterDeclaration } from './eligible/value-converter-declaration';
 
 const storyElementDecorators = new Set(['customElement', 'valueConverter', 'customAttribute', 'bindingBehavior']);
 const storyElementTagComments = new Set(['service']);

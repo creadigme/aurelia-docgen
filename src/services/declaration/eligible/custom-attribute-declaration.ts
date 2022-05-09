@@ -1,5 +1,5 @@
-import { DeclarationReflection } from 'typedoc';
-import { DecoratorDeclaration } from './base/decorator-declaration';
+import type { DeclarationReflection } from 'typedoc';
+import { DecoratorDeclaration } from './../base/decorator-declaration';
 
 /**
  * `@customAttribute` declaration

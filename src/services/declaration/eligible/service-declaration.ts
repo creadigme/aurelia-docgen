@@ -1,5 +1,5 @@
 import type { DeclarationReflection } from 'typedoc';
-import { TagCommentDeclaration } from './base/tag-comment-au-parser';
+import { TagCommentDeclaration } from './../base/tag-comment-au-parser';
 
 /**
  * Tag comment `@service` declaration

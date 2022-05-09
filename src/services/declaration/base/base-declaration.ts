@@ -1,7 +1,7 @@
 import type { Comment, DeclarationReflection, Reflection, ReflectionGroup } from 'typedoc';
 import type { AureliaStoriesStory } from '../../../models/aurelia-stories-story';
 import { getAndStripStories } from '../../helpers/typedoc-stories-helpers';
-import type { AuType } from '../au-type';
+import type { AuType } from './au-type';
 
 export abstract class BaseDeclaration {
   /** Component tag */
@@ -39,8 +39,10 @@ export abstract class BaseDeclaration {
     this.original.children.forEach(f => {
       if (f.flags.isPublic && !f.flags.isStatic) {
         if (f.kind === 2048) {
+          // methods
           this.publicMethods.push(f);
         } else if (f.kind === 1024) {
+          // Properties
           if (f.decorators?.find(f => f.name === 'bindable')) {
             this.bindables.push(f);
           } else {
