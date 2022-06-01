@@ -17,9 +17,9 @@ const loaders = [ async () => ({
 }) ];
 
 let auCache: Aurelia;
-function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context: unknown = {}): HTMLDivElement {
+function enhance(sbInfo: { loaded: { $au: Aurelia } }, __content: string, context: unknown = {}): HTMLDivElement {
   const host = document.createElement('div');
-  host.innerHTML = content;
+  host.innerHTML = __content;
   const localAu = auCache || sbInfo.loaded.$au;
   if (localAu) {
     localAu.enhance({
@@ -28,9 +28,9 @@ function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context:
     });
   } else {
     // docs tab issue with loaders https://github.com/storybookjs/storybook/issues/12726
-    loaders[0]().then(f => {
+    loaders[0]().then(async f => {
       auCache = f.$au;
-      auCache.enhance({
+      await auCache.enhance({
         host,
         component: context,
       });
@@ -42,24 +42,23 @@ function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context:
 
 // More on default export: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
-  title: '<%= (it.component.category ? it.component.category + '/' + it.component.tag : it.component.parent.name) + (it.component.comment?.hasTag('star') ? ' ✨' : '') /* it.component.tag */ %>',
+  title: '<%= (it.component.category ? it.component.category + '/' + it.component.tag : it.component.parent.name) + (it.component.comment?.hasTag('star') ? ' ✨' : '') + (it.component.comment?.hasTag('draft') ? ' ⚠' : '') /* it.component.tag */ %>',
   loaders,
   // More on argTypes: https://storybook.js.org/docs/html/api/argtypes
   argTypes: {
 <% for (const property of it.component.bindables) { %>
     <%= property.name %>: {
-<% const options = it.helpers.toArgType(
-      (typeof property.type === 'string' ?
-        property.type :
-        (property.type.type === 'intrinsic' ? property.type.name : 'reference')
-      ).toLowerCase(), true
-    );
+<% const options = it.helpers.toArgType(property.type, true);
     for (const propName of Object.keys(options)) { 
 %>
+<% if (options[propName] != null) { %>
       <%= propName %>: <%~ JSON.stringify(options[propName]) %>,
 <% } %>
+<% } %>
       defaultValue: <%~ property.defaultValue %>,
+<% if (options.description == null) { %>
       description: <%~ JSON.stringify(it.helpers.formatComment(property.comment)) %>,
+<% } %>
       table: {
         category: 'Bindables',
       },
@@ -80,18 +79,17 @@ export default {
 <% } %>
 <% for (const property of it.component.properties) { %>
     <%= property.name %>: {
-<% const options = it.helpers.toArgType(
-      (typeof property.type === 'string' ?
-        property.type :
-        (property.type.type === 'intrinsic' ? property.type.name : 'reference')
-      ).toLowerCase(), false
-    );
+<% const options = it.helpers.toArgType(property.type, false);
     for (const propName of Object.keys(options)) { 
 %>
+<% if (options[propName] != null) { %>
       <%= propName %>: <%~ JSON.stringify(options[propName]) %>,
 <% } %>
+<% } %>
       defaultValue: <%~ JSON.stringify(property.defaultValue) %>,
+<% if (options.description == null) { %>
       description: <%~ JSON.stringify(it.helpers.formatComment(property.comment)) %>,
+<% } %>
       table: {
         category: 'Properties',
       },
@@ -106,7 +104,7 @@ const Template = (options, sbInfo: { loaded: { $au: Aurelia } }) => {
 <% if (it.component.auType === 'customElement') { %>
   return enhance(sbInfo, `<<%= it.component.tag %>
 <% for (const property of it.component.bindables) { %>
-  <%= property.name %>.bind="<%= property.name %>"
+  <%= it.helpers.kebabCase(property.name) %>.bind="<%= property.name %>"
 <% } %>
   ></<%= it.component.tag %>>`, options);
 <% } else { %>
@@ -129,7 +127,7 @@ DefaultUsage.parameters = {
 
 <% if (it.stories.length) { %>
 const RawTemplate = (options, sbInfo) => {
-  return enhance(sbInfo, options.content);
+  return enhance(sbInfo, options.__content);
 };
 <% } %>
 
@@ -139,7 +137,7 @@ const RawTemplate = (options, sbInfo) => {
 %>
 export const <%= storyName %> = RawTemplate.bind({});
 <%= storyName %>.args = {
-  content: <%~ JSON.stringify(story.code) %>,
+  __content: <%~ JSON.stringify(story.code) %>,
 };
 <%= storyName %>.storyName = <%~ JSON.stringify(story.title) %>;
 <%= storyName %>.parameters = {

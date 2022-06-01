@@ -77,37 +77,19 @@ describe('aurelia-stories', () => {
     assert.ok(stories[2].stories.indexOf("import { Au2Button } from './au2-button';") !== -1);
     assert.ok(stories[2].stories.indexOf("title: 'components/au2-button'") !== -1);
     assert.ok(
-      stories[2].stories.indexOf(`action: {
-      type: "object",
-      control: false,
-      defaultValue: undefined,
-      description: undefined,
-      table: {
-        category: 'Bindables',
-      },
-    },`) !== -1
+      stories[2].stories.indexOf(
+        `action: {\n      type: \"object\",\n      control: false,\n      description: \"Action\\n\\n🔖 **action**\",\n      original: \"reflection\",\n      defaultValue: undefined,\n      table: {\n        category: 'Bindables',\n      },\n    },`
+      ) !== -1
     );
     assert.ok(
-      stories[2].stories.indexOf(`content: {
-      type: "string",
-      control: "text",
-      defaultValue: 'Click me',
-      description: "Content of button",
-      table: {
-        category: 'Bindables',
-      },
-    },`) !== -1
+      stories[2].stories.indexOf(
+        `content: {\n      type: \"string\",\n      control: \"text\",\n      original: {\"name\":\"string\",\"type\":\"intrinsic\"},\n      defaultValue: 'Click me',\n      description: \"Content of button\",\n      table: {\n        category: 'Bindables',\n      },\n    },`
+      ) !== -1
     );
     assert.ok(
-      stories[2].stories.indexOf(`style: {
-      type: "string",
-      control: "text",
-      defaultValue: undefined,
-      description: "Style of button",
-      table: {
-        category: 'Bindables',
-      },
-    },`) !== -1
+      stories[2].stories.indexOf(
+        `style: {\n      type: \"string\",\n      control: \"text\",\n      original: {\"name\":\"string\",\"type\":\"intrinsic\"},\n      defaultValue: undefined,\n      description: \"Style of button\",\n      table: {\n        category: 'Bindables',\n      },\n    },`
+      ) !== -1
     );
     assert.ok(stories[2].stories.indexOf('export const DefaultUsage = Template.bind({});') !== -1);
     assert.ok(stories[2].stories.indexOf("DefaultUsage.storyName = 'Default usage'") !== -1);

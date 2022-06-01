@@ -21,6 +21,9 @@ describe('typedoc-stories-helper', () => {
   });
 
   it('getExampleFromComment', () => {
+    assert.strictEqual(getExampleFromComment(null), '');
+    assert.strictEqual(getExampleFromComment(undefined), '');
+
     const aureliaStories = new AureliaStories({
       projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
     });
@@ -34,9 +37,13 @@ describe('typedoc-stories-helper', () => {
   });
 
   it('toArgType', () => {
-    assert.deepStrictEqual(toArgType('number'), { type: 'number', control: { type: 'number', step: 1 } });
-    assert.deepStrictEqual(toArgType('array'), { type: 'array', control: 'object' });
-    assert.deepStrictEqual(toArgType('somethingwrong' as any), { type: 'object', control: false });
-    assert.deepStrictEqual(toArgType('number', false), { type: 'number', control: false });
+    assert.deepStrictEqual(toArgType('number'), { original: 'number', type: 'number', control: { type: 'number', step: 1 } });
+    assert.deepStrictEqual(toArgType('array'), { original: 'array', type: 'array', control: 'object' });
+    assert.deepStrictEqual(toArgType('somethingwrong' as any), { original: 'somethingwrong', type: 'object', control: false });
+    assert.deepStrictEqual(toArgType('number', false), { original: 'number', type: 'number', control: false });
+    assert.deepStrictEqual(toArgType('date'), { original: 'date', type: 'date', control: 'date' });
+    assert.deepStrictEqual(toArgType('unknown'), { original: 'unknown', type: 'object', control: false });
+    assert.deepStrictEqual(toArgType('any'), { original: 'any', type: 'object', control: 'object' });
+    assert.deepStrictEqual(toArgType('object'), { original: 'object', type: 'object', control: 'object' });
   });
 });

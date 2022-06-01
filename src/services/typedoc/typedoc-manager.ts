@@ -21,7 +21,7 @@ export class TypedocManager {
         }
       },
       tsconfig: this._options.tsConfigPath,
-      exclude: ['**/*+(.spec|.e2e|.stories).ts'],
+      exclude: ['**/*.{spec,e2e,stories}.ts'],
       entryPointStrategy: 'Expand',
       excludeExternals: true,
       excludeInternal: true,

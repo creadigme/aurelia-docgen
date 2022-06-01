@@ -1,4 +1,4 @@
-import type { Comment, CommentTag, ParameterReflection } from 'typedoc';
+import type { Comment, CommentTag, DeclarationReflection, ParameterReflection } from 'typedoc';
 import type { AureliaStoriesStory } from '../../models/aurelia-stories-story';
 
 /** Format TypeDoc Comment */
@@ -125,28 +125,79 @@ export function encodeHTML(html: string) {
   return html.replace(/[&<>]/g, tag => _htmlTags.get(tag));
 }
 
+type PropertyTypeBase = { name: string; type: string };
+type PropertyReferenceType = PropertyTypeBase & { reflection?: DeclarationReflection; elementType: PropertyTypeBase; package?: string };
+type PropertyType = string | PropertyReferenceType;
+
 /** Typedoc type to StoryBook argTypes */
-export const typedocToArgType = {
-  boolean: { type: 'boolean', control: 'boolean' },
-  number: { type: 'number', control: { type: 'number', step: 1 } },
-  object: { type: 'object', control: 'object' },
-  any: { type: 'object', control: 'object' },
-  array: { type: 'array', control: 'object' },
-  string: { type: 'string', control: 'text' },
-  date: { type: 'date', control: 'date' },
-  reflection: { type: 'string', control: false },
-  reference: { type: 'object', control: false },
-  unknown: { type: 'object', control: false },
+export const typedocToArgType: Record<string, (propertyType: PropertyType) => Record<string, unknown>> = {
+  boolean: propertyType => {
+    return { type: 'boolean', control: 'boolean' };
+  },
+  number: propertyType => {
+    return { type: 'number', control: { type: 'number', step: 1 } };
+  },
+  object: propertyType => {
+    return { type: 'object', control: 'object' };
+  },
+  any: propertyType => {
+    return { type: 'object', control: 'object' };
+  },
+  array: propertyType => {
+    return { type: 'array', control: 'object' };
+  },
+  string: propertyType => {
+    return { type: 'string', control: 'text' };
+  },
+  date: propertyType => {
+    return { type: 'date', control: 'date' };
+  },
+  reflection: propertyType => {
+    const method = (propertyType as unknown as { declaration: DeclarationReflection }).declaration;
+    const methodComment = method.signatures?.length && method.signatures[0].comment;
+    const parameters = methodComment ? method.signatures[0].parameters : [];
+    return { type: 'object', control: false, description: methodComment ? formatComment(methodComment, parameters) : undefined };
+  },
+  unknown: propertyType => {
+    return { type: 'object', control: false };
+  },
+  union: (propertyType: any) => {
+    const types = propertyType.types.map(f => (f as any).value);
+    return { type: typeof types[0], control: 'inline-radio', options: types };
+  },
+  reference: (propertyType: PropertyReferenceType) => {
+    if (propertyType.name === 'Date' && propertyType.package === 'typescript') {
+      return typedocToArgType.date(propertyType);
+    } else if (propertyType.reflection) {
+      if (propertyType.reflection.type?.type === 'union') {
+        return typedocToArgType.union(propertyType.reflection.type as any);
+      } else {
+        return { type: 'object', control: false };
+      }
+    } else {
+      return { type: 'object', control: true };
+    }
+  },
 };
 
-export function toArgType(type: keyof typeof typedocToArgType, control?: boolean) {
+export function toArgType(propertyType: PropertyType, control?: boolean) {
+  const type = (typeof propertyType === 'string' ? propertyType : propertyType.type === 'intrinsic' ? propertyType.name : propertyType.type).toLowerCase();
+
   if (type in typedocToArgType) {
-    const argType = typedocToArgType[type];
+    const argType = typedocToArgType[type](propertyType);
     if (control === false) {
       argType.control = false;
     }
+    try {
+      (argType as any).original = JSON.parse(JSON.stringify(propertyType));
+    } catch {
+      (argType as any).original = type;
+      //
+    }
     return argType;
   } else {
-    return { type: 'object', control: false };
+    return { type: 'object', control: false, original: type };
   }
 }
+
+export { kebabCase } from './kebab-case';

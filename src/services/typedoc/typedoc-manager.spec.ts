@@ -27,6 +27,7 @@ describe('typedoc-manager', () => {
     assert.strictEqual(stories[5].component.bindables[5].defaultValue, 'new Map()');
     // 'Au2JustForTest.NAME'
     assert.strictEqual(stories[5].component.bindables[6].defaultValue, undefined);
-    assert.strictEqual(stories[5].component.bindables[7].defaultValue, '{ purge: true }');
+    assert.strictEqual(stories[5].component.bindables[7].defaultValue, "'v1'");
+    assert.strictEqual(stories[5].component.bindables[8].defaultValue, '{ purge: true }');
   });
 });

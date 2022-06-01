@@ -1,6 +1,8 @@
 import { bindable, customElement } from "aurelia";
 import { Au2Countdown } from "./au2-countdown";
 
+export type MyType = 'v1' | 'v2' | 'v3' | 'v4';
+
 /**
  * Just for test. Simulation.
  *
@@ -33,6 +35,9 @@ export class Au2JustForTest {
 
   @bindable()
   public myName: string = Au2JustForTest.NAME;
+
+  @bindable()
+  public myType: MyType = 'v1';
 
   /**
    * Compute nothing
