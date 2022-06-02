@@ -424,10 +424,10 @@ Yes
 Yes
 
 ### Can I use this project with my private project ?
-Yes, with an OEM / private license agreement, contact us.
+Yes, with a private license agreement, [contact us](https://creadigme.net/contact/).
 
 ### Can I use this project with my private commercial project ?
-Yes, with an OEM / private license agreement, contact us.
+Yes, with a private license agreement, [contact us](https://creadigme.net/contact/).
 
 
 ## Coverage
