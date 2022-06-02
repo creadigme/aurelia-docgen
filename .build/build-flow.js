@@ -22,11 +22,11 @@ const tasks = {
   },
   /** Publish */
   publish: () => {
+    const registry = process.env.NPM_PUSH_REGISTRY || 'https://npm.pkg.github.com/';
     const cmds = [
       // Remove devDependencies in npm package
-      `node ./node_modules/json/lib/json -I -f ./package.json -e "this.devDependencies={};this.scripts={};"`,
-      `npm config set @creadigme:registry https://registry.npmjs.org/`,
-      `npm publish --registry=${process.env.NPM_PUSH_REGISTRY || 'https://npm.pkg.github.com/'}`
+      `node ./node_modules/json/lib/json -I -f ./package.json -e "this.devDependencies={};this.scripts={};this.publishConfig.registry='${registry}';"`,
+      `npm publish --registry=${registry}`
     ];
     return cmds.join(' && ');
   },
