@@ -1,5 +1,5 @@
 import type { Comment, DeclarationReflection, Reflection, ReflectionGroup } from 'typedoc';
-import type { AureliaStoriesStory } from '../../../models/aurelia-stories-story';
+import type { AureliaDocgenStory } from '../../../models/aurelia-docgen-story';
 import { getAndStripStories } from '../../helpers/typedoc-stories-helpers';
 import type { AuType } from './au-type';
 
@@ -15,7 +15,7 @@ export abstract class BaseDeclaration {
   /** Main category */
   public readonly category?: string;
   /** Embedded stories */
-  public readonly stories: AureliaStoriesStory[];
+  public readonly stories: AureliaDocgenStory[];
 
   /** Parent */
   public get parent(): Reflection & { groups?: ReflectionGroup[] } {

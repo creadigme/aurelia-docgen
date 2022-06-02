@@ -3,8 +3,8 @@ import * as fs from 'fs';
 import * as jsyaml from 'js-yaml';
 import * as Eta from 'eta';
 import type { LogLevel, DeclarationReflection } from 'typedoc';
-import type { AureliaStoriesAPIOptions } from '../models/aurelia-stories-options';
-import type { AureliaStoriesEligible } from '../models/aurelia-stories-eligible';
+import type { AureliaDocgenAPIOptions } from '../models/aurelia-docgen-options';
+import type { AureliaDocgenEligible } from '../models/aurelia-docgen-eligible';
 import * as helpers from './helpers/typedoc-stories-helpers';
 import { buildRelativePath, ensureAbsolutePath } from './helpers/path-utils';
 import { TypedocManager } from './typedoc/typedoc-manager';
@@ -13,9 +13,9 @@ import { BaseDeclaration } from './declaration/base/base-declaration';
 
 declare const __webpack_require__;
 /**
- * Aurelia Stories
+ * Aurelia Docgen
  */
-export class AureliaStories {
+export class AureliaDocgen {
   private static readonly _RE_DECORATORS = /^(valueConverter|customElement)$/;
   private readonly _typedocManager: TypedocManager;
 
@@ -34,7 +34,7 @@ export class AureliaStories {
   /** Current template */
   private _tpl?: string;
 
-  constructor(private readonly _options: AureliaStoriesAPIOptions) {
+  constructor(private readonly _options: AureliaDocgenAPIOptions) {
     this.projectDir = this._options.projectDir || process.cwd();
     this.srcDir = path.resolve(this.projectDir, 'src');
     if (this._options.out) {
@@ -61,7 +61,7 @@ export class AureliaStories {
   }
 
   /** Get stories from TS project */
-  public *getStories(): Generator<AureliaStoriesEligible> {
+  public *getStories(): Generator<AureliaDocgenEligible> {
     // Phase 1: TypeDoc
     const projectReflection = this._typedocManager.convert();
 
@@ -71,7 +71,7 @@ export class AureliaStories {
     }
   }
 
-  private _buildElementStory(baseDeclaration: BaseDeclaration): AureliaStoriesEligible {
+  private _buildElementStory(baseDeclaration: BaseDeclaration): AureliaDocgenEligible {
     const componentPathWOE = path.join(this.srcDir, baseDeclaration.original.parent.name);
     const ymlStoriesPath = componentPathWOE + '.stories.yml';
     const ymlStories = fs.existsSync(ymlStoriesPath) ? jsyaml.load(fs.readFileSync(ymlStoriesPath, 'utf-8')) : [];
@@ -93,7 +93,7 @@ export class AureliaStories {
         },
         { async: false }
       ) as string,
-    } as AureliaStoriesEligible;
+    } as AureliaDocgenEligible;
   }
 
   /** Get customElement, valueConverters, etc recursively */

@@ -1,7 +1,7 @@
 import type { BaseDeclaration } from '../services/declaration/base/base-declaration';
 
-/** Aurelia Stories Eligible stories generated */
-export type AureliaStoriesEligible = {
+/** Aurelia Docgen Eligible stories generated */
+export type AureliaDocgenEligible = {
   /** Plain text stories generated with the specified Eta template */
   stories: string;
   /** Component Reflection */

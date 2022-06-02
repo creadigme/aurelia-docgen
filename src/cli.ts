@@ -1,4 +1,4 @@
-import { AureliaStoriesCLI } from './services/aurelia-stories-cli';
+import { AureliaDocgenCLI } from './services/aurelia-docgen-cli';
 import * as c from 'ansi-colors';
 import { EOL } from 'os';
 import { parentPort } from 'worker_threads';
@@ -16,7 +16,7 @@ function closeWatch() {
 }
 
 function onExitMsg(msg) {
-  if (msg === AureliaStoriesCLI.MSG_EXIT) {
+  if (msg === AureliaDocgenCLI.MSG_EXIT) {
     closeWatch();
     logAndExit();
   }
@@ -41,7 +41,7 @@ const blueBright = c.bold.underline.blueBright;
 console.log(blueBright(`[${name}] version ${version}.`));
 
 try {
-  const au2Storybook = new AureliaStoriesCLI();
+  const au2Storybook = new AureliaDocgenCLI();
   if (au2Storybook.mustWatch) {
     fsWatch = au2Storybook.watchStories();
     console.log(blueBright(`[${name}] Listen for modifications...`));

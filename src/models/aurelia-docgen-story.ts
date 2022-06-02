@@ -1,5 +1,5 @@
 /** Story */
-export type AureliaStoriesStory = {
+export type AureliaDocgenStory = {
   title?: string;
   help?: string;
   tags?: string[];

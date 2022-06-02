@@ -1,15 +1,15 @@
-[![npm version](https://img.shields.io/npm/v/@creadigme/aurelia-stories.svg)](https://www.npmjs.com/package/@creadigme/aurelia-stories)
-[![Build Status](https://github.com/creadigme/aurelia-stories/actions/workflows/ci.yml/badge.svg)](https://github.com/creadigme/aurelia-stories/actions)
-[![CodeQL](https://github.com/creadigme/aurelia-stories/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/creadigme/aurelia-stories/actions/workflows/codeql-analysis.yml)
-[![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/main/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
+[![npm version](https://img.shields.io/npm/v/@creadigme/aurelia-docgen.svg)](https://www.npmjs.com/package/@creadigme/aurelia-docgen)
+[![Build Status](https://github.com/creadigme/aurelia-docgen/actions/workflows/ci.yml/badge.svg)](https://github.com/creadigme/aurelia-docgen/actions)
+[![CodeQL](https://github.com/creadigme/aurelia-docgen/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/creadigme/aurelia-docgen/actions/workflows/codeql-analysis.yml)
+[![codecov](https://codecov.io/gh/creadigme/aurelia-docgen/branch/main/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-docgen)
 [![License Badge](https://img.shields.io/badge/License-AGPL%203%2B-blue.svg)](LICENSE)
 <br />
 
-# Aurelia Stories | @creadigme/aurelia-stories
+# Aurelia Docgen | @creadigme/aurelia-docgen
 
 > Aurelia + Storybook (*can be*) ❤
 
-`Aurelia Stories` brings the ability to **generate** component<sup>1</sup> documentations, **stories**, from *any*<sup>2</sup> `Aurelia` `TypeScript` project.
+`Aurelia Docgen` brings the ability to **generate** component<sup>1</sup> documentations, **stories**, from *any*<sup>2</sup> `Aurelia` `TypeScript` project.
 Component's stories are written in class comments `@story` or in [YAML](https://yaml.org/) files.
 
 This tool is intended to be used with projects based on [Aurelia framework](https://aurelia.io/)<sup>3</sup> + [Storybook](https://storybook.js.org). It could also work with projects using only `Aurelia` **without** `Storybook`.
@@ -50,14 +50,14 @@ Do not hesitate to contact us.
 
 ## 💾 Installation
 
-### Aurelia Stories
+### Aurelia Docgen
 
 ```bash
-npm i @creadigme/aurelia-stories -D
+npm i @creadigme/aurelia-docgen -D
 # or
-yarn add @creadigme/aurelia-stories -D
+yarn add @creadigme/aurelia-docgen -D
 # or for global use
-yarn add @creadigme/aurelia-stories -g
+yarn add @creadigme/aurelia-docgen -g
 ```
 
 ### Storybook (*version 6*)
@@ -302,9 +302,9 @@ With this format:
 {
   "name": "something",
   "scripts": {
-+   "build:stories": "aurelia-stories --out ./src/stories"
-!   "build:stories": "aurelia-stories"
-!   "build:stories": "aurelia-stories --out ./src/stories --auConfigure ./src/configure"
++   "build:stories": "aurelia-docgen --out ./src/stories"
+!   "build:stories": "aurelia-docgen"
+!   "build:stories": "aurelia-docgen --out ./src/stories --auConfigure ./src/configure"
   }
 }
 ```
@@ -316,7 +316,7 @@ With this format:
 cd ./my-supra-project
 
 # add a new script in package.json, like `build:stories` with command
-# aurelia-stories --out ./src/stories
+# aurelia-docgen --out ./src/stories
 npm run build:stories
 
 # all detect components and stories will be written in ./src/stories directory.
@@ -326,7 +326,7 @@ npm run build:stories
 
 ```bash
 # add a new script in package.json, like `build:stories` with command
-# aurelia-stories
+# aurelia-docgen
 npm run build:stories
 
 # all detected components and the stories will be written next to the detected components.
@@ -334,7 +334,7 @@ npm run build:stories
 
 ### Real world installation
 
-- Install `@creadigme/aurelia-stories` in [`devDependencies`](#aurelia-stories).
+- Install `@creadigme/aurelia-docgen` in [`devDependencies`](#aurelia-docgen).
 - Script on `package.json` as below.
 - All component stories in one directory.
 - Storybook stories can use any register elements.
@@ -345,11 +345,11 @@ npm run build:stories
 {
   "name": "something",
   "scripts": {
-+   "build:stories": "aurelia-stories --out ./src/stories --auConfigure ./src/configure"
++   "build:stories": "aurelia-docgen --out ./src/stories --auConfigure ./src/configure"
 +   "watch:stories": "npm run build:stories -- --watch"
   },
   "devDependencies": {
-+   "@creadigme/aurelia-stories": "^1"
++   "@creadigme/aurelia-docgen": "^1"
   }
 }
 ```
@@ -403,7 +403,7 @@ npm run storybook
 | logger | `(msg: string, level: LevelLog) => void` | `console.log(``${level} - ${msg}``)` |
 
 ```typescript
-import { AU2Storybook } from '@creadigme/aurelia-stories';
+import { AU2Storybook } from '@creadigme/aurelia-docgen';
 
 const au2Storybook = new AU2Storybook({
   projectDir: './path-of-your-supra-ultra-project',
@@ -431,6 +431,6 @@ Yes, with an OEM / private license agreement, contact us.
 
 
 ## Coverage
-[![codecov](https://codecov.io/gh/creadigme/aurelia-stories/branch/main/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-stories)
+[![codecov](https://codecov.io/gh/creadigme/aurelia-docgen/branch/main/graph/badge.svg?token=BV2ZP1FH6K)](https://codecov.io/gh/creadigme/aurelia-docgen)
 
-![Coverage sunburst](https://codecov.io/gh/creadigme/aurelia-stories/branch/main/graphs/sunburst.svg?token=BV2ZP1FH6K)
+![Coverage sunburst](https://codecov.io/gh/creadigme/aurelia-docgen/branch/main/graphs/sunburst.svg?token=BV2ZP1FH6K)

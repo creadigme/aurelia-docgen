@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = [
   configurator({
     org: 'creadigme',
-    name: 'aurelia-stories',
+    name: 'aurelia-docgen',
     directory: __dirname,
     target: 'node',
     libraryType: 'commonjs',

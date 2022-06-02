@@ -1,14 +1,14 @@
 import * as assert from 'assert';
 import * as path from 'path';
-import { AureliaStories } from '../aurelia-stories';
+import { AureliaDocgen } from '../aurelia-docgen';
 
 describe('typedoc-manager', () => {
   it('types', () => {
-    const aureliaStories = new AureliaStories({
+    const aureliaDocgen = new AureliaDocgen({
       projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
     });
 
-    const stories = Array.from(aureliaStories.getStories());
+    const stories = Array.from(aureliaDocgen.getStories());
     assert.strictEqual(stories[0].component.bindables.length, 0);
     assert.strictEqual(stories[1].component.bindables.length, 0);
     assert.strictEqual(stories[2].component.bindables[0].defaultValue, undefined);

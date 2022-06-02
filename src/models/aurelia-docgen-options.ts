@@ -1,18 +1,18 @@
 import type { OptionDefinition } from 'command-line-args';
 import { LogLevel } from 'typedoc';
 
-/** Aurelia Stories Common Options */
-export type AureliaStoriesOptions = {
+/** Aurelia Docgen Common Options */
+export type AureliaDocgenOptions = {
   /**
    * Output directory for generated stories
    *
    * If null or empty, stories will be written next to the classes.
    *
-   * ⚠️ Write (on drive) the files in CLI usage (*command-line* or `AureliaStoriesCLI`), not with `AureliaStories`.
+   * ⚠️ Write (on drive) the files in CLI usage (*command-line* or `AureliaDocgenCLI`), not with `AureliaDocgen`.
    */
   out?: string;
   /**
-   * ⚠️ Write (on drive) the file in CLI usage (*command-line* or `AureliaStoriesCLI`), not with `AureliaStories`.
+   * ⚠️ Write (on drive) the file in CLI usage (*command-line* or `AureliaDocgenCLI`), not with `AureliaDocgen`.
    */
   mergeOut?: boolean;
   /** You [can] speak too much! */
@@ -48,8 +48,8 @@ export type AureliaStoriesOptions = {
   auConfigure?: string;
 };
 
-/** Aurelia Stories CLI Options */
-export type AureliaStoriesCLIOptions = AureliaStoriesOptions & {
+/** Aurelia Docgen CLI Options */
+export type AureliaDocgenCLIOptions = AureliaDocgenOptions & {
   /**
    * **ONLY WITH CLI USAGE**
    * Watch modifications
@@ -57,8 +57,8 @@ export type AureliaStoriesCLIOptions = AureliaStoriesOptions & {
   watch?: boolean;
 };
 
-/** Aurelia Stories API Options */
-export type AureliaStoriesAPIOptions = AureliaStoriesOptions & {
+/** Aurelia Docgen API Options */
+export type AureliaDocgenAPIOptions = AureliaDocgenOptions & {
   /**
    * **ONLY WITH API USAGE**
    */
@@ -66,10 +66,10 @@ export type AureliaStoriesAPIOptions = AureliaStoriesOptions & {
 };
 
 /**
- * Aurelia Stories Options
+ * Aurelia Docgen Options
  * CommandLines definitions
  */
-export const AureliaStoriesCLIOptions: OptionDefinition[] = [
+export const AureliaDocgenCLIOptions: OptionDefinition[] = [
   { name: 'verbose', alias: 'v', type: Boolean },
   { name: 'projectDir', alias: 'i', type: String },
   { name: 'out', alias: 'o', type: String },

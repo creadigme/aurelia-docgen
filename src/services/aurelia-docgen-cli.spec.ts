@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { tmpdir } from 'os';
 import * as assert from 'assert';
-import { AureliaStoriesCLI } from './aurelia-stories-cli';
+import { AureliaDocgenCLI } from './aurelia-docgen-cli';
 import { spawn, spawnSync } from 'child_process';
 
 function ensureUnlink(filePath: string) {
@@ -12,9 +12,9 @@ function ensureUnlink(filePath: string) {
   }
 }
 
-describe('aurelia-stories-cli', () => {
+describe('aurelia-docgen-cli', () => {
   it('Bad parameters', async () => {
-    const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
+    const tmp = path.join(tmpdir(), `aurelia-docgen-${Date.now()}`);
     try {
       fs.mkdirSync(tmp);
       await new Promise<void>((resolve, reject) => {
@@ -39,7 +39,7 @@ describe('aurelia-stories-cli', () => {
   });
 
   it('My self - so no component must be found - outdir must be created', async () => {
-    const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
+    const tmp = path.join(tmpdir(), `aurelia-docgen-${Date.now()}`);
     try {
       const logs: string[] = [];
       const errors: Error[] = [];
@@ -67,7 +67,7 @@ describe('aurelia-stories-cli', () => {
   });
 
   it('My self - so no component must be found - specified cwd', async () => {
-    const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
+    const tmp = path.join(tmpdir(), `aurelia-docgen-${Date.now()}`);
     try {
       fs.mkdirSync(tmp);
       const logs: string[] = [];
@@ -96,7 +96,7 @@ describe('aurelia-stories-cli', () => {
   });
 
   it('Project AU2 Basic - components must be found', async () => {
-    const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
+    const tmp = path.join(tmpdir(), `aurelia-docgen-${Date.now()}`);
     try {
       fs.mkdirSync(tmp);
       const logs: string[] = [];
@@ -157,7 +157,7 @@ describe('aurelia-stories-cli', () => {
   });
 
   it('Watch Project AU2 Basic - components must be found', async () => {
-    const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
+    const tmp = path.join(tmpdir(), `aurelia-docgen-${Date.now()}`);
     const projectDir = path.join(process.cwd(), 'examples', 'au2-basic');
     const tmpNewFile = path.join(projectDir, 'src', '_move_.txt');
     const tmpNewFile2 = path.join(projectDir, 'src', '_move_2.txt');
@@ -174,13 +174,13 @@ describe('aurelia-stories-cli', () => {
           env: process.env,
         });
         worker.on('message', message => {
-          if (message === AureliaStoriesCLI.MSG_WATCHING) {
+          if (message === AureliaDocgenCLI.MSG_WATCHING) {
             fs.writeFileSync(tmpNewFile, "c'est parti", 'utf-8');
             fs.writeFileSync(tmpNewFile2, "c'est parti 2", 'utf-8');
-          } else if (message === AureliaStoriesCLI.MSG_WRITE_STORIES_DONE) {
+          } else if (message === AureliaDocgenCLI.MSG_WRITE_STORIES_DONE) {
             i++;
             if (i > 1) {
-              worker.postMessage(AureliaStoriesCLI.MSG_EXIT);
+              worker.postMessage(AureliaDocgenCLI.MSG_EXIT);
             }
           }
         });
@@ -217,7 +217,7 @@ describe('aurelia-stories-cli', () => {
   });
 
   it('Project AU2 Basic - Merge all', async () => {
-    const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
+    const tmp = path.join(tmpdir(), `aurelia-docgen-${Date.now()}`);
     try {
       fs.mkdirSync(tmp);
       const logs: string[] = [];
@@ -250,7 +250,7 @@ describe('aurelia-stories-cli', () => {
   });
 
   it('Process, lifecycle', async () => {
-    const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
+    const tmp = path.join(tmpdir(), `aurelia-docgen-${Date.now()}`);
     try {
       fs.mkdirSync(tmp);
       const results = spawnSync(`node`, [path.join(process.cwd(), './src/cli.worker.js'), '--projectDir', process.cwd(), '--out', tmp], { encoding: 'utf-8' });
@@ -267,16 +267,16 @@ describe('aurelia-stories-cli', () => {
   });
 
   it('Process, lifecycle watch', async () => {
-    const tmp = path.join(tmpdir(), `aurelia-stories-${Date.now()}`);
+    const tmp = path.join(tmpdir(), `aurelia-docgen-${Date.now()}`);
     try {
       fs.mkdirSync(tmp);
       await new Promise<void>((resolve, reject) => {
         const spawnProc = spawn(`node`, [path.join(process.cwd(), './src/cli.worker.js'), '--watch', '--projectDir', process.cwd(), '--out', tmp], { cwd: process.cwd(), stdio: ['inherit', 'inherit', 'inherit', 'ipc'] });
         spawnProc.on('message', msg => {
-          if (msg === AureliaStoriesCLI.MSG_WATCHING) {
+          if (msg === AureliaDocgenCLI.MSG_WATCHING) {
             const files = fs.readdirSync(tmp);
             assert.strictEqual(files.length, 0);
-            spawnProc.send(AureliaStoriesCLI.MSG_EXIT);
+            spawnProc.send(AureliaDocgenCLI.MSG_EXIT);
           }
         });
         spawnProc.on('exit', code => {

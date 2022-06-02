@@ -1,15 +1,15 @@
 import * as assert from 'assert';
 import * as path from 'path';
-import { AureliaStories } from '../aurelia-stories';
+import { AureliaDocgen } from '../aurelia-docgen';
 import { formatComment, getExampleFromComment, toArgType } from './typedoc-stories-helpers';
 
 describe('typedoc-stories-helper', () => {
   it('formatComment', () => {
-    const aureliaStories = new AureliaStories({
+    const aureliaDocgen = new AureliaDocgen({
       projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
     });
 
-    const stories = Array.from(aureliaStories.getStories());
+    const stories = Array.from(aureliaDocgen.getStories());
     assert.strictEqual(formatComment(stories[0].component.comment), 'Red Square\nFrom https://docs.aurelia.io/getting-to-know-aurelia/custom-attributes#attribute-aliases\n\n🔖 **group**');
     assert.strictEqual(formatComment(stories[1].component.comment), 'Log behavior\n\n🔖 **group**');
     assert.strictEqual(formatComment(stories[2].component.comment), "I'm not a button");
@@ -24,11 +24,11 @@ describe('typedoc-stories-helper', () => {
     assert.strictEqual(getExampleFromComment(null), '');
     assert.strictEqual(getExampleFromComment(undefined), '');
 
-    const aureliaStories = new AureliaStories({
+    const aureliaDocgen = new AureliaDocgen({
       projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
     });
 
-    const stories = Array.from(aureliaStories.getStories());
+    const stories = Array.from(aureliaDocgen.getStories());
     assert.strictEqual(getExampleFromComment(stories[0].component.comment), '');
     assert.strictEqual(getExampleFromComment(stories[1].component.comment), '');
     assert.strictEqual(getExampleFromComment(stories[2].component.comment), '');

@@ -1,12 +1,12 @@
 {
-  "name": "@creadigme/aurelia-stories",
+  "name": "@creadigme/aurelia-docgen",
   "version": "999.0.0",
-  "description": "Aurelia + Storybook (can be) ❤",
+  "description": "Aurelia + Storybook (can be) ❤. Aurelia documentation generator.",
   "author": "CREADIGME",
   "license": "AGPL-3.0-or-later",
-  "main": "dist/aurelia-stories.bundle",
+  "main": "dist/aurelia-docgen.bundle",
   "bin": {
-    "aurelia-stories": "dist/aurelia-stories-cli.bundle.js"
+    "aurelia-docgen": "dist/aurelia-docgen-cli.bundle.js"
   },
   "typings": "dist/bundle.d.ts",
   "engines": {
@@ -15,7 +15,7 @@
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/creadigme/aurelia-stories",
+  "repository": "https://github.com/creadigme/aurelia-docgen",
   "pre-commit": [
     "lint"
   ],
@@ -25,6 +25,8 @@
   "keywords": [
     "aurelia",
     "au2",
+    "documentation",
+    "docgen",
     "storybook"
   ],
   "devDependencies": {

@@ -1,17 +1,17 @@
 import * as assert from 'assert';
 import * as path from 'path';
 import type { LogLevel } from 'typedoc';
-import { AureliaStories } from './aurelia-stories';
+import { AureliaDocgen } from './aurelia-docgen';
 
-describe('aurelia-stories', () => {
+describe('aurelia-docgen', () => {
   it('My self - so no component must be found', () => {
     const logs: Array<{ msg: string; level: LogLevel }> = [];
-    const aureliaStories = new AureliaStories({
+    const aureliaDocgen = new AureliaDocgen({
       logger: (msg, level) => logs.push({ msg, level }),
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (const ceStories of aureliaStories.getStories()) {
+    for (const ceStories of aureliaDocgen.getStories()) {
       assert.fail('No component must be found');
     }
 
@@ -20,13 +20,13 @@ describe('aurelia-stories', () => {
 
   it('My self - so no component must be found - cwd specified', () => {
     const logs: Array<{ msg: string; level: LogLevel }> = [];
-    const aureliaStories = new AureliaStories({
+    const aureliaDocgen = new AureliaDocgen({
       projectDir: process.cwd(),
       logger: (msg, level) => logs.push({ msg, level }),
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (const ceStories of aureliaStories.getStories()) {
+    for (const ceStories of aureliaDocgen.getStories()) {
       assert.fail('No component must be found');
     }
 
@@ -34,27 +34,27 @@ describe('aurelia-stories', () => {
   });
 
   it('My self verbose with default logger', () => {
-    const aureliaStories = new AureliaStories({
+    const aureliaDocgen = new AureliaDocgen({
       projectDir: process.cwd(),
       verbose: true,
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (const ceStories of aureliaStories.getStories()) {
+    for (const ceStories of aureliaDocgen.getStories()) {
       assert.fail('No component must be found');
     }
   });
 
   it('My self verbose - so no component must be found', () => {
     const logs: Array<{ msg: string; level: LogLevel }> = [];
-    const aureliaStories = new AureliaStories({
+    const aureliaDocgen = new AureliaDocgen({
       projectDir: process.cwd(),
       verbose: true,
       logger: (msg, level) => logs.push({ msg, level }),
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (const ceStories of aureliaStories.getStories()) {
+    for (const ceStories of aureliaDocgen.getStories()) {
       assert.fail('No component must be found');
     }
 
@@ -62,11 +62,11 @@ describe('aurelia-stories', () => {
   });
 
   it('Project AU2 Basic - components must be found', () => {
-    const aureliaStories = new AureliaStories({
+    const aureliaDocgen = new AureliaDocgen({
       projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
     });
 
-    const stories = Array.from(aureliaStories.getStories());
+    const stories = Array.from(aureliaDocgen.getStories());
     assert.strictEqual(stories.length, 8);
 
     // AU2 Button
@@ -117,12 +117,12 @@ describe('aurelia-stories', () => {
   });
 
   it('Project AU2 Basic - custom Eta template', () => {
-    const aureliaStories = new AureliaStories({
+    const aureliaDocgen = new AureliaDocgen({
       projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
       etaTemplate: path.join(process.cwd(), 'static', 'templates', 'common.stories.md.eta'),
     });
 
-    const stories = Array.from(aureliaStories.getStories());
+    const stories = Array.from(aureliaDocgen.getStories());
     assert.strictEqual(stories.length, 8);
 
     // AU2 Button
@@ -136,12 +136,12 @@ describe('aurelia-stories', () => {
   });
 
   it('Project AU2 Basic - auConfigure', () => {
-    const aureliaStories = new AureliaStories({
+    const aureliaDocgen = new AureliaDocgen({
       projectDir: path.join(process.cwd(), 'examples', 'au2-basic'),
       auConfigure: './src/configure',
     });
 
-    const stories = Array.from(aureliaStories.getStories());
+    const stories = Array.from(aureliaDocgen.getStories());
     assert.strictEqual(stories.length, 8);
 
     assert.ok(stories[0].stories.indexOf("import * as configure from './../configure';") !== -1);

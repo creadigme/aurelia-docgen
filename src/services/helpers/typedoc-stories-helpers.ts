@@ -1,5 +1,5 @@
 import type { Comment, CommentTag, DeclarationReflection, ParameterReflection } from 'typedoc';
-import type { AureliaStoriesStory } from '../../models/aurelia-stories-story';
+import type { AureliaDocgenStory } from '../../models/aurelia-docgen-story';
 
 /** Format TypeDoc Comment */
 export function formatComment(comment: Comment, parameters?: ParameterReflection[]) {
@@ -67,8 +67,8 @@ export function getExampleFromComment(comment: Comment) {
 }
 
 /** Get and strip stories from comment */
-export function getAndStripStories(comment: Comment): AureliaStoriesStory[] {
-  const stories: AureliaStoriesStory[] = [];
+export function getAndStripStories(comment: Comment): AureliaDocgenStory[] {
+  const stories: AureliaDocgenStory[] = [];
   if (comment) {
     comment.tags.forEach(tag => {
       if (tag.tagName === 'story') {
@@ -84,9 +84,9 @@ export function getAndStripStories(comment: Comment): AureliaStoriesStory[] {
 /**
  * Extract Stroy from comment tag
  * @param string comment
- * @returns AureliaStoriesStory
+ * @returns AureliaDocgenStory
  */
-function extractStory(text: string): AureliaStoriesStory {
+function extractStory(text: string): AureliaDocgenStory {
   const htmlCode = '```html';
   const tsCode = '```typescript';
   let currentCode = '';
