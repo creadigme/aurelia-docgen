@@ -57,6 +57,7 @@ jobs:
     - name: Publish packages GitHub
       env:
         CI: true
+        NPM_PUBLISH_PUBLIC: '0'
         NODE_AUTH_TOKEN: ${{ secrets.NPM_GITHUB_AUTH_TOKEN }}
         NPM_PUSH_REGISTRY: https://npm.pkg.github.com/
       run: node ./.build/build-flow.js publish
@@ -65,5 +66,6 @@ jobs:
       env:
         CI: true
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        NPM_PUBLISH_PUBLIC: '1'
         NPM_PUSH_REGISTRY: https://registry.npmjs.org/
       run: node ./.build/build-flow.js publish

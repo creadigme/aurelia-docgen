@@ -26,7 +26,7 @@ const tasks = {
     const cmds = [
       // Remove devDependencies in npm package
       `node ./node_modules/json/lib/json -I -f ./package.json -e "this.devDependencies={};this.scripts={};this.publishConfig['@creadigme:registry']='${registry}';"`,
-      `npm publish --registry=${registry}`
+      `npm publish --registry=${registry}${process.env.NPM_PUBLISH_PUBLIC === '1' ? ' --access public' : '' }`
     ];
     return cmds.join(' && ');
   },
