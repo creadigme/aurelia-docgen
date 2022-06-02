@@ -31,7 +31,7 @@ Copyright © 2022 [Creadigme](https://www.creadigme.net).
 
 This project has a dual license:
 - The **AGPLv3** License - see the [LICENSE file](LICENSE) for details.
-- An OEM / private license agreement for private or/and commercial use.
+- A private license agreement for private or/and commercial use.
 
 See [the FAQ on licensing](#license-faq).
 
