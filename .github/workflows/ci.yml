@@ -27,7 +27,7 @@ jobs:
         node-version: 16.x
         registry-url: 'https://npm.pkg.github.com'
         # Defaults to the user or organization that owns the workflow file
-        scope: '@aegenet'
+        scope: '@creadigme'
     - name: setup git config
       run: |
         git config user.name "GitHub Actions Bot"
