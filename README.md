@@ -35,7 +35,7 @@ This project has a dual license:
 
 See [the FAQ on licensing.](#license-faq).
 
-Do not hesitate to contact us.
+Do not hesitate to [contact us](https://creadigme.net/contact/).
 
 <!--
 > [AD]
