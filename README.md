@@ -33,7 +33,7 @@ This project has a dual license:
 - The **AGPLv3** License - see the [LICENSE file](LICENSE) for details.
 - An OEM / private license agreement for private or/and commercial use.
 
-See [the FAQ on licensing.](#license-faq).
+See [the FAQ on licensing](#license-faq).
 
 Do not hesitate to [contact us](https://creadigme.net/contact/).
 
@@ -403,14 +403,14 @@ npm run storybook
 | logger | `(msg: string, level: LevelLog) => void` | `console.log(``${level} - ${msg}``)` |
 
 ```typescript
-import { AU2Storybook } from '@creadigme/aurelia-docgen';
+import { AureliaDocgen } from '@creadigme/aurelia-docgen';
 
-const au2Storybook = new AU2Storybook({
+const au2Docgen = new AureliaDocgen({
   projectDir: './path-of-your-supra-ultra-project',
   out: './src/stories',
 });
 
-for (const ceStories of this._au2Storybook.getStories()) {
+for (const ceStories of au2Docgen.getStories()) {
   console.dir(ceStories);
 }
 ```
