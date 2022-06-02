@@ -41,12 +41,12 @@ const blueBright = c.bold.underline.blueBright;
 console.log(blueBright(`[${name}] version ${version}.`));
 
 try {
-  const au2Storybook = new AureliaDocgenCLI();
-  if (au2Storybook.mustWatch) {
-    fsWatch = au2Storybook.watchStories();
+  const au2Docgen = new AureliaDocgenCLI();
+  if (au2Docgen.mustWatch) {
+    fsWatch = au2Docgen.watchStories();
     console.log(blueBright(`[${name}] Listen for modifications...`));
   } else {
-    au2Storybook.writeStories();
+    au2Docgen.writeStories();
     logAndExit();
   }
 } catch (error) {
