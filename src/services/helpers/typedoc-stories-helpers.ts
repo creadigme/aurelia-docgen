@@ -1,8 +1,12 @@
 import type { Comment, CommentTag, DeclarationReflection, ParameterReflection } from 'typedoc';
 import type { AureliaDocgenStory } from '../../models/aurelia-docgen-story';
 
+export interface IFormatCommentOptions {
+  mode: 'md' | 'html';
+}
+
 /** Format TypeDoc Comment */
-export function formatComment(comment: Comment, parameters?: ParameterReflection[]) {
+export function formatComment(comment: Comment, parameters?: ParameterReflection[], options: IFormatCommentOptions = { mode: 'md' }) {
   if (comment) {
     let formatedComment = comment.shortText;
     if (comment.text) {
@@ -13,7 +17,7 @@ export function formatComment(comment: Comment, parameters?: ParameterReflection
         .map(f => {
           let tag = `🔖 **${f.tagName}**`;
           if (f.text.trim() && _formatTagComment.has(f.tagName)) {
-            tag += _formatTagComment.get(f.tagName)(f);
+            tag += _formatTagComment.get(f.tagName)(f, options);
           }
           return tag;
         })
@@ -41,15 +45,19 @@ export function formatComment(comment: Comment, parameters?: ParameterReflection
 }
 
 /** Easy formatting of special tags */
-const _formatTagComment = new Map<string, (tag: CommentTag) => string>([
+const _formatTagComment = new Map<string, (tag: CommentTag, options: IFormatCommentOptions) => string>([
   [
     'example',
-    ({ text }) => {
-      if (text.indexOf('```html') !== -1) {
-        // we are in a "p", we can't use pre or code
-        return `\n<br><span class="prismjs language-html" style="padding: 8px;font-size: 12px;font-family: monospace;display: block;background: whitesmoke;border-radius: 8px;">${encodeHTML(extractStory(text).code)}</span>`;
+    (comment, options) => {
+      if (comment.text.indexOf('```html') !== -1) {
+        if (options.mode === 'html') {
+          // we are in a "p", we can't use pre or code
+          return `\n<br><span class="prismjs language-html" style="padding: 8px;font-size: 12px;font-family: monospace;display: block;background: whitesmoke;border-radius: 8px;">${encodeHTML(extractStory(comment.text).code)}</span>`;
+        } else {
+          return comment.text;
+        }
       } else {
-        return `: ${encodeHTML(text)}`;
+        return `: ${encodeHTML(comment.text)}`;
       }
     },
   ],

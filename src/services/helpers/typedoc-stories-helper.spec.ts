@@ -13,8 +13,9 @@ describe('typedoc-stories-helper', () => {
     assert.strictEqual(formatComment(stories[0].component.comment), 'Red Square\nFrom https://docs.aurelia.io/getting-to-know-aurelia/custom-attributes#attribute-aliases\n\n🔖 **group**');
     assert.strictEqual(formatComment(stories[1].component.comment), 'Log behavior\n\n🔖 **group**');
     assert.strictEqual(formatComment(stories[2].component.comment), "I'm not a button");
+    assert.strictEqual(formatComment(stories[3].component.comment, undefined), 'Au2 Countdown\n\n🔖 **example**\n```html\n<au2-countdown></<au2-countdown>\n```\n');
     assert.strictEqual(
-      formatComment(stories[3].component.comment),
+      formatComment(stories[3].component.comment, undefined, { mode: 'html' }),
       'Au2 Countdown\n\n🔖 **example**\n<br><span class="prismjs language-html" style="padding: 8px;font-size: 12px;font-family: monospace;display: block;background: whitesmoke;border-radius: 8px;">&lt;au2-countdown&gt;&lt;/&lt;au2-countdown&gt;</span>'
     );
     assert.strictEqual(formatComment(stories[4].component.comment), "I'm not empty.\n\nI am ?\n\n\n🔖 **example**: nothing\n<br>🔖 **star**");

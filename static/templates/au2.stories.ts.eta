@@ -17,9 +17,9 @@ const loaders = [ async () => ({
 }) ];
 
 let auCache: Aurelia;
-function enhance(sbInfo: { loaded: { $au: Aurelia } }, __content: string, context: unknown = {}): HTMLDivElement {
+function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context: unknown = {}): HTMLDivElement {
   const host = document.createElement('div');
-  host.innerHTML = __content;
+  host.innerHTML = content;
   const localAu = auCache || sbInfo.loaded.$au;
   if (localAu) {
     localAu.enhance({
@@ -57,7 +57,7 @@ export default {
 <% } %>
       defaultValue: <%~ property.defaultValue %>,
 <% if (options.description == null) { %>
-      description: <%~ JSON.stringify(it.helpers.formatComment(property.comment)) %>,
+      description: <%~ JSON.stringify(it.helpers.formatComment(property.comment, undefined, { mode: 'html' })) %>,
 <% } %>
       table: {
         category: 'Bindables',
@@ -71,7 +71,7 @@ export default {
     <%= method.name %>: <%~ JSON.stringify({
       type: 'object',
       control: false,
-      description: methodComment ? it.helpers.formatComment(methodComment, parameters) : '',
+      description: methodComment ? it.helpers.formatComment(methodComment, parameters, { mode: 'html' }) : '',
       table: {
         category: 'Methods',
       },
@@ -88,7 +88,7 @@ export default {
 <% } %>
       defaultValue: <%~ JSON.stringify(property.defaultValue) %>,
 <% if (options.description == null) { %>
-      description: <%~ JSON.stringify(it.helpers.formatComment(property.comment)) %>,
+      description: <%~ JSON.stringify(it.helpers.formatComment(property.comment, undefined, { mode: 'html' })) %>,
 <% } %>
       table: {
         category: 'Properties',
@@ -119,7 +119,7 @@ DefaultUsage.storyName = 'Default usage';
 DefaultUsage.parameters = {
   docs: {
     description: {
-      component: <%~ JSON.stringify(it.helpers.formatComment(it.component.comment)) %>,
+      component: <%~ JSON.stringify(it.helpers.formatComment(it.component.comment, undefined, { mode: 'html' })) %>,
     },
   },
 };
@@ -143,7 +143,7 @@ export const <%= storyName %> = RawTemplate.bind({});
 <%= storyName %>.parameters = {
   docs: {
     description: {
-      component: <%~ JSON.stringify(it.helpers.formatComment(it.component.comment)) %>,
+      component: <%~ JSON.stringify(it.helpers.formatComment(it.component.comment, undefined, { mode: 'html' })) %>,
       story: <%~ JSON.stringify(story.tags?.length ? story.tags.map(f => `\`${f}\``).join(' ') + '\n' : '') %> + <%~ JSON.stringify(story.help || '') %>,
     },
   },
