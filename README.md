@@ -9,7 +9,7 @@
 
 > Aurelia + Storybook (*can be*) ❤
 
-`Aurelia Docgen` brings the ability to **generate** component<sup>1</sup> documentations, **stories**, from *any*<sup>2</sup> `Aurelia` `TypeScript` project.
+`Aurelia Docgen` brings the ability to **generate** component<sup>1</sup> documentations, **stories**, from *any*<sup>2</sup> `Aurelia`<sup>3</sup> `TypeScript` project.
 Component's stories are written in class comments `@story` or in [YAML](https://yaml.org/) files.
 
 This tool is intended to be used with projects based on [Aurelia framework](https://aurelia.io/)<sup>3</sup> + [Storybook](https://storybook.js.org). It could also work with projects using only `Aurelia` **without** `Storybook`.
@@ -33,7 +33,7 @@ This project has a dual license:
 - The **AGPLv3** License - see the [LICENSE file](LICENSE) for details.
 - A private license agreement for private or/and commercial use.
 
-See [the FAQ on licensing](#license-faq).
+See [the FAQ on licensing](https://github.com/creadigme/aurelia-docgen/wiki/License-FAQ#faq).
 
 Do not hesitate to [contact us](https://creadigme.net/contact/).
 
@@ -458,20 +458,6 @@ for (const ceStories of au2Docgen.getStories()) {
   console.dir(ceStories);
 }
 ```
-
-## License FAQ
-
-### Can I use this project with my **AGPLv3** project ?
-Yes
-
-### Can I use this project with my commercial **AGPLv3** project ?
-Yes
-
-### Can I use this project with my private project ?
-Yes, with a private license agreement, [contact us](https://creadigme.net/contact/).
-
-### Can I use this project with my private commercial project ?
-Yes, with a private license agreement, [contact us](https://creadigme.net/contact/).
 
 
 ## Coverage
