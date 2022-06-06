@@ -72,14 +72,58 @@ npx sb init --type html --builder webpack5
 
 #### Webpack configuration
 
-In your project, edit this file: `./.storybook/main.js`.
+> `./webpack.config.js`
+
+Storybook and Aurelia use **HMR** (Hot Module Replacement), we have to disable Aurelia HMR if Storybook is used.
+
+In your project, edit this file: `./webpack.config.js`.
+
+**Example**: [webpack.config.js](./examples/au2-basic/webpack.config.js)
+
+```diff
+/** Your content */
+
+- module.exports = function(env, { analyze }) {
++ module.exports = function(env, { analyze, hmr }) {
+
+/** Your content */
+
+{ test: /\.ts$/i, use: ['ts-loader', 
+- '@aurelia/webpack-loader'
++ {
++   loader: '@aurelia/webpack-loader',
++   options: {
++     hmr: hmr === false ? false : undefined,
++   },
++ }
+], exclude: /node_modules/ },
+{
+  test: /[/\\]src[/\\].+\.html$/i,
+- use: '@aurelia/webpack-loader',
++ use: {
++   loader: '@aurelia/webpack-loader',
++   options: {
++     hmr: hmr === false ? false : undefined,
++   },
++ },
+
+/** Your content */
+```
+
+> `./.storybook/main.js`
+
+Storybook must use Aurelia configuration. In your project, edit this file: `./.storybook/main.js`.
+
+**Example**: [main.js](./examples/au2-basic/.storybook/main.js)
 
 ```diff
 + const customWP = require('../webpack.config.js');
 
 module.exports = {
 + webpackFinal: async (config) => {
-+   const customConfigs = customWP(config.mode, {});
++   const customConfigs = customWP(config.mode, {
++     hmr: false
++   });
 +   return {
 +     ...config,
 +     module: {

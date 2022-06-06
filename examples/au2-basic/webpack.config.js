@@ -6,7 +6,6 @@ const Dotenv = require('dotenv-webpack');
 
 const cssLoader = 'css-loader';
 
-
 const postcssLoader = {
   loader: 'postcss-loader',
   options: {
@@ -16,7 +15,7 @@ const postcssLoader = {
   }
 };
 
-module.exports = function(env, { analyze }) {
+module.exports = function(env, { analyze, hmr }) {
   const production = env.production || process.env.NODE_ENV === 'production';
   return {
     target: 'web',
@@ -69,10 +68,22 @@ module.exports = function(env, { analyze }) {
         { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset' },
         { test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,  type: 'asset' },
         { test: /\.css$/i, use: [ 'style-loader', cssLoader, postcssLoader ] },
-        { test: /\.ts$/i, use: ['ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ },
+        { test: /\.ts$/i, use: [
+          'ts-loader', {
+            loader: '@aurelia/webpack-loader',
+            options: {
+              hmr: hmr === false ? false : undefined,
+            },
+          }
+        ], exclude: /node_modules/ },
         {
           test: /[/\\]src[/\\].+\.html$/i,
-          use: '@aurelia/webpack-loader',
+          use: {
+            loader: '@aurelia/webpack-loader',
+            options: {
+              hmr: hmr === false ? false : undefined,
+            },
+          },
           exclude: /node_modules/
         }
       ]

@@ -4,7 +4,9 @@ const customWP = require('../webpack.config.js');
 module.exports = {
   // Use the configuration
   webpackFinal: async (config) => {
-    const customConfigs = customWP(config.mode, {});
+    const customConfigs = customWP(config.mode, {
+      hmr: false
+    });
     return {
       ...config,
       module: {
