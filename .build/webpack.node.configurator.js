@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const Dotenv = require('dotenv-webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { BundleDeclarationsWebpackPlugin } = require('bundle-declarations-webpack-plugin');
+const BundleDeclarationsWebpackPlugin = require('bundle-declarations-webpack-plugin');
 const webpack = require('webpack');
 
 /**
