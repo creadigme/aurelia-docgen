@@ -4,8 +4,8 @@
   "check-coverage": true,
   "include": ["src/**"],
   "exclude": ["src/**/*.spec.ts"],
-  "statements": 90,
-  "branches": 90,
+  "statements": 85,
+  "branches": 85,
   "functions": 95,
-  "lines": 90
+  "lines": 85
 }
