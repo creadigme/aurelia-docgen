@@ -5,7 +5,9 @@ import { BaseDeclaration } from './base-declaration';
 export abstract class TagCommentDeclaration extends BaseDeclaration {
   constructor(declaration: DeclarationReflection, auType: AuType) {
     super(declaration, auType);
+  }
 
-    this.tag = declaration.name;
+  protected override _fillTag(): void {
+    this.tag = this.original.name;
   }
 }

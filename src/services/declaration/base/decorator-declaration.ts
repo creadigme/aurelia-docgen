@@ -5,12 +5,10 @@ import { BaseDeclaration } from './base-declaration';
 export abstract class DecoratorDeclaration extends BaseDeclaration {
   constructor(declaration: DeclarationReflection, auType: AuType) {
     super(declaration, auType);
-
-    this._fillTagName();
   }
 
   /** Fill tag name for decorator */
-  private _fillTagName() {
+  protected _fillTag(): void {
     const decorator = this.original.decorators.find(f => f.name === this.auType);
     const decoratorArgs = decorator.arguments;
     if (decoratorArgs.name) {

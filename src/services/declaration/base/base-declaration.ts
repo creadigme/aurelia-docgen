@@ -34,6 +34,8 @@ export abstract class BaseDeclaration {
   }
 
   constructor(public readonly original: DeclarationReflectionWithD, public auType: AuType) {
+    this._fillTag();
+
     // Embedded stories
     this.stories = getAndStripStories(original.comment);
 
@@ -61,4 +63,6 @@ export abstract class BaseDeclaration {
       this.category = parent.groups[0].categories[0].title;
     }
   }
+
+  protected abstract _fillTag(): void;
 }
