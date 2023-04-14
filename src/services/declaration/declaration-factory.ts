@@ -5,6 +5,7 @@ import { CustomElementDeclaration } from './eligible/custom-element-declaration'
 import { ServiceDeclaration } from './eligible/service-declaration';
 import { ValueConverterDeclaration } from './eligible/value-converter-declaration';
 import type { DeclarationReflectionWithD } from '../typedoc/plugins/decorator';
+import { ReflectionKind } from 'typedoc';
 
 const storyElementDecorators = new Set(['customElement', 'valueConverter', 'customAttribute', 'bindingBehavior']);
 const storyElementTagComments = new Set(['@service']);
@@ -19,18 +20,19 @@ const storyElementFactory: Record<string, (declaration: DeclarationReflectionWit
 
 /** Get any eligible declaration */
 export function getEligibleDeclaration(declaration: DeclarationReflectionWithD): BaseDeclaration | null {
-  const decorators = declaration.decorators || [];
+  if (declaration.kind === ReflectionKind.Class) {
+    const decorators = declaration.decorators || [];
+    // By decorator ?
+    const decorator = decorators.find(f => storyElementDecorators.has(f.name));
+    if (decorator) {
+      return storyElementFactory[decorator.name](declaration);
+    }
 
-  // By decorator ?
-  const decorator = decorators.find(f => storyElementDecorators.has(f.name));
-  if (decorator) {
-    return storyElementFactory[decorator.name](declaration);
-  }
-
-  // By tag comment ?
-  const tagComment = declaration.comment?.blockTags.find(f => storyElementTagComments.has(f.tag));
-  if (tagComment) {
-    return storyElementFactory[tagComment.tag](declaration);
+    // By tag comment ?
+    const tagComment = declaration.comment?.blockTags.find(f => storyElementTagComments.has(f.tag));
+    if (tagComment) {
+      return storyElementFactory[tagComment.tag](declaration);
+    }
   }
 
   return null;
