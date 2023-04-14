@@ -8,7 +8,7 @@ export abstract class DecoratorDeclaration extends BaseDeclaration {
   }
 
   /** Fill tag name for decorator */
-  protected _fillTag(): void {
+  protected override _fillTag(): void {
     const decorator = this.original.decorators.find(f => f.name === this.auType);
     const decoratorArgs = decorator.arguments;
     if (decoratorArgs.name) {
