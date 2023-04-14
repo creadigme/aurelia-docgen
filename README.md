@@ -25,7 +25,7 @@ This tool is intended to be used with projects based on [Aurelia framework](http
 
 ## 📝 License
 
-Copyright © 2022 [Creadigme](https://www.creadigme.net).
+Copyright © 2022-2023 [Creadigme](https://www.creadigme.net).
 
 **Disclaimer**
 
@@ -53,11 +53,11 @@ Do not hesitate to [contact us](https://creadigme.net/contact/).
 ### Aurelia Docgen
 
 ```bash
-npm i @creadigme/aurelia-docgen -D
+npm i @creadigme/aurelia-docgen@^2 -D
 # or
-yarn add @creadigme/aurelia-docgen -D
+yarn add @creadigme/aurelia-docgen@^2 -D
 # or for global use
-yarn add @creadigme/aurelia-docgen -g
+yarn add @creadigme/aurelia-docgen@^2 -g
 ```
 
 ### Storybook (*version 6*)
@@ -272,19 +272,19 @@ The tag comment `@service` is the key.
  */
 export class MyService implements IMyService {
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   public running: boolean = false;
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   public start(): void {
     this.running = true;
   }
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
    public stop(): void {
     this.running = false;
@@ -323,7 +323,7 @@ With this format:
     - simple
   code: |
     <let state.bind="false"></let>
-    <au2-button action.call="state = !state" content="${state ? 'Turn me off' : 'Turn me on'}"></au2-button>
+    <au2-button action.bind="() => state = !state" content="${state ? 'Turn me off' : 'Turn me on'}"></au2-button>
     <div>${state ? '✅' : '☐' }</div>
 - title: Another story
   help: |
@@ -334,7 +334,7 @@ With this format:
     - supra
   code: |
     <let state.bind="false"></let>
-    <au2-button action.call="state = !state" content="${state ? '✅' : '☐'}"></au2-button>
+    <au2-button action.bind="() => state = !state" content="${state ? '✅' : '☐'}"></au2-button>
     <div>${state ? '✅' : '☐' }</div>
 ```
 

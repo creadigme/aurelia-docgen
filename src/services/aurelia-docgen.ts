@@ -65,9 +65,11 @@ export class AureliaDocgen {
     // Phase 1: TypeDoc
     const projectReflection = this._typedocManager.convert();
 
-    // Phase 2: Search and format components
-    for (const component of this._getEligibleDeclarations(projectReflection as unknown as DeclarationReflection)) {
-      yield this._buildElementStory(component);
+    if (projectReflection) {
+      // Phase 2: Search and format components
+      for (const component of this._getEligibleDeclarations(projectReflection as unknown as DeclarationReflection)) {
+        yield this._buildElementStory(component);
+      }
     }
   }
 

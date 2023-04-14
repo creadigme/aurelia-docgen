@@ -58,7 +58,7 @@ describe('aurelia-docgen', () => {
       assert.fail('No component must be found');
     }
 
-    assert.strictEqual(logs.length, 7);
+    assert.strictEqual(logs.length, 6);
   });
 
   it('Project AU2 Basic - components must be found', () => {
@@ -114,6 +114,11 @@ describe('aurelia-docgen', () => {
     assert.strictEqual(stories[4].component.tag, 'au2-empty');
     assert.strictEqual(stories[4].component.bindables.length, 0);
     assert.strictEqual(stories[4].component.publicMethods.length, 0);
+
+    // AU2 just for test
+    assert.strictEqual(stories[5].component.tag, 'au2-just-for-test');
+    assert.strictEqual(stories[5].component.bindables.length, 9);
+    assert.ok(stories[5].component.bindables.find(f => f.name === 'isEnabled'));
   });
 
   it('Project AU2 Basic - custom Eta template', () => {

@@ -41,7 +41,7 @@ export class Au2Countdown implements ICustomElementViewModel, IAu2Countdown {
   public onReach: () => void;
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   public start(): void {
     this.stop();

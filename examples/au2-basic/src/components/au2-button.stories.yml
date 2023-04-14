@@ -7,7 +7,7 @@
     - simple
   code: |
     <let state.bind="false"></let>
-    <au2-button action.call="state = !state" content="${state ? 'Turn me off' : 'Turn me on'}"></au2-button>
+    <au2-button action.bind="() => state = !state" content="${state ? 'Turn me off' : 'Turn me on'}"></au2-button>
     <div>${state ? '✅' : '☐' }</div>
 - title: Another story
   help: |
@@ -18,5 +18,5 @@
     - supra
   code: |
     <let state.bind="false"></let>
-    <au2-button action.call="state = !state" content="${state ? '✅' : '☐'}"></au2-button>
+    <au2-button action.bind="() => state = !state" content="${state ? '✅' : '☐'}"></au2-button>
     <div>${state ? '✅' : '☐' }</div>

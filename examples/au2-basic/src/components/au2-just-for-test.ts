@@ -1,5 +1,6 @@
 import { bindable, customElement } from "aurelia";
 import { Au2Countdown } from "./au2-countdown";
+import { BaseComponent } from "./base-component";
 
 export type MyType = 'v1' | 'v2' | 'v3' | 'v4';
 
@@ -9,14 +10,11 @@ export type MyType = 'v1' | 'v2' | 'v3' | 'v4';
  * @category components/empty
  */
 @customElement({ name: 'au2-just-for-test' })
-export class Au2JustForTest {
+export class Au2JustForTest extends BaseComponent {
   public static readonly NAME = 'else';
 
   @bindable()
   public initialDate: Date = new Date();
-
-  @bindable()
-  public isEnabled = false;
 
   @bindable()
   public isPrimary = true;
