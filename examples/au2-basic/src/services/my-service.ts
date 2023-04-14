@@ -7,14 +7,14 @@ import { DI } from "aurelia";
  */
 export class MyService implements IMyService {
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   public running: boolean;
   private _name: string;
   private _options: { a: string; b: number; };
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   public initialize(name: string, options: { a: string, b: number} = { a: 'a', b: 1}): void {
     this._name = name;
@@ -31,14 +31,14 @@ export class MyService implements IMyService {
     return !!specific;
   }
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   public start(): void {
     this.running = true;
   }
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
    public stop(): void {
     this.running = false;

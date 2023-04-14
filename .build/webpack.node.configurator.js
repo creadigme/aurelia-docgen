@@ -57,7 +57,7 @@ module.exports = function(
       externals: options.externals,
       plugins: [
         ... options.plugins ?? [],
-        new BundleDeclarationsWebpackPlugin({
+        new BundleDeclarationsWebpackPlugin.default({
             entry: {
               filePath: indexPath,
               libraries: {

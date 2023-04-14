@@ -8,17 +8,19 @@ export interface IFormatCommentOptions {
 /** Format TypeDoc Comment */
 export function formatComment(comment: Comment, parameters?: ParameterReflection[], options: IFormatCommentOptions = { mode: 'md' }) {
   if (comment) {
-    let formatedComment = comment.shortText;
-    if (comment.text) {
-      formatedComment += `\n\n${comment.text}`;
+    let formatedComment = comment.summary.map(f => f.text).join('\n');
+    if (comment.label) {
+      formatedComment += `\n\n${comment.label}`;
     }
-    if (comment.tags.length) {
-      formatedComment += `\n\n${comment.tags
+    if (comment.blockTags.length) {
+      formatedComment += `\n\n${comment.blockTags
         .map(f => {
-          let tag = `🔖 **${f.tagName}**`;
-          if (f.text.trim() && _formatTagComment.has(f.tagName)) {
-            tag += _formatTagComment.get(f.tagName)(f, options);
+          let tag = `🔖 **${f.tag.slice(1)}**`;
+
+          if (f.content?.length && _formatTagComment.has(f.tag)) {
+            tag += _formatTagComment.get(f.tag)(f, options);
           }
+
           return tag;
         })
         .join('<br>')}`;
@@ -35,8 +37,8 @@ export function formatComment(comment: Comment, parameters?: ParameterReflection
         })
         .join('<br>')}`;
     }
-    if (comment.returns) {
-      formatedComment += `<br><br>↩️ **returns** \`${comment.returns}\`\n<br>`;
+    if (comment.getTag('@returns')) {
+      formatedComment += `<br><br>↩️ **returns** \`${comment.getTag('@returns')}\`\n<br>`;
     }
     return formatedComment;
   } else {
@@ -47,17 +49,23 @@ export function formatComment(comment: Comment, parameters?: ParameterReflection
 /** Easy formatting of special tags */
 const _formatTagComment = new Map<string, (tag: CommentTag, options: IFormatCommentOptions) => string>([
   [
-    'example',
+    '@example',
     (comment, options) => {
-      if (comment.text.indexOf('```html') !== -1) {
+      const text = comment.content.map(f => f.text).join('\n');
+
+      const isHTML = text.indexOf('```html') !== -1;
+
+      if (isHTML || text.indexOf('```ts') !== -1 || text.indexOf('```typescript') !== -1) {
         if (options.mode === 'html') {
           // we are in a "p", we can't use pre or code
-          return `\n<br><span class="prismjs language-html" style="padding: 8px;font-size: 12px;font-family: monospace;display: block;background: whitesmoke;border-radius: 8px;">${encodeHTML(extractStory(comment.text).code)}</span>`;
+          return `\n<br><span class="prismjs language-${isHTML ? 'html' : 'typescript'}" style="padding: 8px;font-size: 12px;font-family: monospace;display: block;background: whitesmoke;border-radius: 8px;">${encodeHTML(
+            extractStory(text).code
+          )}</span>`;
         } else {
-          return comment.text;
+          return '\n' + text + '\n';
         }
       } else {
-        return `: ${encodeHTML(comment.text)}`;
+        return `: ${encodeHTML(text)}`;
       }
     },
   ],
@@ -65,8 +73,9 @@ const _formatTagComment = new Map<string, (tag: CommentTag, options: IFormatComm
 
 /** Get example from comment */
 export function getExampleFromComment(comment: Comment) {
-  if (comment?.hasTag('example')) {
-    const example = comment.getTag('example').text;
+  const commentTag = comment?.getTag('@example');
+  if (commentTag) {
+    const example = commentTag.content.map(f => f.text).join('\n');
     if (example) {
       return extractStory(example).code;
     }
@@ -78,12 +87,12 @@ export function getExampleFromComment(comment: Comment) {
 export function getAndStripStories(comment: Comment): AureliaDocgenStory[] {
   const stories: AureliaDocgenStory[] = [];
   if (comment) {
-    comment.tags.forEach(tag => {
-      if (tag.tagName === 'story') {
-        stories.push(extractStory(tag.text));
+    comment.blockTags.forEach(tag => {
+      if (tag.tag === '@story') {
+        stories.push(extractStory(tag.content.map(f => f.text).join('\n')));
       }
     });
-    comment.removeTags('story');
+    comment.removeTags('@story');
   }
 
   return stories;
@@ -97,6 +106,7 @@ export function getAndStripStories(comment: Comment): AureliaDocgenStory[] {
 function extractStory(text: string): AureliaDocgenStory {
   const htmlCode = '```html';
   const tsCode = '```typescript';
+  const tsCodeAlt = '```ts';
   let currentCode = '';
   let code = text;
   let title = '';
@@ -105,6 +115,10 @@ function extractStory(text: string): AureliaDocgenStory {
   if (start === -1) {
     currentCode = tsCode;
     start = text.indexOf(currentCode);
+    if (start === -1) {
+      currentCode = tsCodeAlt;
+      start = text.indexOf(currentCode);
+    }
   }
   let end = -1;
   if (start !== -1) {

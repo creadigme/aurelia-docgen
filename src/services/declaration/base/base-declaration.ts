@@ -2,6 +2,7 @@ import type { Comment, DeclarationReflection, Reflection, ReflectionGroup } from
 import type { AureliaDocgenStory } from '../../../models/aurelia-docgen-story';
 import { getAndStripStories } from '../../helpers/typedoc-stories-helpers';
 import type { AuType } from './au-type';
+import type { DeclarationReflectionWithD } from '../../typedoc/plugins/decorator';
 
 export abstract class BaseDeclaration {
   /** Component tag */
@@ -32,11 +33,11 @@ export abstract class BaseDeclaration {
     return this.original.comment;
   }
 
-  constructor(public readonly original: DeclarationReflection, public auType: AuType) {
+  constructor(public readonly original: DeclarationReflectionWithD, public auType: AuType) {
     // Embedded stories
     this.stories = getAndStripStories(original.comment);
 
-    this.original.children.forEach(f => {
+    this.original.children?.forEach((f: DeclarationReflectionWithD) => {
       if (f.flags.isPublic && !f.flags.isStatic) {
         if (f.kind === 2048) {
           // methods
@@ -54,6 +55,10 @@ export abstract class BaseDeclaration {
 
     // Store main category (if specified)
     const parent = this.parent;
-    this.category = parent?.groups?.length && parent.groups[0].categories?.length ? parent.groups[0].categories[0].title : undefined;
+
+    this.category = undefined;
+    if (parent?.groups?.length && parent.groups[0].categories?.length) {
+      this.category = parent.groups[0].categories[0].title;
+    }
   }
 }

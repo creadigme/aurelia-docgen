@@ -1,8 +1,12 @@
 import { Application, type LogLevel, TSConfigReader, type ProjectReflection, Converter, TypeScript } from 'typedoc';
+// import { getDecorators } from 'typescript';
+import { DecoratorPlugin } from './plugins/decorator-plugin';
+import { MiniLogger } from './log/mini-logger';
 
 /** Typedoc Manager */
 export class TypedocManager {
   private readonly _typedoc: Application;
+  private readonly _decoratorPlugin: DecoratorPlugin;
 
   constructor(
     private readonly _options: {
@@ -14,18 +18,16 @@ export class TypedocManager {
   ) {
     this._typedoc = new Application();
     this._typedoc.options.addReader(new TSConfigReader());
+    this._typedoc.logger = new MiniLogger(this._options);
     this._typedoc.bootstrap({
-      logger: (msg: string, level: LogLevel) => {
-        if (level > 0 || this._options.verbose) {
-          this._options.logger(msg, level);
-        }
-      },
       tsconfig: this._options.tsConfigPath,
       exclude: ['**/*.{spec,e2e,stories}.ts'],
       entryPointStrategy: 'Expand',
       excludeExternals: true,
+      // skipErrorChecking: true,
       excludeInternal: true,
       excludePrivate: true,
+      readme: 'none', // Bypass Readme
       disableSources: true,
       logLevel: this._options.verbose ? 'Verbose' : 'Warn',
       excludeProtected: true,
@@ -33,6 +35,9 @@ export class TypedocManager {
     });
 
     this._patchDefaultValue();
+
+    this._decoratorPlugin = new DecoratorPlugin(this._typedoc);
+    this._decoratorPlugin.register();
   }
 
   /**
@@ -46,18 +51,22 @@ export class TypedocManager {
     const printer = TypeScript.createPrinter({ removeComments: true, omitTrailingSemicolon: true });
 
     this._typedoc.converter.on(Converter.EVENT_CREATE_DECLARATION, (_context, reflection, node) => {
-      if (!node || !node.initializer) return;
+      const symbol = reflection.project.getSymbolFromReflection(reflection);
 
-      const defaultValue = printer.printNode(TypeScript.EmitHint.Expression, node.initializer, node.getSourceFile());
-      // Ignore PropertyAccessExpression (property = MyClass.anotherProperty)
-      if (node.initializer.kind !== TypeScript.SyntaxKind.PropertyAccessExpression) {
-        defaultValues.set(reflection, defaultValue);
-      } else {
-        defaultValues.set(reflection, undefined);
+      for (const node of symbol?.declarations || []) {
+        if (node.initializer) {
+          const defaultValue = printer.printNode(TypeScript.EmitHint.Expression, node.initializer, node.getSourceFile());
+          // Ignore PropertyAccessExpression (property = MyClass.anotherProperty)
+          if (node.initializer.kind !== TypeScript.SyntaxKind.PropertyAccessExpression) {
+            defaultValues.set(reflection, defaultValue);
+          } else {
+            defaultValues.set(reflection, undefined);
+          }
+        }
       }
     });
 
-    this._typedoc.converter.on(Converter.EVENT_RESOLVE_BEGIN, () => {
+    this._typedoc.converter.on(Converter.EVENT_RESOLVE_BEGIN, function () {
       for (const [refl, init] of defaultValues) {
         refl.defaultValue = init;
       }

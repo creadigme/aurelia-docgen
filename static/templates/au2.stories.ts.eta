@@ -42,7 +42,7 @@ function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context:
 
 // More on default export: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
-  title: '<%= (it.component.category ? it.component.category + '/' + it.component.tag : it.component.parent.name) + (it.component.comment?.hasTag('star') ? ' ✨' : '') + (it.component.comment?.hasTag('draft') ? ' ⚠' : '') /* it.component.tag */ %>',
+  title: '<%= (it.component.category ? it.component.category + '/' + it.component.tag : it.component.parent.name === 'index' ? 'index/' + it.component.tag : it.component.parent.name) + (it.component.comment?.getTag('star') ? ' ✨' : '') + (it.component.comment?.getTag('draft') ? ' ⚠' : '') /* it.component.tag */ %>',
   loaders,
   // More on argTypes: https://storybook.js.org/docs/html/api/argtypes
   argTypes: {
