@@ -53,11 +53,11 @@ Do not hesitate to [contact us](https://creadigme.net/contact/).
 ### Aurelia Docgen
 
 ```bash
-npm i @creadigme/aurelia-docgen@^1 -D
+npm i @creadigme/aurelia-docgen@^2 -D
 # or
-yarn add @creadigme/aurelia-docgen@^1 -D
+yarn add @creadigme/aurelia-docgen@^2 -D
 # or for global use
-yarn add @creadigme/aurelia-docgen@^1 -g
+yarn add @creadigme/aurelia-docgen@^2 -g
 ```
 
 ### Storybook (*version 6*)
