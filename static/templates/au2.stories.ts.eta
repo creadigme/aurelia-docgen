@@ -22,18 +22,33 @@ function enhance(sbInfo: { loaded: { $au: Aurelia } }, content: string, context:
   host.innerHTML = content;
   const localAu = auCache || sbInfo.loaded.$au;
   if (localAu) {
+<% if (it.registry.import && it.registry.path) { %>
+    <%= it.registry.import %>.enhance(localAu, {
+      host,
+      component: context,
+    });
+<% } else { %>
     localAu.enhance({
       host,
       component: context,
     });
+<% } %>
   } else {
     // docs tab issue with loaders https://github.com/storybookjs/storybook/issues/12726
     loaders[0]().then(async f => {
       auCache = f.$au;
+
+<% if (it.registry.import && it.registry.path) { %>
+      await <%= it.registry.import %>.enhance(auCache, {
+        host,
+        component: context,
+      });
+<% } else { %>
       await auCache.enhance({
         host,
         component: context,
       });
+<% } %>
     });
   }
   
