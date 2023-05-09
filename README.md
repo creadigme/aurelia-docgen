@@ -400,6 +400,8 @@ npm run build:stories
 
 **./src/configure.ts**
 ```typescript
+import { Aurelia, Registration, type IEnhancementConfig, type IHydratedParentController } from "aurelia";
+
 /** It's just an example */
 let au: Aurelia;
 
@@ -413,6 +415,21 @@ export async function getOrCreateAurelia(): Promise<Aurelia> {
     // Do your specific stuff here
   }
   return au;
+}
+
+let lastController: ICustomElementController<unknown>;
+
+/** Cleanup previous story and enhance current */
+export async function enhance(aureliaInst: Aurelia, config: IEnhancementConfig<unknown>, parentController?: IHydratedParentController | null): Promise<ICustomElementController<unknown>> {
+  if (lastController) {
+    // detaching, unbinding
+    await lastController.deactivate(lastController, null);
+    // dispose
+    await lastController.dispose();
+  }
+
+  lastController = await aureliaInst.enhance(config, parentController);
+  return lastController;
 }
 ```
 
