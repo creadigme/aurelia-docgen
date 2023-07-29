@@ -8,12 +8,12 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "aurelia": "^2.0.0-beta.4"
+    "aurelia": "^2.0.0-beta.8"
   },
   "devDependencies": {
-    "@aurelia/testing": "2.0.0-beta.4",
-    "@aurelia/ts-jest": "2.0.0-beta.4",
-    "@aurelia/webpack-loader": "2.0.0-beta.4",
+    "@aurelia/testing": "2.0.0-beta.8",
+    "@aurelia/ts-jest": "2.0.0-beta.8",
+    "@aurelia/webpack-loader": "2.0.0-beta.8",
     "@babel/core": "^7.21.4",
     "@storybook/addon-actions": "^6.5.16",
     "@storybook/addon-essentials": "^6.5.16",

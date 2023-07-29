@@ -58,7 +58,7 @@ describe('aurelia-docgen', () => {
       assert.fail('No component must be found');
     }
 
-    assert.strictEqual(logs.length, 6);
+    assert.strictEqual(logs.length, 7);
   });
 
   it('Project AU2 Basic - components must be found', () => {

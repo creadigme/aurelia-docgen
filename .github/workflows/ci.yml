@@ -48,10 +48,9 @@ jobs:
       run: yarn run test:coverage
     - name: build
       run: node ./.build/build-flow.js build
-    - name: Upload coverage
-      run: yarn run codecov
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
       env:
-        CI: true
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Publish packages GitHub

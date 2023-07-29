@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as jsyaml from 'js-yaml';
-import * as Eta from 'eta';
+import { Eta } from 'eta';
 import type { LogLevel, DeclarationReflection } from 'typedoc';
 import type { AureliaDocgenAPIOptions } from '../models/aurelia-docgen-options';
 import type { AureliaDocgenEligible } from '../models/aurelia-docgen-eligible';
@@ -16,8 +16,8 @@ declare const __webpack_require__;
  * Aurelia Docgen
  */
 export class AureliaDocgen {
-  private static readonly _RE_DECORATORS = /^(valueConverter|customElement)$/;
   private readonly _typedocManager: TypedocManager;
+  private readonly _eta: Eta;
 
   /** Target project directory */
   public readonly projectDir: string;
@@ -53,6 +53,7 @@ export class AureliaDocgen {
       tsConfigPath: path.join(this.projectDir, 'tsconfig.json'),
       verbose: this._options.verbose,
     });
+    this._eta = new Eta();
     this._init();
   }
 
@@ -81,20 +82,16 @@ export class AureliaDocgen {
     return {
       component: baseDeclaration,
       componentPath: componentPathWOE,
-      stories: Eta.render(
-        this._tpl,
-        {
-          importPath: this.outDir ? buildRelativePath(this.outDir, componentPathWOE) : './' + path.basename(baseDeclaration.original.parent.name),
-          registry: {
-            import: 'configure',
-            path: this._auConfigure ? buildRelativePath(this.outDir || path.dirname(componentPathWOE), this._auConfigure) : undefined,
-          },
-          component: baseDeclaration,
-          stories: baseDeclaration.stories.concat(ymlStories),
-          helpers,
+      stories: this._eta.renderString(this._tpl, {
+        importPath: this.outDir ? buildRelativePath(this.outDir, componentPathWOE) : './' + path.basename(baseDeclaration.original.parent.name),
+        registry: {
+          import: 'configure',
+          path: this._auConfigure ? buildRelativePath(this.outDir || path.dirname(componentPathWOE), this._auConfigure) : undefined,
         },
-        { async: false }
-      ) as string,
+        component: baseDeclaration,
+        stories: baseDeclaration.stories.concat(ymlStories),
+        helpers,
+      }) as string,
     } as AureliaDocgenEligible;
   }
 
