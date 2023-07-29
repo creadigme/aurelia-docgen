@@ -17,7 +17,8 @@
   ],
   "repository": "https://github.com/creadigme/aurelia-docgen",
   "pre-commit": [
-    "lint"
+    "lint",
+    "test"
   ],
   "publishConfig": {
     "@creadigme:registry": "https://npm.pkg.github.com"
@@ -30,6 +31,7 @@
     "storybook"
   ],
   "devDependencies": {
+    "@fastify/pre-commit": "^2.0.2",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
