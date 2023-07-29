@@ -1,5 +1,5 @@
-const path = require('path');
-const child_process = require('child_process');
+const path = require('node:path');
+const child_process = require('node:child_process');
 
 const tasks = {
   build: () => {

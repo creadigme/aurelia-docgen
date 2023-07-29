@@ -1,10 +1,10 @@
-import * as path from 'path';
-import * as fs from 'fs';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
 import * as chokidar from 'chokidar';
 import { AureliaDocgenCLIOptions } from '../models/aurelia-docgen-options';
 import { AureliaDocgen } from './aurelia-docgen';
 import commandLineArgs from 'command-line-args';
-import { parentPort } from 'worker_threads';
+import { parentPort } from 'node:worker_threads';
 import { blueBright, redBright } from 'ansi-colors';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -1,4 +1,4 @@
-import * as path from 'path';
+import * as path from 'node:path';
 
 /** Create a relative path from a directory to a file */
 export function buildRelativePath(fromDir: string, toFilePath: string) {
