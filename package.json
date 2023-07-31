@@ -17,7 +17,8 @@
   ],
   "repository": "https://github.com/creadigme/aurelia-docgen",
   "pre-commit": [
-    "lint"
+    "lint",
+    "test"
   ],
   "publishConfig": {
     "@creadigme:registry": "https://npm.pkg.github.com"
@@ -30,46 +31,45 @@
     "storybook"
   ],
   "devDependencies": {
+    "@fastify/pre-commit": "^2.0.2",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^5.33.1",
-    "@typescript-eslint/parser": "^5.33.1",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
     "bundle-declarations-webpack-plugin": "^4.0.1",
-    "codecov": "^3.8.3",
     "copy-webpack-plugin": "^11.0.0",
     "dotenv-webpack": "^8.0.1",
-    "eslint": "^8.22.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
+    "eslint": "^8.46.0",
+    "eslint-config-prettier": "^8.9.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "json": "^11.0.0",
-    "mocha": "^10.0.0",
+    "mocha": "^10.2.0",
     "nyc": "^15.1.0",
-    "prettier": "^2.7.1",
-    "rimraf": "^5.0.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.1",
     "ts-loader": "^9.3.1",
     "ts-mocha": "^10.0.0",
     "typescript": "^5",
-    "webpack": "^5.74.0",
-    "webpack-bundle-analyzer": "^4.5.0",
-    "webpack-cli": "^5.0.1",
+    "webpack": "^5.88.2",
+    "webpack-bundle-analyzer": "^4.9.0",
+    "webpack-cli": "^5.1.4",
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
     "ansi-colors": "^4.1.3",
     "chokidar": "^3.5.3",
     "command-line-args": "^5.2.1",
-    "eta": "^2.0.1",
+    "eta": "^3.1.0",
     "js-yaml": "^4.1.0",
-    "typedoc": "0.24.1"
+    "typedoc": "0.24.8"
   },
   "scripts": {
-    "clean": "node ./node_modules/rimraf ./dist && node ./node_modules/rimraf ./coverage && node ./node_modules/rimraf ./.nyc_output && node ./node_modules/rimraf ./node_modules",
-    "lint": "node ./node_modules/eslint/bin/eslint ./src/**/*.{js,ts,tsx}",
-    "lint:fix": "node ./node_modules/eslint/bin/eslint ./src/**/*.{js,ts,tsx} --fix",
-    "test": "node ./node_modules/ts-mocha/bin/ts-mocha --timeout 15000 ./src/**/*.spec.ts",
+    "clean": "rimraf ./dist ./coverage ./.nyc_output ./node_modules",
+    "lint": "eslint ./src/**/*.{js,ts,tsx}",
+    "lint:fix": "eslint ./src/**/*.{js,ts,tsx} --fix",
+    "test": "ts-mocha --timeout 15000 './src/**/*.spec.ts'",
     "test:coverage": "nyc --reporter=html --reporter=text --reporter=json --reporter=text-summary npm test",
-    "analyze": "node  ./node_modules/rimraf dist && node ./node_modules/webpack/bin/webpack --env production --analyze",
-    "build": "node ./node_modules/rimraf dist && node ./node_modules/webpack/bin/webpack --mode=production",
-    "codecov": "./node_modules/.bin/codecov"
+    "analyze": "rimraf dist && webpack --env production --analyze",
+    "build": "rimraf dist && webpack --mode=production"
   }
 }

@@ -1,5 +1,5 @@
-import * as assert from 'assert';
-import * as path from 'path';
+import * as assert from 'node:assert';
+import * as path from 'node:path';
 import type { LogLevel } from 'typedoc';
 import { AureliaDocgen } from './aurelia-docgen';
 
@@ -58,7 +58,7 @@ describe('aurelia-docgen', () => {
       assert.fail('No component must be found');
     }
 
-    assert.strictEqual(logs.length, 6);
+    assert.strictEqual(logs.length, 7);
   });
 
   it('Project AU2 Basic - components must be found', () => {

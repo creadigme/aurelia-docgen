@@ -1,5 +1,6 @@
-import * as assert from 'assert';
-import * as path from 'path';
+import * as assert from 'node:assert';
+import * as path from 'node:path';
+import * as os from 'node:os';
 import { buildRelativePath, ensureAbsolutePath } from './path-utils';
 
 describe('path-utils', () => {
@@ -12,7 +13,11 @@ describe('path-utils', () => {
 
   it('ensureAbsolutePath', () => {
     const cwd = process.cwd();
-    assert.strictEqual(ensureAbsolutePath(cwd, 'C:/something/else'), `C:${path.sep}something${path.sep}else`);
+    if (os.platform() === 'win32') {
+      assert.strictEqual(ensureAbsolutePath(cwd, 'C:/something/else'), `C:${path.sep}something${path.sep}else`);
+    } else {
+      assert.strictEqual(ensureAbsolutePath(cwd, '/something/else'), `/something${path.sep}else`);
+    }
     assert.strictEqual(ensureAbsolutePath(cwd, './something/else'), `${cwd}${path.sep}something${path.sep}else`);
   });
 });

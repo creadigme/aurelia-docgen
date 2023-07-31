@@ -1,10 +1,10 @@
 import { Worker } from 'worker_threads';
-import * as path from 'path';
-import * as fs from 'fs';
-import { tmpdir } from 'os';
-import * as assert from 'assert';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
+import { tmpdir } from 'node:os';
+import * as assert from 'node:assert';
 import { AureliaDocgenCLI } from './aurelia-docgen-cli';
-import { spawn, spawnSync } from 'child_process';
+import { spawn, spawnSync } from 'node:child_process';
 
 function ensureUnlink(filePath: string) {
   if (fs.existsSync(filePath)) {

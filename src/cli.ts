@@ -1,8 +1,8 @@
 import { AureliaDocgenCLI } from './services/aurelia-docgen-cli';
 import * as c from 'ansi-colors';
-import { EOL } from 'os';
+import { EOL } from 'node:os';
 import { parentPort } from 'worker_threads';
-import { FSWatcher } from 'fs';
+import { FSWatcher } from 'node:fs';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version, name } = require('./../package.json');

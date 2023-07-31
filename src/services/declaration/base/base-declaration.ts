@@ -33,7 +33,10 @@ export abstract class BaseDeclaration {
     return this.original.comment;
   }
 
-  constructor(public readonly original: DeclarationReflectionWithD, public auType: AuType) {
+  constructor(
+    public readonly original: DeclarationReflectionWithD,
+    public auType: AuType
+  ) {
     this._fillTag();
 
     // Embedded stories

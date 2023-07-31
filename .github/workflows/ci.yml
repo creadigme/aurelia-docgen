@@ -48,10 +48,9 @@ jobs:
       run: yarn run test:coverage
     - name: build
       run: node ./.build/build-flow.js build
-    - name: Upload coverage
-      run: yarn run codecov
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
       env:
-        CI: true
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Publish packages GitHub
@@ -69,3 +68,43 @@ jobs:
         NPM_PUBLISH_PUBLIC: '1'
         NPM_PUSH_REGISTRY: https://registry.npmjs.org/
       run: node ./.build/build-flow.js publish
+
+    
+  build_pr:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.ref != 'refs/heads/main'
+
+    # strategy:
+    #   matrix:
+    #     node-version: [16.x, 17.x]
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    # - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        registry-url: 'https://npm.pkg.github.com'
+        # Defaults to the user or organization that owns the workflow file
+        scope: '@creadigme'
+    - name: setup git config
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "<>"
+    - name: Install dependencies
+      env:
+        CI: true
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      run: rm -rf node_modules && yarn install --frozen-lockfile
+    - name: Install examples dependencies
+      env:
+        CI: true
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      run: cd ./examples/au2-basic && rm -rf node_modules && yarn install --frozen-lockfile && cd ../../
+    - name: lint
+      run: yarn run lint
+    - name: test and coverage
+      run: yarn run test:coverage
+    - name: build
+      run: node ./.build/build-flow.js build
